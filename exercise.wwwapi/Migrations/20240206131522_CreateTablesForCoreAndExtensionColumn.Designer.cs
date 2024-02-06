@@ -12,8 +12,8 @@ using exercise.wwwapi.Data;
 namespace exercise.wwwapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240206110300_CreatingtablesAndPopulateWithData")]
-    partial class CreatingtablesAndPopulateWithData
+    [Migration("20240206131522_CreateTablesForCoreAndExtensionColumn")]
+    partial class CreateTablesForCoreAndExtensionColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,7 +111,7 @@ namespace exercise.wwwapi.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("average_grade");
 
-                    b.Property<int>("CourseId")
+                    b.Property<int?>("CourseId")
                         .HasColumnType("integer")
                         .HasColumnName("course_id");
 
@@ -259,12 +259,15 @@ namespace exercise.wwwapi.Migrations
             modelBuilder.Entity("exercise.wwwapi.DataModels.Student", b =>
                 {
                     b.HasOne("exercise.wwwapi.DataModels.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Students")
+                        .HasForeignKey("CourseId");
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("exercise.wwwapi.DataModels.Course", b =>
+                {
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

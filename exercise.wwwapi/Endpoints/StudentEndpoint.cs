@@ -19,7 +19,7 @@ namespace exercise.wwwapi.Endpoints
             students.MapPost("/", CreateStudent);
             students.MapPut("{id}", UpdateStudent);
             students.MapDelete("/{id}", DeleteStudent);
-            students.MapPost("/course/{id}", AddStudentToCourse);
+            students.MapPost("/{student_id}/course/{course_id}", AddStudentToCourse);
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -90,6 +90,19 @@ namespace exercise.wwwapi.Endpoints
             }
             return TypedResults.Ok(new StudentDataDTO(result, "success"));
 
+        }
+
+        private static async Task<IResult> AddStudentToCourse(int student_id, int course_id, IRepository repository)
+        {
+            var result = await repository.addStudentToCourse(student_id, course_id);
+
+            if (result)
+            {
+                return TypedResults.Created($"Student with od {student_id} has successfuly been added to course with id {course_id}");
+            } else
+            {
+                return TypedResults.BadRequest($"Given values is not in the database");
+            }
         }
 
     }

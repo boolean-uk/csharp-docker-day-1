@@ -12,6 +12,8 @@ namespace exercise.wwwapi.Repository
         Task<Course?> createCourse(string course_title, DateTimeOffset course_start_date);
         Task<Course?> updateCourse(int id, string? course_title, DateTimeOffset? course_start_date);
         Task<Course?> deleteCourse(int id);
+
+        Task<bool> addStudentToCourse(int student_id, int course_id);
     }
 
 }

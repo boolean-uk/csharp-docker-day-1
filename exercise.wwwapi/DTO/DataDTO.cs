@@ -28,7 +28,7 @@ namespace exercise.wwwapi.DTO
             this.data = data;
             this.status = status;
         }
-    }   
+    }
 
 
     public class CourseDataDTO
@@ -39,6 +39,18 @@ namespace exercise.wwwapi.DTO
         public CourseDataDTO(Course course, string status)
         {
             data = course;
+            this.status = status;
+        }
+    }
+
+    public class CourseListDataDTO
+    {
+        public string status { get; set; }
+        public List<CourseDTO> data { get; set; }
+
+        public CourseListDataDTO(List<CourseDTO> data, string status)
+        {
+            this.data = data;
             this.status = status;
         }
     }

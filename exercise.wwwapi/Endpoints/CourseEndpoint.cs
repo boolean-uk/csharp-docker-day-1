@@ -75,7 +75,13 @@ namespace exercise.wwwapi.Endpoints
             {
                 return TypedResults.NotFound("No courses is in the db");
             }
-            var payload = new Payload<IEnumerable<Course>>() { data = results };
+            var payload = new List<CourseDTO>();
+            foreach (var course in results)
+            {
+                payload.Add(new CourseDTO(course));
+            }
+            var dataDTO = new CourseListDataDTO(payload, "success");
+            //var payload = new Payload<IEnumerable<Course>>() { data = results };
             return TypedResults.Ok(payload);
         }
 

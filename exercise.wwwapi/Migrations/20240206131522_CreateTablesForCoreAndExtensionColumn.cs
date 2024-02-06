@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace exercise.wwwapi.Migrations
 {
     /// <inheritdoc />
-    public partial class CreatingtablesAndPopulateWithData : Migration
+    public partial class CreateTablesForCoreAndExtensionColumn : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -42,7 +42,7 @@ namespace exercise.wwwapi.Migrations
                     average_grade = table.Column<decimal>(type: "numeric", nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    course_id = table.Column<int>(type: "integer", nullable: false)
+                    course_id = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,8 +51,7 @@ namespace exercise.wwwapi.Migrations
                         name: "FK_students_courses_course_id",
                         column: x => x.course_id,
                         principalTable: "courses",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.InsertData(

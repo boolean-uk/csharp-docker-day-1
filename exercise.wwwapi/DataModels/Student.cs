@@ -26,7 +26,7 @@ namespace exercise.wwwapi.DataModels
         public DateTimeOffset UpdatedAt { get; set; }
 
         [Column("course_id")]
-        public int CourseId { get; set; }
+        public int? CourseId { get; set; }
         public Course Course { get; set; }
     }
 }

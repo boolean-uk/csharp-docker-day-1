@@ -108,7 +108,7 @@ namespace exercise.wwwapi.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("average_grade");
 
-                    b.Property<int>("CourseId")
+                    b.Property<int?>("CourseId")
                         .HasColumnType("integer")
                         .HasColumnName("course_id");
 
@@ -256,12 +256,15 @@ namespace exercise.wwwapi.Migrations
             modelBuilder.Entity("exercise.wwwapi.DataModels.Student", b =>
                 {
                     b.HasOne("exercise.wwwapi.DataModels.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Students")
+                        .HasForeignKey("CourseId");
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("exercise.wwwapi.DataModels.Course", b =>
+                {
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

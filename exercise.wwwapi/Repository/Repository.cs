@@ -164,6 +164,27 @@ namespace exercise.wwwapi.Repository
             return course;
         }
 
-        
+        public async Task<bool> addStudentToCourse(int student_id, int course_id)
+        {
+            var student = await getStudentById(student_id);
+            var course = await getCourseById(course_id);
+
+            if (student == null || course == null)
+            {
+                return false;
+            }
+
+            if (student.CourseId == course_id)
+            {
+                return false; // student allready in the course
+            }
+
+            student.CourseId = course_id;
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+
+
     }
 }
