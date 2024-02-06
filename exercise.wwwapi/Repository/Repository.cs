@@ -93,7 +93,7 @@ namespace exercise.wwwapi.Repository
         {
             return await _db.Students
                         .Include(s => s.CourseStudent)
-                        .ThenInclude(cs => cs.Student)
+                        .ThenInclude(cs => cs.Course)
                         .ToListAsync();
         }
 
