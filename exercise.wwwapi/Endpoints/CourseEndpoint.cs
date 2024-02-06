@@ -76,17 +76,18 @@ namespace exercise.wwwapi.Endpoints
             return TypedResults.Ok(CourseDTO);
         }
 
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateCourse(CreateCoursePayload payload, IRepository repository)
         {
 
-            if (payload.Title == null || payload.StartDate == null)
+            if (payload.Title == null || payload.Teacher == null || payload.StartDate == null)
             {
                 return Results.BadRequest("Non-empty fields required");
             }
 
-            Course? d = await repository.CreateCourse(payload.Title, payload.StartDate);
+            Course? d = await repository.CreateCourse(payload.Title, payload.Teacher, payload.StartDate);
             
             if (d == null)
             {
@@ -97,6 +98,7 @@ namespace exercise.wwwapi.Endpoints
 
             return TypedResults.Ok(new CourseResponseDTO(d));
         }
+
 
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -111,13 +113,13 @@ namespace exercise.wwwapi.Endpoints
                 return Results.BadRequest("The Course does not exist.");
             }
 
-            if (payload.Title == "" && payload.StartDate == null)
+            if (payload.Title == "" && payload.Teacher == "" && payload.StartDate == null)
             {
                 return Results.BadRequest("Non-empty fields are required");
             }
 
 
-            Course? Course = await repository.UpdateCourse(id, payload.Title, payload.StartDate, PreloadPolicy.PreloadRelations);
+            Course? Course = await repository.UpdateCourse(id, payload.Title, payload.Teacher, payload.StartDate, PreloadPolicy.PreloadRelations);
 
 
             if (Course == null)
@@ -129,7 +131,7 @@ namespace exercise.wwwapi.Endpoints
 
             CourseResponseDTO cdto = new CourseResponseDTO(Course);
 
-            return TypedResults.Created($"/Courses{Course.Id}", cdto);
+            return TypedResults.Created($"/courses{Course.Id}", cdto);
         }
     }
 }

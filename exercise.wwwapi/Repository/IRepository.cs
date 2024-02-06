@@ -23,10 +23,10 @@ namespace exercise.wwwapi.Repository
 
         Task<IEnumerable<Course>> GetCourses();
         Task<Course?> GetCourse(int courseId, PreloadPolicy preloadPolicy = PreloadPolicy.DoNotPreloadRelations);
-        Task<Course?> CreateCourse(string Title, DateTime StartDate);
+        Task<Course?> CreateCourse(string Title, string Teacher, DateTime StartDate);
 
         Task<Course?> DeleteCourse(int courseId, PreloadPolicy preloadPolicy = PreloadPolicy.DoNotPreloadRelations);
-        Task<Course?> UpdateCourse(int courseId, string? Title, DateTime? StartDate, PreloadPolicy preloadPolicy = PreloadPolicy.DoNotPreloadRelations);
+        Task<Course?> UpdateCourse(int courseId, string? Title, string? Teacher, DateTime? StartDate, PreloadPolicy preloadPolicy = PreloadPolicy.DoNotPreloadRelations);
 
         public void SaveChanges();
     }

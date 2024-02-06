@@ -12,6 +12,9 @@ namespace exercise.wwwapi.DataModels
         [Column("title")]
         public string Title { get; set; }
 
+        [Column("teacher")]
+        public string Teacher { get; set; }
+
         [Column("start_date")]
         public DateTime StartDate { get; set; }
 

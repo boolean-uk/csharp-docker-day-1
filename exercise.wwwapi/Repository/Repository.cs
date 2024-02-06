@@ -41,23 +41,22 @@ namespace exercise.wwwapi.Repository
 
             List<Student> scr = _db.Students.Where(x => x.CourseId == mv.Id).ToList();
 
-            foreach (Student sc in scr)
-            {
-                mv.Students.Remove(sc);
-            }
 
+            mv.Students.Clear();
+            
             _db.Courses.Remove(mv);
 
             return mv;
                 
         }
 
-        public async Task<Course?> CreateCourse(string title, DateTime startDate)
+        public async Task<Course?> CreateCourse(string title, string teacher, DateTime startDate)
         {
-            if (title == "" || startDate == null) return null;
+            if (title == "" || teacher == "" || startDate == null) return null;
 
             var Course = new Course { 
                 Title = title, 
+                Teacher = teacher,
                 StartDate = startDate };
 
             await _db.Courses.AddAsync(Course);
@@ -65,7 +64,7 @@ namespace exercise.wwwapi.Repository
             return Course;
         }
 
-        public async Task<Course?> UpdateCourse(int courseId, string? title, DateTime? startDate, PreloadPolicy preloadPolicy = PreloadPolicy.DoNotPreloadRelations)
+        public async Task<Course?> UpdateCourse(int courseId, string? title, string? teacher, DateTime? startDate, PreloadPolicy preloadPolicy = PreloadPolicy.DoNotPreloadRelations)
         {
 
             var mv = await _db.Courses.Include(x => x.Students).FirstOrDefaultAsync(s => s.Id == courseId);
@@ -76,6 +75,8 @@ namespace exercise.wwwapi.Repository
             }
 
             if (title !=  null) { mv.Title = title; }
+
+            if (teacher !=  null) { mv.Teacher = teacher; }
 
             if (startDate != null) {  mv.StartDate = (DateTime)startDate; }
 
@@ -90,7 +91,7 @@ namespace exercise.wwwapi.Repository
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            return await _db.Students.ToListAsync();
+            return await _db.Students.Include(x => x.Course).ToListAsync();
         }
 
 
@@ -100,7 +101,7 @@ namespace exercise.wwwapi.Repository
             switch (preloadPolicy)
             {
                 case PreloadPolicy.PreloadRelations:
-                    return await _db.Students.FirstOrDefaultAsync(s => s.Id == studentId);
+                    return await _db.Students.Include(x => x.Course).FirstOrDefaultAsync(s => s.Id == studentId);
                 case PreloadPolicy.DoNotPreloadRelations:
                     return await _db.Students.FirstOrDefaultAsync(s => s.Id == studentId);
                 default:

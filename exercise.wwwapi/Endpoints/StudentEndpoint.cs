@@ -127,7 +127,7 @@ namespace exercise.wwwapi.Endpoints
 
             StudentDTO cdto = new StudentDTO(Student);
 
-            return TypedResults.Created($"/Students{Student.Id}", cdto);
+            return TypedResults.Created($"/students{Student.Id}", cdto);
         }
        
     }

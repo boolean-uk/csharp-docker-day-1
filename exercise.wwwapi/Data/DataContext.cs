@@ -35,9 +35,9 @@ namespace exercise.wwwapi.Data
             modelBuilder.Entity<Course>().HasMany(e => e.Students).WithOne(e => e.Course).HasForeignKey(e => e.CourseId);
 
             modelBuilder.Entity<Course>().HasData(
-             new Course { Id = 1, Title = "Math", StartDate = DateTime.Now.ToUniversalTime() },
-             new Course { Id = 2, Title = "Literature", StartDate = DateTime.Now.ToUniversalTime() },
-             new Course { Id = 3, Title = "Arts", StartDate = DateTime.Now.ToUniversalTime() });
+             new Course { Id = 1, Title = "Math", Teacher = "Ms. Rosamund", StartDate = DateTime.Now.ToUniversalTime() },
+             new Course { Id = 2, Title = "Literature", Teacher = "Mr. Dostoyevski", StartDate = DateTime.Now.ToUniversalTime() },
+             new Course { Id = 3, Title = "Arts", Teacher = "Mr. Bacon", StartDate = DateTime.Now.ToUniversalTime() });
 
 
             List<Student> students = new List<Student>();
