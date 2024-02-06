@@ -1,5 +1,6 @@
 ﻿using exercise.wwwapi.Data;
 using exercise.wwwapi.DataModels;
+using exercise.wwwapi.DTO;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 
@@ -97,7 +98,7 @@ namespace exercise.wwwapi.Repository
         }
         public async Task<IEnumerable<Course>> getCourses()
         {
-            return await _db.Courses.ToListAsync();
+            return await _db.Courses.Include(c => c.Students).ToListAsync();
         }
 
         public async Task<Course?> getCourseById(int id)
@@ -123,9 +124,33 @@ namespace exercise.wwwapi.Repository
             return result;
         }
 
-        public async Task<Course?> updateCourse(string? course_title, DateTimeOffset? course_start_date)
+        public async Task<Course?> updateCourse(int id, string? course_title, DateTimeOffset? course_start_date)
         {
-            throw new NotImplementedException();
+
+            Course? course = await getCourseById(id);
+            if (course == null)
+            {
+                return null;
+            }
+            if (course_title == "")
+            {
+                return null;
+            }
+            
+
+            if (course_title != null)
+            {
+                course.CourseTitle = course_title;
+                course.UpdatedAt = DateTimeOffset.UtcNow;
+            }
+            if (course_start_date != null)
+            {
+                course.CourseStartDate = course_start_date.Value;
+                course.UpdatedAt = DateTimeOffset.UtcNow;
+            }
+           
+            await _db.SaveChangesAsync();
+            return course;
         }
 
         public async Task<Course?> deleteCourse(int id)
@@ -138,5 +163,7 @@ namespace exercise.wwwapi.Repository
             await _db.SaveChangesAsync();
             return course;
         }
+
+        
     }
 }

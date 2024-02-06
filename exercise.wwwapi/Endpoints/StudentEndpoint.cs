@@ -19,6 +19,7 @@ namespace exercise.wwwapi.Endpoints
             students.MapPost("/", CreateStudent);
             students.MapPut("{id}", UpdateStudent);
             students.MapDelete("/{id}", DeleteStudent);
+            students.MapPost("/course/{id}", AddStudentToCourse);
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,7 +59,7 @@ namespace exercise.wwwapi.Endpoints
             {
                 return TypedResults.BadRequest();
             }
-            return TypedResults.Created("/customers", new StudentDataDTO(result, "success"));
+            return TypedResults.Created("/students", new StudentDataDTO(result, "success"));
         }
 
         private static async Task<IResult> UpdateStudent(int id, StudentPutPayload payload, IRepository repository)

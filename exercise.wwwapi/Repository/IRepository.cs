@@ -10,7 +10,7 @@ namespace exercise.wwwapi.Repository
         Task<Student?> deleteStudent(int id);
         Task<IEnumerable<Course>> getCourses();
         Task<Course?> createCourse(string course_title, DateTimeOffset course_start_date);
-        Task<Course?> updateCourse(string? course_title, DateTimeOffset? course_start_date);
+        Task<Course?> updateCourse(int id, string? course_title, DateTimeOffset? course_start_date);
         Task<Course?> deleteCourse(int id);
     }
 
