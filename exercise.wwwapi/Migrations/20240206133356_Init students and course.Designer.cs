@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using exercise.wwwapi.Data;
@@ -11,9 +12,11 @@ using exercise.wwwapi.Data;
 namespace exercise.wwwapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240206133356_Init students and course")]
+    partial class Initstudentsandcourse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,8 +66,8 @@ namespace exercise.wwwapi.Migrations
                             Id = 1,
                             AvailableSpots = 30,
                             Description = "Advanced Calculus",
-                            EndDate = new DateTime(2024, 6, 5, 13, 5, 57, 518, DateTimeKind.Utc).AddTicks(7518),
-                            StartDate = new DateTime(2024, 2, 13, 14, 5, 57, 518, DateTimeKind.Utc).AddTicks(7447),
+                            EndDate = new DateTime(2024, 6, 5, 12, 33, 56, 244, DateTimeKind.Utc).AddTicks(5716),
+                            StartDate = new DateTime(2024, 2, 13, 13, 33, 56, 244, DateTimeKind.Utc).AddTicks(5644),
                             Title = "Mathematics"
                         },
                         new
@@ -72,8 +75,8 @@ namespace exercise.wwwapi.Migrations
                             Id = 2,
                             AvailableSpots = 25,
                             Description = "Introduction to Programming",
-                            EndDate = new DateTime(2024, 5, 6, 13, 5, 57, 518, DateTimeKind.Utc).AddTicks(7526),
-                            StartDate = new DateTime(2024, 2, 20, 14, 5, 57, 518, DateTimeKind.Utc).AddTicks(7524),
+                            EndDate = new DateTime(2024, 5, 6, 12, 33, 56, 244, DateTimeKind.Utc).AddTicks(5724),
+                            StartDate = new DateTime(2024, 2, 20, 13, 33, 56, 244, DateTimeKind.Utc).AddTicks(5722),
                             Title = "Computer Science"
                         });
                 });
@@ -95,7 +98,7 @@ namespace exercise.wwwapi.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("birthdate");
 
-                    b.Property<int?>("CourseId")
+                    b.Property<int>("CourseId")
                         .HasColumnType("integer")
                         .HasColumnName("course_id");
 
@@ -140,7 +143,9 @@ namespace exercise.wwwapi.Migrations
                 {
                     b.HasOne("exercise.wwwapi.DataModels.Course", "Course")
                         .WithMany("Students")
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Course");
                 });

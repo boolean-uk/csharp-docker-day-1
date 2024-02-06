@@ -11,21 +11,20 @@ namespace exercise.wwwapi.DataModels
         public int Id { get; set; }
 
         [Column("first_name")]
-        public string FirstName { get; set; }
+        public required string FirstName { get; set; }
 
         [Column("last_name")]
-        public string LastName { get; set; }
+        public required string LastName { get; set; }
 
         [Column("birthdate")]
-        public DateTime Birthdate { get; set; }
-
-        [Column("course_title")]
-        public string CourseTitle { get; set; }
-
-        [Column("start_date")]
-        public DateTime CourseStartDate { get; set; }
+        public required DateTime Birthdate { get; set; }
 
         [Column("average_grade")]
-        public float AverageGrade { get; set; }
+        public required float AverageGrade { get; set; }
+
+        [ForeignKey("Course")]
+        [Column("course_id")]
+        public int? CourseId { get; set; }
+        public Course Course { get; set; } = null!;
     }
 }

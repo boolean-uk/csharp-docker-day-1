@@ -1,6 +1,8 @@
-﻿namespace exercise.wwwapi.DataModels
+﻿using exercise.wwwapi.DataModels;
+
+namespace exercise.wwwapi.DataTransferObjects.StudentDTO
 {
-    public class StudentDTO
+    public record StudentDTO
     {
 
         public int Id { get; set; }
@@ -11,11 +13,8 @@
 
         public DateTime Birthdate { get; set; }
 
-        public string CourseTitle { get; set; }
-
-        public DateTime CourseStartDate { get; set; }
-
         public float AverageGrade { get; set; }
+        public StudentCourseDTO Course { get; set; } = null!;
 
         public StudentDTO(Student student)
         {
@@ -23,9 +22,12 @@
             FirstName = student.FirstName;
             LastName = student.LastName;
             Birthdate = student.Birthdate;
-            CourseTitle = student.CourseTitle;
-            CourseStartDate = student.CourseStartDate;
             AverageGrade = student.AverageGrade;
+            if (student.Course != null)
+            {
+                Course = new StudentCourseDTO(student.Course);
+            }
+
         }
     }
 }

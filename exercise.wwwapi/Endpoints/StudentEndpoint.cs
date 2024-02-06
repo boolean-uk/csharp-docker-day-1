@@ -1,5 +1,5 @@
-﻿using exercise.wwwapi.DataModels;
-using exercise.wwwapi.DataTransferObjects;
+﻿using exercise.wwwapi.DataTransferObjects.StudentDTO;
+using exercise.wwwapi.Payloads;
 using exercise.wwwapi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +17,8 @@ namespace exercise.wwwapi.Endpoints
             students.MapPut("/", AddStudent);
             students.MapPost("/{id}", UpdateStudent);
             students.MapDelete("/{id}", DeleteStudent);
+            students.MapPost("/{studentId}/course/{courseId}", ApplyToCourse);
+            students.MapPatch("/{id}/course", LeaveCourse);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -42,22 +44,23 @@ namespace exercise.wwwapi.Endpoints
                 return TypedResults.BadRequest("Incomplete student data.");
             }
 
-            var student = await repository.AddStudent(payload.FirstName, payload.LastName, payload.Birthdate, payload.CourseTitle, payload.CourseStartDate, payload.AverageGrade);
+            var student = await repository.AddStudent(payload.FirstName, payload.LastName, payload.Birthdate, payload.AverageGrade);
             return TypedResults.Created($"students/{student.Id}", new StudentDTO(student));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> UpdateStudent(IStudentRepository repository, int id, UpdateStudentPayload payload)
         {
             if (string.IsNullOrWhiteSpace(payload.FirstName) && string.IsNullOrWhiteSpace(payload.LastName) &&
-                payload.Birthdate == null && payload.CourseStartDate == null && float.IsNaN(payload.AverageGrade))
+                payload.Birthdate == null && float.IsNaN(payload.AverageGrade))
             {
                 return TypedResults.BadRequest("Empty data");
             }
 
-            var student = await repository.UpdateStudent(id, payload.FirstName, payload.LastName, payload.Birthdate, payload.CourseTitle, payload.CourseStartDate, payload.AverageGrade);
-            return TypedResults.Ok(new StudentDTO(student));
+            var student = await repository.UpdateStudent(id, payload.FirstName, payload.LastName, payload.Birthdate, payload.AverageGrade);
+            return student == null ? TypedResults.NotFound("Student not found") : TypedResults.Ok(new StudentDTO(student));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -65,6 +68,29 @@ namespace exercise.wwwapi.Endpoints
         public static async Task<IResult> DeleteStudent(IStudentRepository repository, int id)
         {
             var student = await repository.DeleteStudent(id);
+            return student == null ? TypedResults.NotFound("Student not found") : TypedResults.Ok(new StudentDTO(student));
+        }
+
+        public static async Task<IResult> ApplyToCourse(IStudentRepository repository, int studentId, int courseId)
+        {
+            try
+            {
+                var student = await repository.ApplyToCourse(studentId, courseId);
+                return student == null ? TypedResults.NotFound("Student not found") : TypedResults.Ok(new StudentDTO(student));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return TypedResults.NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest(ex.Message);
+            }
+
+        }
+        public static async Task<IResult> LeaveCourse(IStudentRepository repository, int id)
+        {
+            var student = await repository.LeaveCourse(id);
             return student == null ? TypedResults.NotFound("Student not found") : TypedResults.Ok(new StudentDTO(student));
         }
     }
