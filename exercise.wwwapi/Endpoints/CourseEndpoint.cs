@@ -1,6 +1,4 @@
-﻿using exercise.wwwapi.DataModels;
-using exercise.wwwapi.DataTransferObjects;
-using exercise.wwwapi.Repository;
+﻿using exercise.wwwapi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace exercise.wwwapi.Endpoints
@@ -17,11 +15,14 @@ namespace exercise.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetCourses(IRepository repository)
+        public static async Task<IResult> GetCourses(IStudentRepository repository)
         {
+            throw new NotImplementedException();
+            /*
             var results = await repository.GetCourses();
-            var payload = new Payload<IEnumerable<Course>>() { data = results };
+            var payload = new StudentPayload<IEnumerable<Course>>() { data = results };
             return TypedResults.Ok(payload);
+            */
         }
     }
 }
