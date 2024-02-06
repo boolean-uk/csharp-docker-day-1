@@ -35,6 +35,10 @@ namespace exercise.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> AddStudent(IRepository repository, StudentPostPayload payload, int courseId)
         {
+            Course? course = await repository.GetCourse(courseId);
+            if (course == null)
+                return Results.NotFound("ID out of scope");
+
             //Handling missing inputs
             bool somethingWrong = false;
             string message = "";

@@ -29,7 +29,7 @@ namespace exercise.wwwapi.Repository
             int nrStudents = await _db.Students.CountAsync();
 
             int id = 0;
-            if (students.Count == 0)
+            if (students.Count > 0)
                 id = students.Last().Id;
             id++;
 
@@ -106,7 +106,7 @@ namespace exercise.wwwapi.Repository
             int nrCourses = await _db.Courses.CountAsync();
 
             int id = 0;
-            if (courses.Count == 0)
+            if (courses.Count > 0)
                 id = courses.Last().Id;
             id++;
 
