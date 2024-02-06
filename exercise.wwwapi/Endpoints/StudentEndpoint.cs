@@ -9,8 +9,8 @@ namespace exercise.wwwapi.Endpoints
     /// Core Endpoint
     /// </summary>
     /// 
-    public record StudentPostPayload(string firstname, string lastname, string birthday, string grade, int courseId);
-    public record StudentUpdatePayload(string? firstname, string? lastname, string? birthday, string? grade, int? courseId);
+    public record StudentPostPayload(string firstname, string lastname, string birthday, string grade);
+    public record StudentUpdatePayload(string? firstname, string? lastname, string? birthday, string? grade);
 
     public static class StudentEndpoint
     {
@@ -18,8 +18,8 @@ namespace exercise.wwwapi.Endpoints
         {
             var students = app.MapGroup("students");
             students.MapGet("/", GetStudents);
-            students.MapPost("/", AddStudent);
-            students.MapPut("/{id}", ChangeStudent);
+            students.MapPost("/{courseId}", AddStudent);
+            students.MapPut("/{id}/courses/{courseId}", ChangeStudent);
             students.MapDelete("/{id}", RemoveStudent);
         }
         
@@ -33,7 +33,7 @@ namespace exercise.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> AddStudent(IRepository repository, StudentPostPayload payload)
+        public static async Task<IResult> AddStudent(IRepository repository, StudentPostPayload payload, int courseId)
         {
             //Handling missing inputs
             bool somethingWrong = false;
@@ -66,7 +66,7 @@ namespace exercise.wwwapi.Endpoints
             if (somethingWrong)
                 return Results.BadRequest(message);
 
-            Student? student = await repository.AddStudent(payload.firstname, payload.lastname, payload.birthday, payload.grade, payload.courseId);
+            Student? student = await repository.AddStudent(payload.firstname, payload.lastname, payload.birthday, payload.grade, courseId);
             if (student == null)
                 return Results.BadRequest("Student already exists");
 
@@ -75,13 +75,13 @@ namespace exercise.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async static Task<IResult> ChangeStudent(IRepository repository, StudentUpdatePayload posted, int id)
+        public async static Task<IResult> ChangeStudent(IRepository repository, StudentUpdatePayload posted, int studentId, int courseId)
         {
-            Student? student = await repository.GetStudent(id);
+            Student? student = await repository.GetStudent(studentId);
             if (student == null)
                 return Results.NotFound("ID out of scope");
 
-            student = await repository.ChangeStudent(student, posted.firstname, posted.lastname, posted.birthday, posted.grade, posted.courseId);
+            student = await repository.ChangeStudent(student, posted.firstname, posted.lastname, posted.birthday, posted.grade, courseId);
             if (student == null)
                 return Results.BadRequest("Student already changed");
 
