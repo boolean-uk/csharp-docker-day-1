@@ -11,6 +11,11 @@ WORKDIR /src
 COPY ["*.csproj", "./"]
 RUN dotnet restore
 COPY . .
+
+RUN dotnet tool install --global dotnet-ef --version 8.0.0
+ENV PATH="/root/.dotnet/tools:${PATH}"
+RUN dotnet ef migrations add InitialCreate
+
 RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
