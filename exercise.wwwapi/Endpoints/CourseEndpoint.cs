@@ -19,7 +19,7 @@ namespace exercise.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetCourses(IRepository repository)
         {
-            var results = await repository.GetCourses();
+            var results = await repository.getCourses();
             var payload = new Payload<IEnumerable<Course>>() { data = results };
             return TypedResults.Ok(payload);
         }
