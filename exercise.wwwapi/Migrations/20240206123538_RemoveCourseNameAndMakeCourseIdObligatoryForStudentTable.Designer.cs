@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using exercise.wwwapi.Data;
@@ -11,9 +12,11 @@ using exercise.wwwapi.Data;
 namespace exercise.wwwapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240206123538_RemoveCourseNameAndMakeCourseIdObligatoryForStudentTable")]
+    partial class RemoveCourseNameAndMakeCourseIdObligatoryForStudentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,6 +101,9 @@ namespace exercise.wwwapi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("StartDateOfCourse")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
@@ -112,7 +118,8 @@ namespace exercise.wwwapi.Migrations
                             CourseId = 1,
                             DateOfBirth = new DateTime(2000, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "John",
-                            LastName = "Doe"
+                            LastName = "Doe",
+                            StartDateOfCourse = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
@@ -121,7 +128,8 @@ namespace exercise.wwwapi.Migrations
                             CourseId = 2,
                             DateOfBirth = new DateTime(1999, 5, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Jane",
-                            LastName = "Smith"
+                            LastName = "Smith",
+                            StartDateOfCourse = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 

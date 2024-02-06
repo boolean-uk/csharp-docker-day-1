@@ -2,7 +2,7 @@
 
 namespace exercise.wwwapi.Repository
 {
-    public interface IRepository
+    public interface IStudentRepository
     {
         Task<List<Student>> GetStudents();
         Task<Student?> GetStudentById(int id);
@@ -11,7 +11,6 @@ namespace exercise.wwwapi.Repository
         
         Task<Student?> DeleteStudentById(int id);
 
-        Task<IEnumerable<Course>> GetCourses();
     }
 
 }

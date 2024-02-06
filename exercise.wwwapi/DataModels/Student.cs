@@ -9,8 +9,10 @@ namespace exercise.wwwapi.DataModels
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public string CourseName { get; set; }
-        public DateTime StartDateOfCourse { get; set; }
+
+        public int CourseId { get; set; }
+        public Course Course { get; set; }
+
         public float AvarageGrade { get; set; }
 
 

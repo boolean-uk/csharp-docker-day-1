@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using exercise.wwwapi.Data;
@@ -11,9 +12,11 @@ using exercise.wwwapi.Data;
 namespace exercise.wwwapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240206123150_AddCourses")]
+    partial class AddCourses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,8 +87,12 @@ namespace exercise.wwwapi.Migrations
                     b.Property<float>("AvarageGrade")
                         .HasColumnType("real");
 
-                    b.Property<int>("CourseId")
+                    b.Property<int?>("CourseId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("CourseName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
@@ -97,6 +104,9 @@ namespace exercise.wwwapi.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("StartDateOfCourse")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -110,18 +120,22 @@ namespace exercise.wwwapi.Migrations
                             Id = 1,
                             AvarageGrade = 3.5f,
                             CourseId = 1,
+                            CourseName = "Computer Science",
                             DateOfBirth = new DateTime(2000, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "John",
-                            LastName = "Doe"
+                            LastName = "Doe",
+                            StartDateOfCourse = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = 2,
                             AvarageGrade = 3.8f,
                             CourseId = 2,
+                            CourseName = "Mathematics",
                             DateOfBirth = new DateTime(1999, 5, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Jane",
-                            LastName = "Smith"
+                            LastName = "Smith",
+                            StartDateOfCourse = new DateTime(2023, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -129,9 +143,7 @@ namespace exercise.wwwapi.Migrations
                 {
                     b.HasOne("exercise.wwwapi.DataModels.Course", "Course")
                         .WithMany("students")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.Navigation("Course");
                 });

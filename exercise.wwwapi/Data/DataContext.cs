@@ -1,5 +1,6 @@
 ﻿using exercise.wwwapi.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace exercise.wwwapi.Data
 {
@@ -19,30 +20,12 @@ namespace exercise.wwwapi.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Student>().HasData(
-                new Student()
-                {
-                    Id = 1,
-                    FirstName = "John",
-                    LastName = "Doe",
-                    DateOfBirth = DateTime.SpecifyKind(new DateTime(2000, 1, 15), DateTimeKind.Utc), // January 15, 2000
-                    CourseName = "Computer Science",
-                    StartDateOfCourse = DateTime.SpecifyKind(new DateTime(2023, 9, 1), DateTimeKind.Utc), // September 1, 2023
-                    AvarageGrade = 3.5f
-                },
-                new Student()
-                {
-                    Id = 2,
-                    FirstName = "Jane",
-                    LastName = "Smith",
-                    DateOfBirth = DateTime.SpecifyKind(new DateTime(1999, 5, 22), DateTimeKind.Utc), // May 22, 1999
-                    CourseName = "Mathematics",
-                    StartDateOfCourse = DateTime.SpecifyKind(new DateTime(2023, 9, 1), DateTimeKind.Utc), // September 1, 2023
-                    AvarageGrade = 3.8f
-                }
-
-                );
+            Seeder.AddCourses(modelBuilder);
+            Seeder.AddStudents(modelBuilder);
         }
+
+
+
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }
     }

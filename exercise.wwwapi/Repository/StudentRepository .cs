@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class StudentRepository : IStudentRepository
     {
         private DataContext _db;
-        public Repository(DataContext db)
+        public StudentRepository(DataContext db)
         {
             _db = db;
         }
@@ -25,13 +25,13 @@ namespace exercise.wwwapi.Repository
 
         public async Task<Student?> GetStudentById(int id)
         {
-            return await _db.Students.FirstOrDefaultAsync(s => s.Id == id);
+            return await _db.Students.Include(s => s.Course).FirstOrDefaultAsync(s => s.Id == id);
 
         }
 
         public async Task<List<Student>> GetStudents()
         {
-            return await _db.Students.ToListAsync();
+            return await _db.Students.Include(s => s.Course).ToListAsync();
         }
 
         public async Task<Student?> UpdateStudentById(int id, Student StudentUpdateData)
@@ -41,8 +41,7 @@ namespace exercise.wwwapi.Repository
             student.FirstName = StudentUpdateData.FirstName;
             student.LastName = StudentUpdateData.LastName;
             student.DateOfBirth = StudentUpdateData.DateOfBirth;
-            student.CourseName = StudentUpdateData.CourseName;
-            student.StartDateOfCourse = StudentUpdateData.StartDateOfCourse;
+            student.CourseId = StudentUpdateData.CourseId;
             student.AvarageGrade = StudentUpdateData.AvarageGrade;
             _db.SaveChanges();
             return student;
