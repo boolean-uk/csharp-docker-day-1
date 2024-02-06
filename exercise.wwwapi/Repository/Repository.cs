@@ -11,10 +11,6 @@ namespace exercise.wwwapi.Repository
         {
             _db = db;
         }
-        public async Task<IEnumerable<Course>> GetCourses()
-        {
-            return await _db.Courses.Include(s => s.Students).ToListAsync();
-        }
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
@@ -88,6 +84,71 @@ namespace exercise.wwwapi.Repository
             _db.Students.Remove(student);
             await _db.SaveChangesAsync();
             return await _db.Students.ToListAsync();
+        }
+
+
+
+
+        public async Task<IEnumerable<Course>> GetCourses()
+        {
+            return await _db.Courses.Include(s => s.Students).ToListAsync();
+        }
+
+        public async Task<Course?> GetCourse(int id)
+        {
+            var task = await _db.Courses.Include(s => s.Students).FirstOrDefaultAsync(t => t.Id == id);
+            return task;
+        }
+
+        public async Task<Course?> AddCourse(string title, DateTime startDate)
+        {
+            List<Course> courses = _db.Courses.ToList();
+            int nrCourses = await _db.Courses.CountAsync();
+
+            int id = 0;
+            if (courses.Count == 0)
+                id = courses.Last().Id;
+            id++;
+
+            for (int i = 0; i < nrCourses; i++)
+            {
+                if (courses[i].Title == title)
+                    return null;
+            }
+
+            var newCourse = new Course() { Id = id, Title = title, StartDate = startDate };
+            await _db.AddAsync(newCourse);
+            await _db.SaveChangesAsync();
+            return newCourse;
+        }
+
+        public async Task<Course>? ChangeCourse(Course course, string? title, DateTime? startDate)
+        {
+            bool hasUpdate = false;
+            List<Course> coursList = _db.Courses.ToList();
+
+            if (title != null)
+            {
+                course.Title = title;
+                hasUpdate = true;
+            }
+
+            if (startDate != null)
+            {
+                course.StartDate = (DateTime)startDate;
+                hasUpdate = true;
+            }
+
+            if (!hasUpdate) throw new Exception("No update data provided");
+            await _db.SaveChangesAsync();
+            return course;
+        }
+
+        public async Task<IEnumerable<Course>> RemoveCourse(Course course)
+        {
+            _db.Courses.Remove(course);
+            await _db.SaveChangesAsync();
+            return await _db.Courses.ToListAsync();
         }
     }
 }

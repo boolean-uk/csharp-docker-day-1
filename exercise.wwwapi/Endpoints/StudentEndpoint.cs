@@ -10,7 +10,6 @@ namespace exercise.wwwapi.Endpoints
     /// </summary>
     /// 
     public record StudentPostPayload(string firstname, string lastname, string birthday, string grade, int courseId);
-
     public record StudentUpdatePayload(string? firstname, string? lastname, string? birthday, string? grade, int? courseId);
 
     public static class StudentEndpoint
@@ -22,7 +21,6 @@ namespace exercise.wwwapi.Endpoints
             students.MapPost("/", AddStudent);
             students.MapPut("/{id}", ChangeStudent);
             students.MapDelete("/{id}", RemoveStudent);
-            students.MapGet("/course", GetCourses);
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -32,15 +30,6 @@ namespace exercise.wwwapi.Endpoints
             //var payload = new Payload<IEnumerable<Student>>() { data = results };
 
             return TypedResults.Ok(StudentResponseDTO.FromRepository(results));
-        }
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetCourses(IRepository repository)
-        {
-            var results = await repository.GetCourses();
-            //var payload = new Payload<IEnumerable<Course>>() { data = results };
-            
-            return TypedResults.Ok(CourseResponseDTO.FromRepository(results));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -77,12 +66,12 @@ namespace exercise.wwwapi.Endpoints
             if (somethingWrong)
                 return Results.BadRequest(message);
 
-            Student student = await repository.AddStudent(payload.firstname, payload.lastname, payload.birthday, payload.grade, payload.courseId);
+            Student? student = await repository.AddStudent(payload.firstname, payload.lastname, payload.birthday, payload.grade, payload.courseId);
             if (student == null)
                 return Results.BadRequest("Student already exists");
 
             StudentResponseDTO stu = StudentResponseDTO.FromARepository(student);
-            return TypedResults.Created($"/movies{stu.FirstName} {stu.LastName} {stu.Birthday} {stu.AverageGrade} {stu.LastName}", stu);
+            return TypedResults.Created($"/students{stu.FirstName} {stu.LastName} {stu.Birthday} {stu.AverageGrade} {stu.LastName}", stu);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -97,7 +86,7 @@ namespace exercise.wwwapi.Endpoints
                 return Results.BadRequest("Student already changed");
 
             StudentResponseDTO stu = StudentResponseDTO.FromARepository(student);
-            return TypedResults.Created($"/movies{stu.FirstName} {stu.LastName} {stu.Birthday} {stu.AverageGrade} {stu.LastName}", stu);
+            return TypedResults.Created($"/students{stu.FirstName} {stu.LastName} {stu.Birthday} {stu.AverageGrade} {stu.LastName}", stu);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
