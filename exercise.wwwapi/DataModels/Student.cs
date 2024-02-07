@@ -19,13 +19,12 @@ namespace exercise.wwwapi.DataModels
         [Column("date_of_birth")]
         public string DateOfBirth { get; set; }
 
-        [Column("course_title")]
-        public string CourseTitle { get; set; }
-
-        [Column("course_start_date")]
-        public string CourseStartDate { get; set; }
-
         [Column("average_grade")]
         public int AverageGrade { get; set; }
+
+        [Column("course_id")]
+        public int CourseId {  get; set; }
+
+        public Course Course { get; set; }
     }
 }

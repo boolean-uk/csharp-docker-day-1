@@ -5,23 +5,12 @@
         public T data { get; set; }
     }
 
-    public record CreateNewStudentPayload
+    public record StudentPayload
     (
         string? FirstName,
         string? LastName,
         string? DateOfBirth,
-        string? CourseTitle,
-        string? CourseStartDate,
-        int AverageGrade
+        int AverageGrade,
+        int courseId
     );
-
-    public record UpdateStudentPayload
-(
-    string? FirstName,
-    string? LastName,
-    string? DateOfBirth,
-    string? CourseTitle,
-    string? CourseStartDate,
-    int AverageGrade
-);
 }

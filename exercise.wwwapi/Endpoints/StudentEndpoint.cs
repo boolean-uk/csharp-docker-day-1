@@ -19,6 +19,7 @@ namespace exercise.wwwapi.Endpoints
             students.MapDelete("/", DeleteStudent);
         }
         
+        //get all students
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetStudents(IRepository repository)
         {
@@ -30,33 +31,47 @@ namespace exercise.wwwapi.Endpoints
                 StudentResponseDTO studentToReturn = new StudentResponseDTO(student);
                 resultList.Add(studentToReturn);
             }
-            //var payload = new Payload<IEnumerable<Student>>() { data = results };
             return TypedResults.Ok(resultList);
         }
 
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(StudentResponseDTO))]
+        //create student
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(StudentCreatedResponseDTO))]
         public static async Task<IResult> CreateStudent(IRepository repository, 
-            CreateNewStudentPayload createData)
+            StudentPayload createData)
         {
             var student = await repository.CreateStudent(createData);
-            StudentResponseDTO studentToReturn = new StudentResponseDTO(student);
+            if (student == null)
+            {
+                return TypedResults.BadRequest("All fields are needed");
+            }
+            StudentCreatedResponseDTO studentToReturn = new StudentCreatedResponseDTO(student);
             return TypedResults.Created("created",studentToReturn);
         }
 
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(StudentResponseDTO))]
+        //update student
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(StudentCreatedResponseDTO))]
         public static async Task<IResult> UpdateStudent(IRepository repository, int id,
-           UpdateStudentPayload createData)
+           StudentPayload updateData)
         {
-            var student = await repository.UpdateStudent(id, createData);
-            StudentResponseDTO studentToReturn = new StudentResponseDTO(student);
+            var student = await repository.UpdateStudent(id, updateData);
+            if (student == null)
+            {
+                return TypedResults.BadRequest("invalid studentID or entry");
+            }
+            StudentCreatedResponseDTO studentToReturn = new StudentCreatedResponseDTO(student);
             return TypedResults.Created("updated", studentToReturn);
         }
 
+        //delete student
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> DeleteStudent(IRepository repository, int id)
         {
             var student = await repository.DeleteStudent(id);
-            StudentResponseDTO studentToReturn = new StudentResponseDTO(student);
+            if (student == null)
+            {
+                return TypedResults.BadRequest("invalid studentID");
+            }
+            StudentCreatedResponseDTO studentToReturn = new StudentCreatedResponseDTO(student);
             return TypedResults.Ok(studentToReturn);
         }
     }

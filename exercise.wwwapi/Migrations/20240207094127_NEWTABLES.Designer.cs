@@ -11,8 +11,8 @@ using exercise.wwwapi.Data;
 namespace exercise.wwwapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240206100253_CREATESTUDENTTABLE")]
-    partial class CREATESTUDENTTABLE
+    [Migration("20240207094127_NEWTABLES")]
+    partial class NEWTABLES
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,50 @@ namespace exercise.wwwapi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("exercise.wwwapi.DataModels.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("StartDate")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("start_date");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("courses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            StartDate = "2024/08/07",
+                            Title = "Advanced Data Science"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            StartDate = "2024/09/15",
+                            Title = "Machine Learning Fundamentals"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            StartDate = "2024/10/20",
+                            Title = "Web Development with React"
+                        });
+                });
 
             modelBuilder.Entity("exercise.wwwapi.DataModels.Student", b =>
                 {
@@ -37,15 +81,9 @@ namespace exercise.wwwapi.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("average_grade");
 
-                    b.Property<string>("CourseStartDate")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("course_start_date");
-
-                    b.Property<string>("CourseTitle")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("course_title");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer")
+                        .HasColumnName("course_id");
 
                     b.Property<string>("DateOfBirth")
                         .IsRequired()
@@ -64,6 +102,8 @@ namespace exercise.wwwapi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CourseId");
+
                     b.ToTable("students");
 
                     b.HasData(
@@ -71,8 +111,7 @@ namespace exercise.wwwapi.Migrations
                         {
                             Id = 1,
                             AverageGrade = 4,
-                            CourseStartDate = "2024/05/13",
-                            CourseTitle = "Fundamentals of Csharp",
+                            CourseId = 1,
                             DateOfBirth = "1994/02/07",
                             FirstName = "Joel",
                             LastName = "Joelsson"
@@ -81,8 +120,7 @@ namespace exercise.wwwapi.Migrations
                         {
                             Id = 2,
                             AverageGrade = 5,
-                            CourseStartDate = "2024/03/20",
-                            CourseTitle = "Advanced Data Structures",
+                            CourseId = 2,
                             DateOfBirth = "1993/08/15",
                             FirstName = "Anna",
                             LastName = "Andersson"
@@ -91,8 +129,7 @@ namespace exercise.wwwapi.Migrations
                         {
                             Id = 3,
                             AverageGrade = 3,
-                            CourseStartDate = "2024/04/10",
-                            CourseTitle = "Machine Learning Fundamentals",
+                            CourseId = 3,
                             DateOfBirth = "1995/11/21",
                             FirstName = "David",
                             LastName = "Davidsson"
@@ -101,8 +138,7 @@ namespace exercise.wwwapi.Migrations
                         {
                             Id = 4,
                             AverageGrade = 2,
-                            CourseStartDate = "2024/06/01",
-                            CourseTitle = "Web Development Basics",
+                            CourseId = 1,
                             DateOfBirth = "1992/06/30",
                             FirstName = "Emma",
                             LastName = "Emilsson"
@@ -110,13 +146,28 @@ namespace exercise.wwwapi.Migrations
                         new
                         {
                             Id = 5,
-                            AverageGrade = 5,
-                            CourseStartDate = "2024/02/15",
-                            CourseTitle = "Introduction to Algorithms",
+                            AverageGrade = 3,
+                            CourseId = 3,
                             DateOfBirth = "1996/09/18",
                             FirstName = "Erik",
                             LastName = "Eriksson"
                         });
+                });
+
+            modelBuilder.Entity("exercise.wwwapi.DataModels.Student", b =>
+                {
+                    b.HasOne("exercise.wwwapi.DataModels.Course", "Course")
+                        .WithMany("Students")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("exercise.wwwapi.DataModels.Course", b =>
+                {
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

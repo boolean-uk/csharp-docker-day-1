@@ -13,7 +13,7 @@ namespace exercise.wwwapi.Data
     {
         private string _connectionString;
         public DbSet<Student> Students { get; set; }
-        //public DbSet<Course> Courses { get; set; }
+        public DbSet<Course> Courses { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -29,6 +29,11 @@ namespace exercise.wwwapi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().HasKey(s => s.Id); //Primary key
+            modelBuilder.Entity<Course>().HasKey(c => c.Id); //Primary key
+            modelBuilder.Entity<Student>()
+            .HasOne(s => s.Course) // Specify the navigation property
+            .WithMany(c => c.Students) // Specify the inverse navigation property
+            .HasForeignKey(s => s.CourseId);
             modelBuilder.Entity<Student>().HasData
                 (
                     new Student
@@ -37,9 +42,8 @@ namespace exercise.wwwapi.Data
                         FirstName = "Joel",
                         LastName = "Joelsson",
                         DateOfBirth = "1994/02/07",
-                        CourseTitle  = "Fundamentals of Csharp",
-                        CourseStartDate = "2024/05/13",
-                        AverageGrade = 4
+                        AverageGrade = 4,
+                        CourseId = 1
                     },
 
                     new Student
@@ -48,9 +52,8 @@ namespace exercise.wwwapi.Data
                         FirstName = "Anna",
                         LastName = "Andersson",
                         DateOfBirth = "1993/08/15",
-                        CourseTitle = "Advanced Data Structures",
-                        CourseStartDate = "2024/03/20",
-                        AverageGrade = 5
+                        AverageGrade = 5,
+                        CourseId = 2
                     },
 
                     new Student
@@ -59,9 +62,8 @@ namespace exercise.wwwapi.Data
                         FirstName = "David",
                         LastName = "Davidsson",
                         DateOfBirth = "1995/11/21",
-                        CourseTitle = "Machine Learning Fundamentals",
-                        CourseStartDate = "2024/04/10",
-                        AverageGrade = 3
+                        AverageGrade = 3,
+                        CourseId = 3
                     },
 
                     new Student
@@ -70,9 +72,8 @@ namespace exercise.wwwapi.Data
                         FirstName = "Emma",
                         LastName = "Emilsson",
                         DateOfBirth = "1992/06/30",
-                        CourseTitle = "Web Development Basics",
-                        CourseStartDate = "2024/06/01",
-                        AverageGrade = 2
+                        AverageGrade = 2,
+                        CourseId = 1
                     },
 
                     new Student
@@ -81,9 +82,33 @@ namespace exercise.wwwapi.Data
                         FirstName = "Erik",
                         LastName = "Eriksson",
                         DateOfBirth = "1996/09/18",
-                        CourseTitle = "Introduction to Algorithms",
-                        CourseStartDate = "2024/02/15",
-                        AverageGrade = 5
+                        AverageGrade = 3,
+                        CourseId = 3
+                    }
+                );
+
+            
+            modelBuilder.Entity<Course>().HasData
+                (
+                    new Course
+                    {
+                        Id = 1,
+                        Title = "Advanced Data Science",
+                        StartDate = "2024/08/07"
+                    },
+
+                    new Course
+                    {
+                        Id = 2,
+                        Title = "Machine Learning Fundamentals",
+                        StartDate = "2024/09/15"  
+                    },
+
+                    new Course
+                    {
+                        Id = 3,
+                        Title = "Web Development with React",
+                        StartDate = "2024/10/20"
                     }
                 );
         }
