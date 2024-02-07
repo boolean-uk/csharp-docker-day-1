@@ -14,18 +14,13 @@ namespace exercise.wwwapi.DataModels
         public string LastName { get; set; }
         [Column("dob")]
         public string DoB { get; set; }
-        [Column("course_title")]
-        public string CourseTitle { get; set; }
-        [Column("start_date")]
-        public string StartDate { get; set; }
         [Column("avg_grade")]
         public int AvgGrade { get; set; }
+        //[Column("course_id")]
+        //public int CourseId { get; set; }
+        //public virtual Course Course { get; set; }
+
+        //public ICollection<Course> Courses { get; set; } = new List<Course>();
+        public ICollection<Join_student_course> Enrollments { get; set; }
     }
 }
-//Unique ID
-//First Name
-//Last Name
-//Date of Birth
-//Course Title
-//Start Date for Course
-//Average Grade
