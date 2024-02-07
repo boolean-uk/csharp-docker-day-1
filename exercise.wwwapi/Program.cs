@@ -14,7 +14,10 @@ builder.Services.AddScoped<IRepository, Repository>();
 
 
 builder.Services.AddDbContext<DataContext>(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+    opt =>
+    {
+        opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+    });
 var app = builder.Build();
 
 
