@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddDbContext<DataContext>(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DockerConnectionString")));
 var app = builder.Build();
 
 

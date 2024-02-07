@@ -1,0 +1,42 @@
+version: "3.4"
+
+services:
+  exercise.wwwapi:
+    image: bootcamp
+    build:
+      context: .
+      dockerfile: exercise.wwwapi/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - bootcamp-network
+    depends_on:
+      bootcamp.database:
+        condition: service_healthy
+  bootcamp.database:
+    container_name: "bootcamp.database" # host url for my postgres db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    networks:
+      - bootcamp-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  bootcamp-network:
+    driver: bridge

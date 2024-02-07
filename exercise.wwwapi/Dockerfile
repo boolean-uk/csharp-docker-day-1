@@ -1,11 +1,10 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
 WORKDIR /app
 EXPOSE 8080
+EXPOSE 8081
 
-ENV ASPNETCORE_URLS=http://+:8080
-
-USER app
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 WORKDIR /src
 COPY ["exercise.wwwapi/exercise.wwwapi.csproj", "exercise.wwwapi/"]
