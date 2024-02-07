@@ -22,10 +22,6 @@ namespace exercise.wwwapi.DataTransferObjects
             LastName = student.LastName;
             DateOfBirth = student.DateOfBirth;
             avgGrade = student.AvgGrade;
-            foreach (Enrollments enrollment in student.Enrollments)
-            {
-                Enrollments.Add(new StudentEnrollmentDTO(enrollment));
-            }
         }
     }
 
@@ -42,10 +38,6 @@ namespace exercise.wwwapi.DataTransferObjects
             Id = course.Id;
             Title = course.CourseTitle;
             StartDate = course.StartDate;
-            foreach (Enrollments enrollment in course.Enrollments)
-            {
-                Enrollments.Add(new CourseEnrollmentDTO(enrollment));
-            }
         }
     }
 
