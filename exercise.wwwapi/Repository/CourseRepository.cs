@@ -38,7 +38,11 @@ namespace exercise.wwwapi.Repository
         {
             Course? course = await GetCourseById(id);
             if (course == null) { return null; }
-
+            course.CourseName = CourseUpdateData.CourseName;
+            course.TutorName = CourseUpdateData.TutorName;
+            course.StartDate = CourseUpdateData.StartDate;
+            course.Capacity = CourseUpdateData.Capacity;
+            course.Location = CourseUpdateData.Location;
             _db.SaveChanges();
             return course;
 

@@ -15,7 +15,7 @@ services:
       student.database:
         condition: service_healthy
     volumes:
-        - /c/Users/MElfvi/Certificates/localhost.pfx:/https/certificate.pfx
+        - /c/Users/marte/Documents/certificates/localhost.pfx:/https/certificate.pfx 
     environment:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
