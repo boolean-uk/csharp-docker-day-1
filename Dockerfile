@@ -2,8 +2,9 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 5137
+EXPOSE 7242
+
 
 # build my app as Release
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
