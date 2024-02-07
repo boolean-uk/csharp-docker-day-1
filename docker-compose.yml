@@ -1,0 +1,39 @@
+version: "3.4"
+services:
+  exercise.wwwapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5137:5137"
+      - "7242:7242"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnectionString=Host=db;Database=uztwreqw;Username=uztwreqw;Password=am8PhzXXY87noHwaoJ_llrHfhf9SIupx
+    depends_on:
+      - db
+    networks:
+      - todoapi-network
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: uztwreqw
+      POSTGRES_USER: uztwreqw
+      POSTGRES_PASSWORD: am8PhzXXY87noHwaoJ_llrHfhf9SIupx
+    ports:
+      - "5432:5432"
+    networks:
+      - todoapi-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "uztwreqw", "-U", "uztwreqw"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+volumes:
+  postgres_data:
+    driver: local
+networks:
+  todoapi-network:
+    driver: bridge
