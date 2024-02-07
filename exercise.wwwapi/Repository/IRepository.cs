@@ -8,8 +8,8 @@ namespace exercise.wwwapi.Repository
 
         Task<IEnumerable<Student>> GetStudents();
         Task<Student> GetStudent(int studentId);
-        Task<Student> UpdateStudent(int studentId, string firstName, string lastName, string dateOfBirth, int courseId, int averageGrade);
-        Task<Student> CreateStudent(string firstName, string lastName, string dateOfBirth, int courseId, int averageGrade);
+        Task<Student> UpdateStudent(int studentId, string firstName, string lastName, string dateOfBirth, List<int> courseIds);
+        Task<Student> CreateStudent(string firstName, string lastName, string dateOfBirth, List<int> courseIds);
         Task<bool?> DeleteStudent(int studentId);
         
 
@@ -22,8 +22,8 @@ namespace exercise.wwwapi.Repository
 
         Task<IEnumerable<Course>> GetCourses();
         Task<Course?> GetCourse(int courseId);
-        Task<Course?> UpdateCourse(int courseId, string courseTitle, string courseStartDate);
-        Task<Course> CreateCourse(string courseTitle, string courseStartDate);
+        Task<Course?> UpdateCourse(int courseId, string courseTitle, string courseStartDate, int averageGrade);
+        Task<Course> CreateCourse(string courseTitle, string courseStartDate, int averageGrade);
         Task<bool?> DeleteCourse(int courseId);
     }
 

@@ -63,11 +63,15 @@ namespace exercise.wwwapi.Endpoints
             {
                 return TypedResults.BadRequest($"course start date of the provided data was empty or null");
             }
-            
+            if (updateData.averageGrade < 0 || updateData.averageGrade >= 10)
+            {
+                return TypedResults.BadRequest($"Average Grade of the provided data has to be an integer between the values of 0 and 10");
+            }
 
             var result = await repository.UpdateCourse(courseId,
                 updateData.CourseTitle,
-                updateData.CourseStartDate
+                updateData.CourseStartDate,
+                updateData.averageGrade
                 );
 
             if (result == null)
@@ -94,11 +98,16 @@ namespace exercise.wwwapi.Endpoints
             {
                 return TypedResults.BadRequest($"course start date of the provided data was empty or null");
             }
-           
+
+            if (coursePayload.averageGrade < 0 || coursePayload.averageGrade >= 10)
+            {
+                return TypedResults.BadRequest($"Average Grade of the provided data has to be an integer between the values of 0 and 10");
+            }
 
             var result = await repository.CreateCourse(
                 coursePayload.CourseTitle,
-                coursePayload.CourseStartDate
+                coursePayload.CourseStartDate,
+                coursePayload.averageGrade
                 );
             var payload = new Payload<Course>() { data = result };
 

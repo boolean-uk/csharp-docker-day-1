@@ -13,5 +13,8 @@ namespace exercise.wwwapi.DataModels
 
         [Column("course_start_date")]
         public string CourseStartDate { get; set; }
+
+        [Column("average_grade")]
+        public int grade { get; set; } //gives average grade from 0 - 10
     }
 }

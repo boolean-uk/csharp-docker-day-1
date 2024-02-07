@@ -2,7 +2,7 @@
 
 namespace exercise.wwwapi.DataTransferObjects
 {
-    public record CourseUpdateData(string CourseTitle, string CourseStartDate);
+    public record CourseUpdateData(string CourseTitle, string CourseStartDate, int averageGrade);
 
     
 }

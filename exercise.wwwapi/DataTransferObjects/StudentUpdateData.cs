@@ -4,8 +4,7 @@
         string FirstName, 
         string LastName, 
         string DateOfBirth, 
-        int CourseId,
-        int averageGrade );
+        List<int> courseIDs );
     
     
 }

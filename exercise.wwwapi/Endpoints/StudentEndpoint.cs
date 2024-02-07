@@ -68,22 +68,26 @@ namespace exercise.wwwapi.Endpoints
             {
                 return TypedResults.BadRequest($"Date of birth of the provided data was empty or null");
             }
-            if(updateData.CourseId <= 0)
+
+            
+            foreach(int id in updateData.courseIDs)
             {
-                return TypedResults.BadRequest("id must be positive number above 0");
+                if(id <= 0)
+                {
+                    return TypedResults.BadRequest("id must be positive number above 0");
+                }
             }
-            if (updateData.averageGrade < 0 || updateData.averageGrade >= 10)
-            {
-                return TypedResults.BadRequest($"Average Grade of the provided data has to be an integer between the values of 0 and 10");
-            }
+            
+            
 
             var result = await repository.UpdateStudent(studentId, 
                 updateData.FirstName,
                 updateData.LastName,
                 updateData.DateOfBirth,
-                updateData.CourseId,
-                updateData.averageGrade
+                updateData.courseIDs
+                
                 );
+
             if (result == null)
             {
                 return TypedResults.NotFound("student id or course id were not a valid Id");
@@ -112,21 +116,19 @@ namespace exercise.wwwapi.Endpoints
             {
                 return TypedResults.BadRequest($"Date of birth of the provided data was empty or null");
             }
-            if (studentPayload.courseId <= 0)
+            foreach (int id in studentPayload.courseIDs)
             {
-                return TypedResults.BadRequest("id must be positive number above 0");
-            }
-            if (studentPayload.averageGrade < 0 || studentPayload.averageGrade >= 10)
-            {
-                return TypedResults.BadRequest($"Average Grade of the provided data has to be an integer between the values of 0 and 10");
+                if (id <= 0)
+                {
+                    return TypedResults.BadRequest("id must be positive number above 0");
+                }
             }
 
             var result = await repository.CreateStudent(
                 studentPayload.FirstName,
                 studentPayload.LastName,
                 studentPayload.DateOfBirth,
-                studentPayload.courseId,
-                studentPayload.averageGrade
+                studentPayload.courseIDs
                 );
             var payload = new Payload<Student>() { data = result };
 

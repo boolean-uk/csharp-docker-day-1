@@ -18,11 +18,11 @@ namespace exercise.wwwapi.Repository
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            return await _db.Students.Include(s => s.Course).ToListAsync();
+            return await _db.Students.Include(s => s.Courses).ToListAsync();
         }
         public async Task<Student?> GetStudent(int studentId)
         {
-            var student = await _db.Students.Include(s => s.Course).FirstOrDefaultAsync(s => s.Id == studentId);
+            var student = await _db.Students.Include(s => s.Courses).FirstOrDefaultAsync(s => s.Id == studentId);
 
             if(student.FirstName == null) //find does not work with include. and Firstordefaultasync does not return null. so im checking if one of the internal components are null to verify if the course is null.
             {
@@ -33,7 +33,7 @@ namespace exercise.wwwapi.Repository
         }
 
 
-        public async Task<Student?> UpdateStudent(int studentId, string firstName, string lastName, string dateOfBirth, int courseId, int averageGrade)
+        public async Task<Student?> UpdateStudent(int studentId, string firstName, string lastName, string dateOfBirth, List<int> courseIds)
         {
             var student = await _db.Students.FindAsync(studentId);
             if (student == null)
@@ -45,35 +45,39 @@ namespace exercise.wwwapi.Repository
             student.FirstName = firstName;
             student.LastName = lastName;
             student.DateOfBirth = dateOfBirth;
-            student.CourseId = courseId;
-            var course = await _db.Courses.FindAsync(courseId);
-            if (course == null)
+            foreach(int courseId in courseIds)
             {
-                return null;
-            }
-            student.Course = course;
-            student.averageGrade = averageGrade;
-            
 
+                var course = await _db.Courses.FindAsync(courseId);
+                if (course == null)
+                {
+                    return null;
+                }
+                student.Courses.Add(course);
+            }
+            
             _db.SaveChanges();
             return student;
         }
-        public async Task<Student?> CreateStudent(string firstName, string lastName, string dateOfBirth, int courseId, int grade)
+        public async Task<Student?> CreateStudent(string firstName, string lastName, string dateOfBirth, List<int> courseIds)
         {
-            var course = await _db.Courses.FindAsync(courseId);
-            if (course == null)
+            List<Course> temp = new List<Course>();
+            foreach (int courseId in courseIds)
             {
-                return null;
+
+                var course = await _db.Courses.FindAsync(courseId);
+                if (course == null)
+                {
+                    return null;
+                }
+                temp.Add(course);
             }
             Student student = new Student()
             {
                 FirstName = firstName,
                 LastName = lastName,
                 DateOfBirth = dateOfBirth,
-                CourseId = courseId,
-           
-                Course = course,
-                averageGrade = grade
+                Courses = temp
             };
 
             _db.Students.Add(student);
@@ -83,6 +87,8 @@ namespace exercise.wwwapi.Repository
 
         public async Task<bool?> DeleteStudent(int studentId)
         {
+            //TODO: (go in to courses and delete all referenses to spesific student) 
+
             var student = await _db.Students.FindAsync(studentId);
 
             if (student == null) 
@@ -105,7 +111,7 @@ namespace exercise.wwwapi.Repository
             return coruse;
         }
 
-        public async Task<Course?> UpdateCourse(int courseId, string courseTitle, string courseStartDate)
+        public async Task<Course?> UpdateCourse(int courseId, string courseTitle, string courseStartDate, int averageGrade)
         {
             var course = await _db.Courses.FindAsync(courseId);
             if (course == null)
@@ -116,20 +122,22 @@ namespace exercise.wwwapi.Repository
             course.Id = courseId;
             course.CourseTitle = courseTitle;
             course.CourseStartDate = courseStartDate;
+            course.grade = averageGrade; //TODO: when many to many. grade can be the average of the currently enrolled students
             
             _db.SaveChanges();
             return course;
         }
 
-        public async Task<Course> CreateCourse(string courseTitle, string courseStartDate)
+        public async Task<Course> CreateCourse(string courseTitle, string courseStartDate, int averageGrade)
         {
             
             Course course = new Course()
             {
                 CourseTitle = courseTitle,
-                CourseStartDate = courseStartDate
-               
-            };
+                CourseStartDate = courseStartDate,
+                grade = averageGrade //TODO: when many to many. grade can be the average of the currently enrolled students
+
+        };
 
             _db.Courses.Add(course);
             _db.SaveChanges();

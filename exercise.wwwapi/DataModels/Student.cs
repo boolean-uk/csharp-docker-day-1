@@ -17,13 +17,16 @@ namespace exercise.wwwapi.DataModels
         [Column("date_of_birth")]
         public string DateOfBirth { get; set; }
 
-        [Column("course_id")]
-        public int CourseId {  get; set; }
+        //[Column("course_id")]
+        //public int CourseId {  get; set; } // when we have a list, this will no longer be needed. remember to change  the data context file as well as the repository.
 
         
-        public Course Course { get; set;}
+        //public Course Course { get; set;} //make this a list/dictionary/ienumerabel later 
+        public List<Course> Courses { get; set;}
 
-        [Column("averageGrade")]
-        public int averageGrade { get; set; }
+        public Student()
+        {
+            Courses = new List<Course>();
+        }
     }
 }
