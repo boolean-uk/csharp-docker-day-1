@@ -40,6 +40,6 @@ namespace exercise.wwwapi.DataModels
         public Guid CourseId { get; set; }
 
         // Navigation property
-        public Course course { get; set; }
+        public Course? course { get; set; }
     }
 }

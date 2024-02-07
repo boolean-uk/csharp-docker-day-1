@@ -15,6 +15,6 @@ namespace exercise.wwwapi.DataModels
         public string? Title { get; set; }
 
         // Navigation property
-        public ICollection<Student> Students { get; set; }
+        public ICollection<Student>? Students { get; set; }
     }
 }
