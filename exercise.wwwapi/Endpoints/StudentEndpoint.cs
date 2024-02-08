@@ -40,7 +40,7 @@ namespace exercise.wwwapi.Endpoints
                 return Results.BadRequest("A non-empty Name is required");
             }
 
-            Student? student = await repository.CreateStudent(payload.FirstName, payload.LastName, payload.DateOfBirth);
+            Student? student = await repository.CreateStudent(payload.FirstName, payload.LastName, payload.DateOfBirth, payload.avgGrade);
             if (student == null)
             {
                 return Results.BadRequest("Failed to create student.");
@@ -61,7 +61,7 @@ namespace exercise.wwwapi.Endpoints
             {
                 return TypedResults.NotFound("Student not found");
             }
-            Student? studentUpdated = await Repository.UpdateStudent(studentId, payload.newFirstName, payload.newLastName, payload.newDateOfBirth);
+            Student? studentUpdated = await Repository.UpdateStudent(studentId, payload.newFirstName, payload.newLastName, payload.newDateOfBirth, payload.avgGrade);
             if (studentUpdated == null)
             {
                 return Results.BadRequest("Failed to update student.");

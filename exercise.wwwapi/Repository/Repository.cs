@@ -14,18 +14,18 @@ namespace exercise.wwwapi.Repository
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            return await _db.Students.ToListAsync();
+            return await _db.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).ToListAsync();
         }
 
         public async Task<Student?> GetAStudent(int id)
         {
-            return await _db.Students.Include(s => s.Courses).FirstOrDefaultAsync(s => s.Id == id);
+            return await _db.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<Student?> CreateStudent(string FirstName, string LastName, DateOnly DateOfBirth)
+        public async Task<Student?> CreateStudent(string FirstName, string LastName, DateOnly DateOfBirth, float avgGrade)
         {
-            if (FirstName == "" || LastName == "" || DateOfBirth == null) return null;
-            var student = new Student { FirstName = FirstName, LastName = LastName, DateOfBirth = DateOfBirth };
+            if (FirstName == "" || LastName == "" || DateOfBirth == null|| avgGrade == null) return null;
+            var student = new Student { FirstName = FirstName, LastName = LastName, DateOfBirth = DateOfBirth, AvgGrade = avgGrade};
             await _db.Students.AddAsync(student);
             await _db.SaveChangesAsync();
             return student;
@@ -34,13 +34,14 @@ namespace exercise.wwwapi.Repository
      
     
 
-    public async Task<Student?> UpdateStudent(int id, string newFirstName, string newLastName, DateOnly DateOfBirth)
+    public async Task<Student?> UpdateStudent(int id, string newFirstName, string newLastName, DateOnly DateOfBirth, float avgGrade)
         {
             Student student = await GetAStudent(id);
             if (student != null)
             {
                 student.FirstName = newFirstName ?? student.FirstName;
                 student.LastName = newLastName ?? student.LastName;
+                student.AvgGrade = avgGrade != null ? avgGrade: student.AvgGrade;
                 student.DateOfBirth = DateOfBirth != null ? DateOfBirth : student.DateOfBirth;
 
                 await _db.SaveChangesAsync();
@@ -72,14 +73,18 @@ namespace exercise.wwwapi.Repository
 
         public async Task<IEnumerable<Course>> GetCourses()
         {
-            return await _db.Courses.ToListAsync();
-        }
-        /*
-        public async Task<Course?> GetACourse(int id)
-        {
-            return await _db.Courses.Include(c => c.Enrollments).FirstOrDefaultAsync(c => c.Id == id);
+            return await _db.Courses.Include(s => s.Enrollments).ThenInclude(e => e.Student).ToListAsync();
         }
 
+
+        
+        public async Task<Course?> GetACourse(int id)
+        {
+            return await _db.Courses.Include(c => c.Enrollments).ThenInclude(e => e.Student).FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+
+        
         public async Task<Course?> CreateCourse(string CourseTitle, DateOnly startDate)
         {
             if (CourseTitle == ""|| startDate == null) return null;
@@ -89,7 +94,7 @@ namespace exercise.wwwapi.Repository
             return course;
         }
 
-
+        
         public async Task<Course?> UpdateCourse(int id, string newTitle, DateOnly newStartDate)
         {
             Course course = await GetACourse(id);
@@ -105,6 +110,8 @@ namespace exercise.wwwapi.Repository
             return null;
         }
 
+
+        
         public async Task<Course?> DeleteCourse(int id)
         {
             Course course = await GetACourse(id);
@@ -118,6 +125,6 @@ namespace exercise.wwwapi.Repository
             }
 
             return null;
-        }*/
+        }
     }
 }

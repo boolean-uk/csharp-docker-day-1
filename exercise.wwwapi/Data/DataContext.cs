@@ -21,7 +21,7 @@ namespace exercise.wwwapi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Enrollments>().HasKey(e => new { e.StartDate });
+            modelBuilder.Entity<Enrollments>().HasKey(e => new { e.StartDate, e.CourseId, e.StudentId });
 
             modelBuilder.Entity<Student>().HasData(
                 new Student { Id = 1, FirstName = "John", LastName = "Doe", DateOfBirth = new DateOnly(2004, 2, 6), AvgGrade = 3}

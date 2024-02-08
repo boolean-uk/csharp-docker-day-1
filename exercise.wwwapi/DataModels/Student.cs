@@ -15,10 +15,10 @@ namespace exercise.wwwapi.DataModels
         public DateOnly DateOfBirth { get; set; }
 
         [Column("average_grade")]
-        public int AvgGrade { get; set; }
+        public float AvgGrade { get; set; }
 
         public ICollection<Enrollments> Enrollments { get; set; } 
 
-        public ICollection<Course> Courses { get; set; } = new List<Course>();
+        //public ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }

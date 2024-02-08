@@ -11,7 +11,7 @@ namespace exercise.wwwapi.DataTransferObjects
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateOnly DateOfBirth { get; set; }
-        public int avgGrade { get; set; }
+        public float avgGrade { get; set; }
 
         public List<StudentEnrollmentDTO> Enrollments { get; set; } = new List<StudentEnrollmentDTO>();
 
@@ -22,6 +22,10 @@ namespace exercise.wwwapi.DataTransferObjects
             LastName = student.LastName;
             DateOfBirth = student.DateOfBirth;
             avgGrade = student.AvgGrade;
+            foreach (Enrollments enrollment in student.Enrollments)
+            {
+                Enrollments.Add(new StudentEnrollmentDTO(enrollment));
+            }
         }
     }
 
@@ -38,6 +42,10 @@ namespace exercise.wwwapi.DataTransferObjects
             Id = course.Id;
             Title = course.CourseTitle;
             StartDate = course.StartDate;
+            foreach (Enrollments enrollment in course.Enrollments)
+            {
+                Enrollments.Add(new CourseEnrollmentDTO(enrollment));
+            }
         }
     }
 
