@@ -1,0 +1,51 @@
+version: '3.4'
+
+services:
+  exercise.wwwapi:
+    image: studentapi-image-compose-cmd
+    build:
+      context: .
+      dockerfile: exercise.wwwapi/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - studentapi-network
+    depends_on:
+      student.database:
+        condition: service_healthy
+    volumes:
+        - /c/Users/marte/Documents/certificates/localhost.pfx:/https/certificate.pfx 
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+  
+
+
+
+  student.database:
+    container_name: student.database-cmd
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    networks:
+      - studentapi-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  studentapi-network:
+    driver: bridge
