@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-  todo.api:
+  exercise.wwwapi:
     image: todoapi
     build:
       context: .
