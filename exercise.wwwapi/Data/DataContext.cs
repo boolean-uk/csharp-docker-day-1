@@ -8,9 +8,13 @@ namespace exercise.wwwapi.Data
         private string _connectionString;
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+
+            
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            _connectionString = configuration.GetValue<string>("ConnectionStrings.DefaultConnectionString")!;
+            
+            _connectionString = configuration.GetValue<string>("ConnectionStrings.ConnectionElephantSQLString")!;
             this.Database.EnsureCreated();
+            
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {           
