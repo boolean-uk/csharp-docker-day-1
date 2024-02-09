@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(
     opt => {
-        opt.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionElephantSQLString"));
+        opt.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionString"));
         });
 builder.Services.AddScoped<IRepository, Repository>();
 
