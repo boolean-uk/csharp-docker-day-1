@@ -4,4 +4,13 @@
     {
         public T data { get; set; }
     }
+
+    public record StudentPayload
+    (
+        string? FirstName,
+        string? LastName,
+        string? DateOfBirth,
+        int AverageGrade,
+        int courseId
+    );
 }
