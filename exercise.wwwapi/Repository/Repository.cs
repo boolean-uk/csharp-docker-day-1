@@ -1,24 +1,61 @@
-﻿using exercise.wwwapi.Data;
-using exercise.wwwapi.DataModels;
+using exercise.wwwapi.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T : class
     {
         private DataContext _db;
+        private DbSet<T> _entities;
+
         public Repository(DataContext db)
         {
             _db = db;
-        }
-        public async Task<IEnumerable<Course>> GetCourses()
-        {
-            return await _db.Courses.ToListAsync();
+            _entities = db.Set<T>();
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<T> Create(T entity)
         {
-            return await _db.Students.ToListAsync();
+            _entities.Add(entity);
+            await _db.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate)
+        {
+            return await _entities.Where(predicate).ToListAsync();
+        }
+
+        public async Task<T?> Delete(int id)
+        {
+            var entity = await Get(id);
+            if (entity == null)
+                return null;
+
+            var entityCopy = _db.Entry(entity).CurrentValues.Clone().ToObject() as T;
+
+            _entities.Remove(entity);
+            await _db.SaveChangesAsync();
+
+            return entityCopy;
+        }
+
+        public async Task<IEnumerable<T>> Get()
+        {
+            return await _entities.ToListAsync();
+        }
+
+        public async Task<T?> Get(int id)
+        {
+            return await _entities.FindAsync(id);
+        }
+
+        public async Task<T?> Update(T entity)
+        {
+            _entities.Update(entity);
+            await _db.SaveChangesAsync();
+            return entity;
         }
     }
 }
