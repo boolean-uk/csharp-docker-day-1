@@ -13,13 +13,13 @@ namespace exercise.wwwapi.Endpoints
         public static void CourseEndpointConfiguration(this WebApplication app)
         {
             var students = app.MapGroup("courses");
-            students.MapGet("/", GetCourses);
+            students.MapGet("/", GetAllCourses);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetCourses(IRepository repository)
+        public static async Task<IResult> GetAllCourses(IRepository<Course> repository)
         {
-            var results = await repository.GetCourses();
+            var results = await repository.SelectAll();
             var payload = new Payload<IEnumerable<Course>>() { data = results };
             return TypedResults.Ok(payload);
         }

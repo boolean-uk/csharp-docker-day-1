@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace exercise.wwwapi.DataModels
+namespace exercise.wwwapi.Models.Models
 {
     [Table("student_courses")]
     [PrimaryKey("Id")]

@@ -17,9 +17,16 @@ namespace exercise.wwwapi.Repository
 
         public async Task<T> Insert(T entity)
         {
-            await _dbSet.AddAsync(entity);
-            await _db.SaveChangesAsync();
-            return entity;
+            if (entity != null)
+            {
+                await _dbSet.AddAsync(entity);
+                await _db.SaveChangesAsync();
+                return entity;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(entity), "Entity cannot be null.");
+            }
         }
 
         public async Task<IEnumerable<T>> SelectAll()
@@ -32,18 +39,27 @@ namespace exercise.wwwapi.Repository
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<T> Update(int id, T entity)
+        public async Task<T?> Update(int id, T entity)
         {
-            _dbSet.Update(entity);
-            await _db.SaveChangesAsync();
+            if (entity != null)
+            {
+                _dbSet.Update(entity);
+                await _db.SaveChangesAsync();
+            }
+
             return entity;
         }
 
-        public async Task<T> Delete(int id)
+        public async Task<T?> Delete(int id)
         {
             var entity = await _dbSet.FindAsync(id);
-            _dbSet.Remove(entity);
-            await _db.SaveChangesAsync();
+
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+                await _db.SaveChangesAsync();
+            }
+
             return entity;
         }
     }

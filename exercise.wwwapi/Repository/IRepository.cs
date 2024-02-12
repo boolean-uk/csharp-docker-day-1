@@ -7,7 +7,7 @@ namespace exercise.wwwapi.Repository
         Task<T> Insert(T entity);
         Task<IEnumerable<T>> SelectAll();
         Task<T?> SelectById(int id);
-        Task<T> Update(int id, T entity);
-        Task<T> Delete(int id);
+        Task<T?> Update(int id, T entity);
+        Task<T?> Delete(int id);
     }
 }

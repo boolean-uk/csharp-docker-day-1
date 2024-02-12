@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace exercise.wwwapi.DataModels
+namespace exercise.wwwapi.Models.Models
 {
     [Table("courses")]
     [PrimaryKey("Id")]
@@ -13,7 +13,7 @@ namespace exercise.wwwapi.DataModels
         public int Id { get; set; }
         [Column("course_title")]
         [Required]
-        public string CourseTitle { get; set; }
+        public string CourseTitle { get; set; } = "";
         [Column("start_date")]
         [Required]
         public DateTime StartDate { get; set; }
