@@ -22,6 +22,7 @@ public static class StudentEndpoint
     }
 
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public static async Task<IResult> CreateStudent(IRepository<Student> repository, IRepository<Course> courseRepository, PostStudent studentData)
     {
         var student = new Student()
@@ -36,7 +37,7 @@ public static class StudentEndpoint
         var course = courseRepository.GetById(studentData.CourseId);
         if (course == null)
         {
-            return TypedResults.BadRequest($"There is no course with the id: {studentData.CourseId}!");
+            return TypedResults.NotFound($"There is no course with the id: {studentData.CourseId}!");
         }
         var result = await repository.Create(student);
         var payload = new Payload<Student>() { data = result };
@@ -52,6 +53,7 @@ public static class StudentEndpoint
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public static async Task<IResult> GetStudent(IRepository<Student> repository, int id)
     {
         var result = await repository.GetById(id);
@@ -64,6 +66,7 @@ public static class StudentEndpoint
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public static async Task<IResult> UpdateStudent(IRepository<Student> repository, IRepository<Course> courseRepository, int id, PostStudent studentData)
     {   
         var toEdit = await repository.GetById(id);
@@ -80,7 +83,7 @@ public static class StudentEndpoint
         var course = await courseRepository.GetById(studentData.CourseId);
         if (course == null)
         {
-            return TypedResults.BadRequest($"There is no course with the id: {studentData.CourseId}!");
+            return TypedResults.NotFound($"There is no course with the id: {studentData.CourseId}!");
         }
         var result = await repository.Update(toEdit);
         result.Course = course;
@@ -89,6 +92,7 @@ public static class StudentEndpoint
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public static async Task<IResult> DeleteStudent(IRepository<Student> repository, int id)
     {
         var result = await repository.Delete(id);
