@@ -1,4 +1,4 @@
-﻿namespace exercise.wwwapi.DataModels.Course;
+﻿namespace exercise.wwwapi.DataModels.CourseTypes;
 
 public class CourseDTO
 {
@@ -8,3 +8,4 @@ public class CourseDTO
     {
         return new CourseDTO { Id = course.Id, Title = course.Title };
     }
+}

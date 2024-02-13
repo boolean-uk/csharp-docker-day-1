@@ -22,7 +22,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     volumes:
-    - './.containers/fill inn later'
+    - './.containers/students-data:/var/lib/postgresql/data'
     ports:
     - 5432:5432
     networks:

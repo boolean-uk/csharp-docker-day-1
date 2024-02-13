@@ -1,5 +1,5 @@
-﻿using exercise.wwwapi.DataModels.Course;
-using exercise.wwwapi.DataModels.Student;
+﻿using exercise.wwwapi.DataModels.CourseTypes;
+using exercise.wwwapi.DataModels.StudentTypes;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 

@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using exercise.wwwapi.DataModels.StudentTypes;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace exercise.wwwapi.DataModels.Course;
+namespace exercise.wwwapi.DataModels.CourseTypes;
 
 [Table("course")]
 public class Course

@@ -1,4 +1,4 @@
-﻿namespace exercise.wwwapi.DataModels.Student;
+﻿namespace exercise.wwwapi.DataModels.StudentTypes;
 
 public class PostStudent
 {
