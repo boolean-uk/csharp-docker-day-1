@@ -14,17 +14,38 @@ namespace exercise.wwwapi.Endpoints
         {
             var students = app.MapGroup("students");
             students.MapGet("/", GetStudents);
+            students.MapPost("/", CreateStudent);
+
+            var courses = app.MapGroup("courses");
+
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetStudents(IRepository repository)
+        public static async Task<IResult> GetStudents(IRepository<Student> repository)
         {
-            var results = await repository.GetStudents();
-            var payload = new Payload<IEnumerable<Student>>() { data = results };
+            var results = await repository.GetAll();
+
+            var DTOs = from student in results
+                       select new StudentDTO() 
+                       {
+                           Id = student.Id,
+                           FirstName = student.FirstName,
+                           LastName = student.LastName,
+                           DateOfBirth = student.DateOfBirth,
+                           AverageGrade = student.AverageGrade,
+                           CourseTitle = student.CourseTitle,
+                       };
+            var payload = new Payload<IEnumerable<StudentDTO>>() { data = DTOs };
             return TypedResults.Ok(payload);
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+
+        public static async Task<IResult> CreateStudent(IRepository<Student> repository, PostStudent student)
+        {
+
+        }
     }
-  
+
 
 }
