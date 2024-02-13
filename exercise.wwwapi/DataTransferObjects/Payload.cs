@@ -2,6 +2,6 @@
 {
     public class Payload<T> where T : class
     {
-        public T data { get; set; }
+        public required T Data { get; set; }
     }
 }
