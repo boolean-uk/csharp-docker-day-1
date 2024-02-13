@@ -17,6 +17,7 @@ namespace exercise.wwwapi.Endpoints
             students.MapGet("/", GetStudents);
             students.MapPost("/", CreateStudent);
             students.MapPut("/{id}", UpdateStudent);
+            students.MapDelete("/{id}", DeleteStudent);
 
             var courses = app.MapGroup("courses");
 
@@ -98,6 +99,31 @@ namespace exercise.wwwapi.Endpoints
 
             return TypedResults.Created(payload.status, payload);
 
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> DeleteMovie(IRepository<Student> repository, int id)
+        {
+            Payload<StudentDTO> payload = new Payload<StudentDTO>();
+            var result = await repository.Delete(id);
+            if (result == null)
+            {
+                payload.status = "Not Found";
+                payload.data = null;
+                return TypedResults.NotFound(payload);
+            }
+
+            var delete = new StudentDTO()
+            {
+                FirstName = result.FirstName,
+                LastName = result.LastName,
+                DateOfBirth = (DateTime)result.DateOfBirth,
+                CourseTitle = result.CourseTitle,
+                AverageGrade = (double)result.AverageGrade,
+            };
+            payload.data = delete;
+            return TypedResults.Ok(payload);
         }
     }
 
