@@ -1,9 +1,74 @@
 @exercise.wwwapi_HostAddress = http://localhost:5137
 
+###
+### GET ALL STUDENTS
 GET {{exercise.wwwapi_HostAddress}}/students/
 Accept: application/json
 
 ###
+### GET SPECIFIC STUDENT
+GET {{exercise.wwwapi_HostAddress}}/students/1
+Accept: application/json
 
-GET {{exercise.wwwapi_HostAddress}}/students/
+###
+### POST/CREATE NEW STUDENT
+POST {{exercise.wwwapi_HostAddress}}/students/
+Content-Type: application/json
+
+{
+  "firstName": "Ola",
+  "lastName": "Olason",
+  "dateOfBirth": "2000-10-02T09:23:42.211Z",
+  "courseId": 1,
+  "averageGrade": 2
+}
+
+###
+### PUT/UPDATE STUDENT
+PUT {{exercise.wwwapi_HostAddress}}/students/8
+Content-Type: application/json
+
+{
+  "lastName": "Olaison",
+  "dateOfBirth": "1999-10-02T09:23:42.211Z"
+}
+
+###
+### DELETE STUDENT
+DELETE {{exercise.wwwapi_HostAddress}}/students/9
+Accept: application/json
+
+
+### COURSES
+### GET ALL COURSES
+GET {{exercise.wwwapi_HostAddress}}/courses/
+Accept: application/json
+
+###
+### GET SPECIFIC COURSE
+GET {{exercise.wwwapi_HostAddress}}/courses/1
+Accept: application/json
+
+###
+### POST/CREATE NEW COURSE
+POST {{exercise.wwwapi_HostAddress}}/courses/
+Content-Type: application/json
+
+{
+  "courseTitle": "Fullstack Python",
+  "courseStartDate": "2026-01-09T09:35:48.236Z"
+}
+
+###
+### PUT/UPDATE COURSE
+PUT {{exercise.wwwapi_HostAddress}}/courses/4
+Content-Type: application/json
+
+{
+  "courseStartDate": "2027-01-09T08:30:00.000Z"
+}
+
+###
+### DELETE COURSE
+DELETE {{exercise.wwwapi_HostAddress}}/courses/4
 Accept: application/json
