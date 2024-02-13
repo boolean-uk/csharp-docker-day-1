@@ -103,7 +103,7 @@ namespace exercise.wwwapi.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> DeleteMovie(IRepository<Student> repository, int id)
+        public static async Task<IResult> DeleteStudent(IRepository<Student> repository, int id)
         {
             Payload<StudentDTO> payload = new Payload<StudentDTO>();
             var result = await repository.Delete(id);
