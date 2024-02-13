@@ -11,7 +11,6 @@ namespace exercise.wwwapi.Data
                 var db = scope.ServiceProvider.GetRequiredService<DataContext>();
                 db.Database.Migrate();
             }
-
         }
     }
 }
