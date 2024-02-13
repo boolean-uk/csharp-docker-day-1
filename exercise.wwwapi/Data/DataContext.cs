@@ -16,6 +16,11 @@ namespace exercise.wwwapi.Data
                         .WithMany(c => c.Students)
                         .HasForeignKey(x => x.CourseId);
             modelBuilder.Entity<Course>().HasKey(x => x.Id);
+
+            modelBuilder.Entity<Course>().Navigation(c => c.Students).AutoInclude();
+            modelBuilder.Entity<Student>().Navigation(s => s.Course).AutoInclude();
+
+            
         }
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }
