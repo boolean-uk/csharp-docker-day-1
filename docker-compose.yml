@@ -3,6 +3,34 @@ version: '3.4'
 services:
   exercise.wwwapi:
     image: ${DOCKER_REGISTRY-}exercisewwwapi
+    container_name: wwwapi
     build:
       context: .
       dockerfile: exercise.wwwapi/Dockerfile
+    ports: 
+        - 7000:7000
+        - 7001:7001
+    depends_on:
+      - postgresDatabase
+    environment:
+      - ConnectionStrings__LocalDockerContainer=Host=postgresDatabase;Port=5432;Database=postgres;Username=postgres;Password=password
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://wwwapi:7000/health"]  # Adjust the health check as needed
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgresDatabase:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5433:5433"  # Map the host port to the container port
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./containers/postgresql/data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
