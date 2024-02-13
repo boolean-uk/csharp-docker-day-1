@@ -1,7 +1,11 @@
-﻿namespace exercise.wwwapi.DataModels
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace exercise.wwwapi.DataModels
 {
+    [Table("course")]
     public class Course
     {
-        public int Id { get; set; }
+        [Column("id")] public int Id { get; set; }
+        [Column("course_name")] public string CourseName { get; set; }
     }
 }
