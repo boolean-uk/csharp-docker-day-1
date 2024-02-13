@@ -42,7 +42,7 @@ namespace exercise.wwwapi.Repository
             return await _table.ToListAsync();
         }
 
-        public async Task<T> Update(int id, T entity)
+        public async Task<T> Update(T entity)
         {
             _table.Attach(entity);
             _db.Entry(entity).State = EntityState.Modified;
