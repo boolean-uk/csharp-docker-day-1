@@ -28,12 +28,18 @@ namespace exercise.wwwapi.Data
                 .WithMany(c => c.Students)
                 .HasForeignKey(s => s.CourseId);
 
+            modelBuilder.Entity<Student>().Navigation(s => s.Course).AutoInclude();
+
             modelBuilder.Entity<Course>()
                 .HasMany(c => c.Students)
                 .WithOne(s => s.Course)
                 .HasForeignKey(s => s.CourseId);
 
+            modelBuilder.Entity<Course>().Navigation(c => c.Students).AutoInclude();
+
             Seeder.SeedData(modelBuilder);
+
+
         }
 
         public DbSet<Student> Students { get; set; }

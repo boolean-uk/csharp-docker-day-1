@@ -1,4 +1,5 @@
-﻿using exercise.wwwapi.DataModels.StudentModels;
+﻿using exercise.wwwapi.DataModels.CourseModels;
+using exercise.wwwapi.DataModels.StudentModels;
 using exercise.wwwapi.DataTransferObjects;
 using exercise.wwwapi.Repository;
 using exercise.wwwapi.Services;
@@ -27,7 +28,6 @@ namespace exercise.wwwapi.Endpoints
             var results = await repository.Get();
 
             IEnumerable<OutputStudent> outputStudent = StudentDtoManager.Convert(results);
-
             var payload = new Payload<IEnumerable<OutputStudent>>() { data = outputStudent };
             return TypedResults.Ok(payload);
         }
@@ -40,15 +40,20 @@ namespace exercise.wwwapi.Endpoints
                 return TypedResults.NotFound();
 
             OutputStudent outputStudent = StudentDtoManager.Convert(result);
-
             var payload = new Payload<OutputStudent>() { data = outputStudent };
             return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> Create(IRepository<Student> repository, InputStudent student)
+        public static async Task<IResult> Create(IRepository<Student> repository, IRepository<Course> courseRepository, InputStudent student)
         {
+            Course? course = await courseRepository.Get(student.CourseId);
+            if (course == null)
+                return TypedResults.NotFound();
+
             Student newStudent = StudentDtoManager.Convert(student);
+
+            newStudent.Course = course;
 
             var result = await repository.Create(newStudent);
 
@@ -58,12 +63,24 @@ namespace exercise.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> Update(IRepository<Student> repository, int id, Student student)
+        public static async Task<IResult> Update(IRepository<Student> studentRepository, IRepository<Course> courseRepository, int id, InputStudent student)
         {
-            var result = await repository.Update(student);
-
-            if (result == null)
+            Student? existingStudent = await studentRepository.Get(id);
+            if (existingStudent == null)
                 return TypedResults.NotFound();
+
+            Course? course = await courseRepository.Get(student.CourseId);
+            if (course == null)
+                return TypedResults.NotFound($"Course with id {student.CourseId} not found");
+
+            existingStudent.FirstName = student.FirstName;
+            existingStudent.LastName = student.LastName;
+            existingStudent.DateOfBirth = student.DateOfBirth;
+            existingStudent.AverageGrade = student.AverageGrade;
+            existingStudent.CourseId = student.CourseId;
+            existingStudent.Course = course;
+
+            var result = await studentRepository.Update(existingStudent);
 
             OutputStudent outputStudent = StudentDtoManager.Convert(result);
             var payload = new Payload<OutputStudent>() { data = outputStudent };
@@ -73,11 +90,24 @@ namespace exercise.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> Delete(IRepository<Student> repository, int id)
         {
-            var result = await repository.Delete(id);
-            if (result == null)
+            Student? existingStudent = await repository.Get(id);
+            if (existingStudent == null)
                 return TypedResults.NotFound();
 
-            OutputStudent outputStudent = StudentDtoManager.Convert(result);
+            Student studentCopy = new Student
+            {
+                Id = existingStudent.Id,
+                FirstName = existingStudent.FirstName,
+                LastName = existingStudent.LastName,
+                DateOfBirth = existingStudent.DateOfBirth,
+                AverageGrade = existingStudent.AverageGrade,
+                CourseId = existingStudent.CourseId,
+                Course = existingStudent.Course
+            };
+
+            await repository.Delete(id);
+
+            OutputStudent outputStudent = StudentDtoManager.Convert(studentCopy);
             var payload = new Payload<OutputStudent>() { data = outputStudent };
             return TypedResults.Ok(payload);
         }

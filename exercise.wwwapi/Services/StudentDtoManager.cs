@@ -33,5 +33,22 @@ namespace exercise.wwwapi.Services
         {
             return students.Select(Convert);
         }
+
+        public static StudentWhitoutCourse ConvertRemoveCourse(Student student)
+        {
+            return new StudentWhitoutCourse
+            {
+                Id = student.Id,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                DateOfBirth = student.DateOfBirth,
+                AverageGrade = student.AverageGrade
+            };
+        }
+
+        public static IEnumerable<StudentWhitoutCourse> ConvertRemoveCourse(IEnumerable<Student> students)
+        {
+            return students.Select(ConvertRemoveCourse);
+        }
     }
 }

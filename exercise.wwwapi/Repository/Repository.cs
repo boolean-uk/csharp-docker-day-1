@@ -22,14 +22,9 @@ namespace exercise.wwwapi.Repository
             return entity;
         }
 
-        public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate)
-        {
-            return await _entities.Where(predicate).ToListAsync();
-        }
-
         public async Task<T?> Delete(int id)
         {
-            var entity = await Get(id);
+            var entity = await _entities.FindAsync(id);
             if (entity == null)
                 return null;
 
