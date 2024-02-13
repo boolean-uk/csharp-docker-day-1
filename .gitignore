@@ -491,3 +491,5 @@ $RECYCLE.BIN/
 */**/bin/Release   
 */**/obj/Debug   
 */**/obj/Release   
+exercise.wwwapi/appsettings.Development.json
+/exercise.wwwapi/appsettings.Development.json
