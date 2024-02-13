@@ -1,5 +1,6 @@
 ﻿using exercise.wwwapi.DataModels;
 using exercise.wwwapi.DataTransferObjects;
+using exercise.wwwapi.DataTransferObjects.InputDTOs;
 using exercise.wwwapi.DataTransferObjects.Students;
 using exercise.wwwapi.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -48,12 +49,12 @@ namespace exercise.wwwapi.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> PostStudent(IRepository<Student> repo, IRepository<Course> courseRepo, StudentInputDTO studentPost)
+        public static async Task<IResult> PostStudent(IRepository<Student> repo, IRepository<Course> courseRepo, StudentInputPostDTO studentPost)
         {
             DateTime dob;
             try
             {
-                dob = DateTime.Parse(studentPost.DateOfBirth);
+                dob = (DateTime)studentPost.DateOfBirth;
             } catch (FormatException fe) 
             {
                 return TypedResults.BadRequest($"Could not interpret the provided DateOfBirth, {studentPost.DateOfBirth}.");
@@ -69,7 +70,7 @@ namespace exercise.wwwapi.Endpoints
             };
 
             Student createdStudent = await repo.Insert(student);
-            Course course = await courseRepo.Get(createdStudent.CourseID);
+            Course? course = await courseRepo.Get(createdStudent.CourseID);
             createdStudent.Course = course;
 
             StudentDTO studentOut = new StudentDTO(createdStudent);
@@ -79,7 +80,7 @@ namespace exercise.wwwapi.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> PutStudent(IRepository<Student> repo, int id, StudentInputDTO studentPost)
+        public static async Task<IResult> PutStudent(IRepository<Student> repo, int id, StudentInputPutDTO studentPost)
         {
             Student? student = await repo.Get(id);
             if (student == null)
@@ -88,9 +89,9 @@ namespace exercise.wwwapi.Endpoints
             }
 
             DateTime dob;
-            if (studentPost.DateOfBirth == null) 
+            if (studentPost.DateOfBirth != null) 
             {
-                dob = DateTime.Parse(studentPost.DateOfBirth);
+                dob = (DateTime)studentPost.DateOfBirth;
             }
             else 
             {
@@ -103,8 +104,8 @@ namespace exercise.wwwapi.Endpoints
                 FirstName = studentPost.FirstName ?? student.FirstName,
                 LastName = studentPost.LastName ?? student.LastName,
                 DateOfBirth = DateTime.SpecifyKind(dob, DateTimeKind.Utc),
-                CourseID = studentPost.CourseId,
-                AverageGrade = studentPost.AverageGrade
+                CourseID = studentPost.CourseId ?? student.CourseID,
+                AverageGrade = studentPost.AverageGrade ?? student.AverageGrade
             };
 
             Student createdStudent = await repo.Update(id, transcribedStudent);

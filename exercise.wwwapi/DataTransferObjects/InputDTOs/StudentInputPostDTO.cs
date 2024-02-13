@@ -1,12 +1,12 @@
-﻿namespace exercise.wwwapi.DataTransferObjects
+﻿namespace exercise.wwwapi.DataTransferObjects.InputDTOs
 {
-    public class StudentInputDTO
+    public class StudentInputPostDTO
     {
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public string DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         public int CourseId { get; set; }
 

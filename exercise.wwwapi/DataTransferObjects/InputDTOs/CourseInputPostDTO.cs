@@ -1,6 +1,6 @@
-﻿namespace exercise.wwwapi.DataTransferObjects
+﻿namespace exercise.wwwapi.DataTransferObjects.InputDTOs
 {
-    public class CourseInputDTO
+    public class CourseInputPostDTO
     {
         public string CourseTitle { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using exercise.wwwapi.DataModels;
 using exercise.wwwapi.DataTransferObjects;
 using exercise.wwwapi.DataTransferObjects.Courses;
+using exercise.wwwapi.DataTransferObjects.InputDTOs;
 using exercise.wwwapi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace exercise.wwwapi.Endpoints
 
             courses.MapGet("/", GetCourses);
             courses.MapGet("/{id}", GetCourse);
-            courses.MapPost("/{id}", PostCourse);
+            courses.MapPost("/", PostCourse);
             courses.MapPut("/{id}", PutCourse);
             courses.MapDelete("/{id}", DeleteCourse);
         }
@@ -33,6 +34,7 @@ namespace exercise.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> GetCourse(IRepository<Course> repo, int id)
         {
             Course? course = await repo.Get(id);
@@ -78,7 +80,7 @@ namespace exercise.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> PutCourse(IRepository<Course> repo, int id, CourseInputPostDTO coursePut)
+        private static async Task<IResult> PutCourse(IRepository<Course> repo, int id, CourseInputPutDTO coursePut)
         {
             Course? dbCourse = await repo.Get(id);
 
@@ -93,7 +95,7 @@ namespace exercise.wwwapi.Endpoints
                 try
                 {
                     // startDate = DateTime.Parse(coursePut.CourseStartDate);
-                    startDate = coursePut.CourseStartDate;
+                    startDate = (DateTime)coursePut.CourseStartDate;
                 }
                 catch (FormatException fe)
                 {
@@ -107,6 +109,7 @@ namespace exercise.wwwapi.Endpoints
 
             Course course = new Course() 
             {
+                Id = id,
                 CourseTitle = coursePut.CourseTitle ?? dbCourse.CourseTitle,
                 CourseStartDate = startDate,
             };
