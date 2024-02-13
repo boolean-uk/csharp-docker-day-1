@@ -1,4 +1,4 @@
-﻿namespace exercise.wwwapi.DataModels
+﻿namespace exercise.wwwapi.DataTransferObjects
 {
     public class PutStudent
     {

@@ -11,15 +11,26 @@ namespace exercise.wwwapi.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Student>().HasData(new Student()
+            modelBuilder.Entity<Course>().HasData(new Course()
             {
                 Id=1,
-                FirstName="Peder",
-                LastName="Anton",
-                DateOfBirth=DateTime.UtcNow,
-                CourseTitle="C#",
-                AverageGrade=3.0d,
-            },
+                CourseCode="JAVA1001"
+            });
+            modelBuilder.Entity<Course>().HasData(new Course()
+            {
+                Id = 2,
+                CourseCode = "C#1001"
+            });
+            modelBuilder.Entity<Student>().HasData(new Student()
+            {
+                Id = 1,
+                FirstName = "Peder",
+                LastName = "Anton",
+                DateOfBirth = DateTime.UtcNow,
+                CourseTitle = "C#",
+                AverageGrade = 3.0d,
+                CourseId = 2,
+            });
             modelBuilder.Entity<Student>().HasData(new Student()
             {
                 Id = 2,
@@ -28,7 +39,8 @@ namespace exercise.wwwapi.Data
                 DateOfBirth = DateTime.UtcNow,
                 CourseTitle = "Java",
                 AverageGrade = 4.0d,
-            },
+                CourseId = 1,
+            });
 
             modelBuilder.Entity<Student>().HasKey(x => x.Id);  
             modelBuilder.Entity<Student>()
