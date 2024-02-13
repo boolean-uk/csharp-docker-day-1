@@ -7,19 +7,19 @@ namespace exercise.wwwapi.Data
 {
     public class DataContext : DbContext
     {
-        private string _connectionString;
+        //private string _connectionString;
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            var configuration = new ConfigurationBuilder().AddJsonFile("Properties/appsettings.json").Build();
+           // var configuration = new ConfigurationBuilder().AddJsonFile("Properties/appsettings.json").Build();
            // _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
-            _connectionString = configuration.GetValue<string>("ConnectionStrings:LocalConnection")!;
+            //_connectionString = configuration.GetValue<string>("ConnectionStrings:Connection")!;
 
            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(_connectionString);
+            //optionsBuilder.UseNpgsql(_connectionString);
             optionsBuilder.LogTo(message => Debug.WriteLine(message)); //see the sql EF using in the console
         }
 

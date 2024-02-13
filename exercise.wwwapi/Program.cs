@@ -10,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>();
-//opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+builder.Services.AddDbContext<DataContext>(
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
 
 builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
 builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
@@ -29,9 +29,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.ApplyProjectMigrations();
 app.StudentEndpointConfiguration(); //core
 app.CourseEndpointConfiguration(); //extension
-//app.ApplyProjectMigrations();
 
 app.Run();
 

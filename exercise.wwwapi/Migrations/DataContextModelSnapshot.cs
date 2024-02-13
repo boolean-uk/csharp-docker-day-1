@@ -48,25 +48,25 @@ namespace exercise.wwwapi.Migrations
                         new
                         {
                             Id = 1,
-                            CourseStartDate = new DateTime(2024, 2, 13, 9, 21, 9, 188, DateTimeKind.Local).AddTicks(2920),
+                            CourseStartDate = new DateTime(2024, 2, 13, 14, 48, 17, 872, DateTimeKind.Local).AddTicks(5199),
                             Title = "Naturdag"
                         },
                         new
                         {
                             Id = 2,
-                            CourseStartDate = new DateTime(2024, 2, 13, 9, 21, 9, 188, DateTimeKind.Local).AddTicks(2996),
+                            CourseStartDate = new DateTime(2024, 2, 13, 14, 48, 17, 872, DateTimeKind.Local).AddTicks(5287),
                             Title = "Matte"
                         },
                         new
                         {
                             Id = 3,
-                            CourseStartDate = new DateTime(2024, 2, 13, 9, 21, 9, 188, DateTimeKind.Local).AddTicks(2999),
+                            CourseStartDate = new DateTime(2024, 2, 13, 14, 48, 17, 872, DateTimeKind.Local).AddTicks(5290),
                             Title = "Fargerer"
                         },
                         new
                         {
                             Id = 4,
-                            CourseStartDate = new DateTime(2024, 2, 13, 9, 21, 9, 188, DateTimeKind.Local).AddTicks(3002),
+                            CourseStartDate = new DateTime(2024, 2, 13, 14, 48, 17, 872, DateTimeKind.Local).AddTicks(5294),
                             Title = "Kjeddeeeelig"
                         });
                 });
