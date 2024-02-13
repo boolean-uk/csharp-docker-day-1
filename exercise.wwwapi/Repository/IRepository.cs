@@ -1,11 +1,12 @@
-﻿using exercise.wwwapi.DataModels;
-
-namespace exercise.wwwapi.Repository
+﻿namespace exercise.wwwapi.Repository
 {
-    public interface IRepository
+    public interface IRepository<T>
     {
-        Task<IEnumerable<Student>> GetStudents();
-        Task<IEnumerable<Course>> GetCourses();
+        Task<T> Get(int id, string? include=null);
+        Task<IEnumerable<T>> GetAll(string? include=null);
+        Task<T> Delete(int id);
+        Task<T> Update(T entity, int id);
+        Task<T> Add(T entity);
     }
 
 }
