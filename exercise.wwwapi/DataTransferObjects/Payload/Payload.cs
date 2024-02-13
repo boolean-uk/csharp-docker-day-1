@@ -1,4 +1,4 @@
-﻿namespace exercise.wwwapi.DataTransferObjects
+﻿namespace exercise.wwwapi.DataTransferObjects.Payload
 {
     public class Payload<T> where T : class
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace exercise.wwwapi.Dictionaries
+namespace exercise.wwwapi.Helpers
 {
     public static class GradeDictionary
     {

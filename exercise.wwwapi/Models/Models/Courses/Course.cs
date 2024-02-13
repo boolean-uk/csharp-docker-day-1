@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using exercise.wwwapi.Models.Interfaces;
+using exercise.wwwapi.Models.Models.StudentCourses;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace exercise.wwwapi.Models.Models
+namespace exercise.wwwapi.Models.Models.Courses
 {
     [Table("courses")]
     [PrimaryKey("Id")]
-    public class Course
+    public class Course : ICourse
     {
         [Column("id")]
         [Required]
@@ -16,7 +18,7 @@ namespace exercise.wwwapi.Models.Models
         public string CourseTitle { get; set; } = "";
         [Column("start_date")]
         [Required]
-        public DateTime StartDate { get; set; }
+        public DateOnly StartDate { get; set; }
         public ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>();
     }
 }

@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using exercise.wwwapi.Models.Interfaces;
+using exercise.wwwapi.Models.Models.StudentCourses;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace exercise.wwwapi.Models.Models
+namespace exercise.wwwapi.Models.Models.Students
 {
     [Table("students")]
     [PrimaryKey("Id")]
-    public class Student
+    public class Student : IStudent
     {
         [Column("id")]
         [Required]
