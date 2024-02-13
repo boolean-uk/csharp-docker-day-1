@@ -1,4 +1,4 @@
-﻿namespace exercise.wwwapi.DataModels;
+﻿namespace exercise.wwwapi.DataModels.Course;
 
 public class PostCourse
 {

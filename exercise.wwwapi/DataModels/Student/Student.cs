@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace exercise.wwwapi.DataModels;
+namespace exercise.wwwapi.DataModels.Student;
 
 [Table("student")]
 public class Student

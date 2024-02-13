@@ -1,5 +1,6 @@
 using exercise.wwwapi.Data;
-using exercise.wwwapi.DataModels;
+using exercise.wwwapi.DataModels.Course;
+using exercise.wwwapi.DataModels.Student;
 using exercise.wwwapi.Endpoints;
 using exercise.wwwapi.Repository;
 
@@ -27,6 +28,6 @@ app.UseHttpsRedirection();
 
 app.StudentEndpointConfiguration(); //core
 app.CourseEndpointConfiguration(); //extension
-app.ApplyProjectMigrations();
+//app.ApplyProjectMigrations();
 
 app.Run();

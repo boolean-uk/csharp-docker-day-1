@@ -1,4 +1,5 @@
-﻿using exercise.wwwapi.DataModels;
+﻿using exercise.wwwapi.DataModels.Course;
+using exercise.wwwapi.DataModels.Student;
 using exercise.wwwapi.DataTransferObjects;
 using exercise.wwwapi.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -76,12 +77,13 @@ public static class StudentEndpoint
         toEdit.CourseId = studentData.CourseId;
         toEdit.AverageGrade = studentData.AverageGrade;
         toEdit.StartDate = studentData.StartDate;
-        var course = courseRepository.GetById(studentData.CourseId);
+        var course = await courseRepository.GetById(studentData.CourseId);
         if (course == null)
         {
             return TypedResults.BadRequest($"There is no course with the id: {studentData.CourseId}!");
         }
         var result = await repository.Update(toEdit);
+        result.Course = course;
         var payload = new Payload<Student>() { data = result };
         return TypedResults.Ok(payload);
     }
