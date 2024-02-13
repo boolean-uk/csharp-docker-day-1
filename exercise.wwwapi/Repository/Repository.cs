@@ -4,21 +4,52 @@ using Microsoft.EntityFrameworkCore;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T : class
     {
         private DataContext _db;
-        public Repository(DataContext db)
+        private DbSet<T> _table = null;
+
+        public Repository(DataContext dataContext)
         {
-            _db = db;
-        }
-        public async Task<IEnumerable<Course>> GetCourses()
-        {
-            return await _db.Courses.ToListAsync();
+            _db = dataContext;
+            _table = _db.Set<T>();
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<IEnumerable<T>> Get()
         {
-            return await _db.Students.ToListAsync();
+            return await _table.ToListAsync();
+        }
+
+        public async Task<T> GetById(object id)
+        {
+            return _table.Find(id);
+        }
+
+        public async Task<T> Create(T entity)
+        {
+            await _table.AddAsync(entity);
+            _db.SaveChanges();
+            return entity;
+        }
+        public async Task<T> Update(T entity)
+        {
+            _table.Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
+            _db.SaveChanges();
+            return entity;
+        }
+
+        public async Task<T> Delete(int id)
+        {
+            T entity = _table.Find(id);
+            _table.Remove(entity);
+            _db.SaveChanges();
+            return entity;
+        }
+
+        public async void Save()
+        {
+            await _db.SaveChangesAsync();
         }
     }
 }

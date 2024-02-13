@@ -12,6 +12,12 @@ namespace exercise.wwwapi.Data
                 db.Database.Migrate();
             }
 
+            /*
+            using IServiceScope scope = app.ApplicationServices.CreateScope();
+            using DataContext db = scope.ServiceProvider.GetService<DataContext>();
+            db.Database.Migrate();
+            */
+
         }
     }
 }
