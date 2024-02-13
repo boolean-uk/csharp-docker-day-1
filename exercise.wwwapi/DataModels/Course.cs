@@ -8,7 +8,7 @@ namespace exercise.wwwapi.DataModels
         [Column("title")]
         public string Title { get; set; }
         [Column("student_id")]
-        public IEnumerable<Student> Students { get; } = [];
-        public IEnumerable<StudentCourse> StudentCourses { get; } = [];
+        public List<Student> Students { get; } = [];
+        public List<StudentCourse> StudentCourses { get; } = [];
     }
 }

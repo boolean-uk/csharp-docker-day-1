@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using exercise.wwwapi.DataModels;
 using exercise.wwwapi.DataTransferObjects;
+using exercise.wwwapi.DataTransferObjects.Courses;
+using exercise.wwwapi.DataTransferObjects.StudentCourse;
 using exercise.wwwapi.DataTransferObjects.Students;
 using exercise.wwwapi.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -20,15 +22,52 @@ namespace exercise.wwwapi.Endpoints
             students.MapPost("/", AddStudent);
             students.MapPut("/{id}", UpdateStudent);
             students.MapDelete("/{id}", DeleteStudent);
+            students.MapGet("/{id}/courses", GetStudentCourses);
+            students.MapPost("/courses", AddStudentToCourse);
         }
-        
+
+        public static async Task<IResult> AddStudentToCourse([FromServices] IRepository<StudentCourse> repository,
+            [FromServices] IMapper mapper,
+            [FromBody] AddStudentCourse addStudentCourse)
+        {
+            Payload<GetStudentCourse> payload = new();
+            try
+            {
+                StudentCourse sCourse = mapper.Map<StudentCourse>(addStudentCourse);
+                StudentCourse studentCourse = await repository.Add(sCourse);
+                payload.Data = mapper.Map<GetStudentCourse>(studentCourse);
+                return TypedResults.Ok(payload);
+            } catch (ArgumentException ex)
+            {
+                payload.Success = false;
+                payload.Message = ex.Message;
+                return TypedResults.NotFound(payload);
+            }
+        }
+
+        public static async Task<IResult> GetStudentCourses(IRepository<Student> repository, IMapper mapper, int id)
+        {
+            Payload<IEnumerable<GetCourseDTO>> payload = new();
+            try
+            {
+                Student student = await repository.Get(id, "Courses");
+                payload.Data = student.Courses.Select(mapper.Map<GetCourseDTO>);
+                return TypedResults.Ok(payload);
+            } catch (ArgumentException ex)
+            {
+                payload.Success = false;
+                payload.Message = ex.Message;
+                return TypedResults.NotFound(payload);
+            }
+        }
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetStudents(IRepository<Student> repository, IMapper mapper)
         {
             Payload<IEnumerable<GetStudentDTO>> payload = new();
             try
             {
-                var results = await repository.GetAll();
+                var results = await repository.GetAll("Courses");
                 payload.Data = results.Select(mapper.Map<GetStudentDTO>);
                 return TypedResults.Ok(payload);
             } catch (Exception ex)
@@ -44,7 +83,7 @@ namespace exercise.wwwapi.Endpoints
             Payload<GetStudentDTO> payload = new();
             try
             {
-                Student student = await repository.Get(id);
+                Student student = await repository.Get(id, "Courses");
                 payload.Data = mapper.Map<GetStudentDTO>(student);
                 return TypedResults.Ok(payload);
             } catch (ArgumentException ex)

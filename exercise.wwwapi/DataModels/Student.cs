@@ -13,8 +13,8 @@ namespace exercise.wwwapi.DataModels
         [Column("date_of_birth"), DataType("date")]
         public DateTime DateOfBirth { get; set; }
         [Column("course_id")]
-        public IEnumerable<Course> Courses { get; } = [];
-        public IEnumerable<StudentCourse> StudentCourses { get; } = [];
+        public List<Course> Courses { get; set; }
+        public List<StudentCourse> StudentCourses { get; }
 
     }
 }

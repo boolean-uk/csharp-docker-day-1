@@ -2,6 +2,7 @@
 using exercise.wwwapi.DataModels;
 using exercise.wwwapi.DataTransferObjects;
 using exercise.wwwapi.DataTransferObjects.Courses;
+using exercise.wwwapi.DataTransferObjects.Students;
 using exercise.wwwapi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +15,29 @@ namespace exercise.wwwapi.Endpoints
     {
         public static void CourseEndpointConfiguration(this WebApplication app)
         {
-            var students = app.MapGroup("courses");
-            students.MapGet("/", GetCourses);
-            students.MapGet("/{id}", GetCourse);
-            students.MapPost("/", AddCourse);
-            students.MapPut("/{id}", UpdateCourse);
-            students.MapDelete("/{id}", DeleteCourse);
+            var courses = app.MapGroup("courses");
+            courses.MapGet("/", GetCourses);
+            courses.MapGet("/{id}", GetCourse);
+            courses.MapPost("/", AddCourse);
+            courses.MapPut("/{id}", UpdateCourse);
+            courses.MapDelete("/{id}", DeleteCourse);
+            courses.MapGet("/{id}/students", GetCourseStudents);
+        }
+
+        private static async Task<IResult> GetCourseStudents(IRepository<Course> repository, IMapper mapper, int id)
+        {
+            Payload<List<GetStudentDTO>> payload = new();
+            try
+            {
+                Course course = await repository.Get(id, "Students");
+                payload.Data = course.Students.Select(mapper.Map<GetStudentDTO>).ToList();
+                return TypedResults.Ok(payload);
+            } catch (ArgumentException ex)
+            {
+                payload.Success = false;
+                payload.Message = ex.Message;
+                return TypedResults.NotFound(payload);
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -28,7 +46,7 @@ namespace exercise.wwwapi.Endpoints
             Payload<IEnumerable<GetCourseDTO>> payload = new();
             try
             {
-                var results = await repository.GetAll();
+                var results = await repository.GetAll("Students");
                 payload.Data = results.Select(mapper.Map<GetCourseDTO>);
                 return TypedResults.Ok(payload);
             } catch (ArgumentException ex)
@@ -45,7 +63,7 @@ namespace exercise.wwwapi.Endpoints
             Payload<GetCourseDTO> payload = new();
             try
             {
-                Course course = await repository.Get(id);
+                Course course = await repository.Get(id, "Students");
                 payload.Data = mapper.Map<GetCourseDTO>(course);
                 return TypedResults.Ok(payload);
             } catch (ArgumentException ex)

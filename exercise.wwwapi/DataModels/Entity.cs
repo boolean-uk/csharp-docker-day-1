@@ -8,9 +8,5 @@ namespace exercise.wwwapi.DataModels
         [Column("id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
-        [Column("created_at"), DataType("date")]
-        public DateTime CreatedAt { get; set; }
-        [Column("updated_at"), DataType("date")]
-        public DateTime UpdatedAt { get; set; }
     }
 }
