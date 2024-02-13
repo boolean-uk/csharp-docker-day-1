@@ -1,4 +1,4 @@
-@exercise.wwwapi_HostAddress = http://localhost:5137
+@exercise.wwwapi_HostAddress = https://localhost:49175
 
 ###
 ### GET ALL STUDENTS
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ###
 ### PUT/UPDATE STUDENT
-PUT {{exercise.wwwapi_HostAddress}}/students/8
+PUT {{exercise.wwwapi_HostAddress}}/students/7
 Content-Type: application/json
 
 {
@@ -35,7 +35,7 @@ Content-Type: application/json
 
 ###
 ### DELETE STUDENT
-DELETE {{exercise.wwwapi_HostAddress}}/students/9
+DELETE {{exercise.wwwapi_HostAddress}}/students/7
 Accept: application/json
 
 
@@ -61,7 +61,7 @@ Content-Type: application/json
 
 ###
 ### PUT/UPDATE COURSE
-PUT {{exercise.wwwapi_HostAddress}}/courses/4
+PUT {{exercise.wwwapi_HostAddress}}/courses/3
 Content-Type: application/json
 
 {
@@ -70,5 +70,5 @@ Content-Type: application/json
 
 ###
 ### DELETE COURSE
-DELETE {{exercise.wwwapi_HostAddress}}/courses/4
+DELETE {{exercise.wwwapi_HostAddress}}/courses/5
 Accept: application/json
