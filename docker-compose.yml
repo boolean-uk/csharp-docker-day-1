@@ -1,0 +1,47 @@
+version: '3.4'
+
+services:
+  exercise.wwwapi:
+    image: ${DOCKER_REGISTRY-}exercisewwwapi
+    container_name: 'exercise.api'
+    build:
+      context: .
+      dockerfile: exercise.wwwapi/Dockerfile
+    ports:
+      - "8000:8000"
+      - "8001:8001" 
+    networks:
+      - kanthee-network
+    depends_on:
+      exercise.database:
+        condition: service_healthy
+
+  exercise.database:
+    container_name: 'exercise.database'
+    image: postgres:latest
+    environment: 
+       # - =postgres
+       # - POSTGRES_USER=postgres
+       # - POSTGRES_PASSWORD=postgres      ????????
+         POSTGRES_DB: postgres
+         POSTGRES_USER: postgres
+         POSTGRES_PASSWORD: postgres
+    volumes:
+        - './.containers/excerise-db:/var/lib/postgresql/data'          #?`???
+    ports:
+        - 5432:5432
+    networks:
+      - kanthee-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+
+volumes:
+  postgres_data:
+    driver: local
+networks:
+  kanthee-network:
+    driver: bridge
