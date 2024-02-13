@@ -14,6 +14,7 @@ namespace exercise.wwwapi.Endpoints
         {
             var students = app.MapGroup("courses");
             students.MapGet("/", GetCourses);
+            students.MapPost("/", CreateCourse);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
