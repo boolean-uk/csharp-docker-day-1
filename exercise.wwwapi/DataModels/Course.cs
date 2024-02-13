@@ -15,7 +15,7 @@ namespace exercise.wwwapi.DataModels
 
         [JsonIgnore]
         public int StudentCount { get; set; }
-        public int AverageStudentScore { get; set; }
+      
         public ICollection<Student> Students { get; set; } = new List<Student>();
 
         public object DtCourse()
