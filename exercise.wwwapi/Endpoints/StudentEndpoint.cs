@@ -43,7 +43,27 @@ namespace exercise.wwwapi.Endpoints
 
         public static async Task<IResult> CreateStudent(IRepository<Student> repository, PostStudent student)
         {
+            Payload<StudentDTO> payload = new Payload<StudentDTO>();
 
+            var entity = new Student()
+            {
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                DateOfBirth = student.DateOfBirth,
+                AverageGrade = student.AverageGrade,
+            };
+            await repository.Create(entity);
+
+            var result = new StudentDTO()
+            {
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                DateOfBirth = student.DateOfBirth,
+                AverageGrade = student.AverageGrade,
+            };
+            payload.data = result;
+
+            return TypedResults.Created(payload.status, payload);
         }
     }
 
