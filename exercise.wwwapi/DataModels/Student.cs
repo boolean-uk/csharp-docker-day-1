@@ -16,8 +16,17 @@ namespace exercise.wwwapi.DataModels
 
         [Column("course_title")]
         public string CourseTitle { get; set; }
+        
         [Column("average_grade")]
         public double AverageGrade { get; set; }
+
+        [Column("course_id")]
+
+        public int CourseId { get; set; }
+
+
+        [Column("course")]
+        public Course Course { get; set;}
 
     }
 }
