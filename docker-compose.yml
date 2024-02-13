@@ -21,8 +21,10 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+    volumes:
+      - './.containers/data/:/var/lib/postgresql/data'
     ports:
-      - 5431:5431
+      - 5432:5432
     networks:
       - network
     healthcheck:
