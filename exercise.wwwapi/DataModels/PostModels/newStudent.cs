@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace exercise.wwwapi.DataModels.PostModels
 {
-    public class newStudent
+    public class NewStudent
     {
         public string FirstName { get; set; } = "Firstname";
         public string LastName { get; set; } = "Lastname";

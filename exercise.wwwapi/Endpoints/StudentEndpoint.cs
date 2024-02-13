@@ -42,7 +42,7 @@ namespace exercise.wwwapi.Endpoints
             return TypedResults.Ok(payload);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateStudent(IRepository<Student> repository, newStudent model)
+        public static async Task<IResult> CreateStudent(IRepository<Student> repository, NewStudent model)
         {
             var results = await repository.Insert(new Student() { FirstName = model.FirstName, 
                 LastName = model.LastName, 
@@ -54,7 +54,7 @@ namespace exercise.wwwapi.Endpoints
             return results != null?TypedResults.Ok(payload): TypedResults.BadRequest("Input not valid");
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> UpdateStudent(IRepository<Student> repository, patchStudent model, int id)
+        public static async Task<IResult> UpdateStudent(IRepository<Student> repository, PatchStudent model, int id)
         {
             var student = await repository.GetById(id);
             student.CourseDate = (DateTime)(model.CourseDate != null? model.CourseDate:student.CourseDate);

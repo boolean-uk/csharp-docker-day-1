@@ -1,6 +1,6 @@
 ﻿namespace exercise.wwwapi.DataModels.PostModels
 {
-    public class patchStudent
+    public class PatchStudent
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
