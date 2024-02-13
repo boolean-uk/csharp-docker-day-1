@@ -6,3 +6,28 @@ services:
     build:
       context: .
       dockerfile: exercise.wwwapi/Dockerfile
+    networks:
+      - grev-network
+    depends_on:
+      exercise.database:
+        condition: service_healthy
+  exercise.database:
+    container_name: 'exercise.database'
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+        - 5432:5432
+    networks:
+      - grev-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+networks:
+    grev-network:
+        driver: bridge
