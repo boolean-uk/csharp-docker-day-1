@@ -7,34 +7,47 @@ namespace exercise.wwwapi.Repository
     public class Repository<T> : IRepository<T> where T : class
     {
         private DataContext _db;
+        private DbSet<T> _table;
         public Repository(DataContext db)
         {
             _db = db;
+            _table = db.Set<T>();
         }
 
-        public Task<T> Create(T entity)
+        public async Task<T> Create(T entity)
         {
-            throw new NotImplementedException();
+            await _db.AddAsync(entity);
+            await _db.SaveChangesAsync();
+
+            return entity;
+
         }
 
-        public Task<T> Delete(int id)
+        public async Task<T> Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _table.FindAsync(id);
+            _table.Remove(entity);
+            await _db.SaveChangesAsync();
+
+            return entity;
         }
 
-        public Task<T> Get(int id)
+        public async Task<T> Get(int id)
         {
-            throw new NotImplementedException();
+            return _table.Find(id);
         }
 
-        public Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _table.ToListAsync();
         }
 
-        public Task<T> Update(int id, T entity)
+        public async Task<T> Update(int id, T entity)
         {
-            throw new NotImplementedException();
+            _table.Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+            return entity;
         }
     }
 }
