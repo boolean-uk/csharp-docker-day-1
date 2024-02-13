@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DockerString")));
 builder.Services.AddScoped<IRepository, Repository>();
 var app = builder.Build();
 

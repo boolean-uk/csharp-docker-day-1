@@ -8,8 +8,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{84176869-3BC7-4553-8F9F-21A3229CC044}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		docker-compose.override.yml = docker-compose.override.yml
+		docker-compose.yml = docker-compose.yml
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F9E0B3FA-F38A-43A9-8138-E4CE4273B3F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +25,15 @@ Global
 		{9F62209C-4592-46DE-8A7B-BA8045753BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F62209C-4592-46DE-8A7B-BA8045753BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F62209C-4592-46DE-8A7B-BA8045753BD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9E0B3FA-F38A-43A9-8138-E4CE4273B3F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9E0B3FA-F38A-43A9-8138-E4CE4273B3F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9E0B3FA-F38A-43A9-8138-E4CE4273B3F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9E0B3FA-F38A-43A9-8138-E4CE4273B3F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5B2A52B0-A092-4087-87C3-1BF42572D05E}
 	EndGlobalSection
 EndGlobal
