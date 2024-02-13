@@ -7,13 +7,20 @@ namespace exercise.wwwapi.Data.SeedData
         private List<Course> _courses { get; set; } = new List<Course>();
         private List<Student> _students { get; set; } = new List<Student>();
 
-        public Seeder() 
+        public Seeder()
         {
             Course course = new Course()
             {
                 Id = 1,
                 CourseTitle = "Fullstack C#",
-                CourseStartDate = DateTime.SpecifyKind(new DateTime(2024,01,07), DateTimeKind.Utc),
+                CourseStartDate = DateTime.SpecifyKind(new DateTime(2024, 01, 07), DateTimeKind.Utc),
+            };
+
+            Course course2 = new Course() 
+            {
+                Id = 2,
+                CourseTitle = "Fullstack Java",
+                CourseStartDate = DateTime.SpecifyKind(new DateTime(2024, 01, 07), DateTimeKind.Utc),
             };
 
             Student student = new Student()
@@ -36,10 +43,54 @@ namespace exercise.wwwapi.Data.SeedData
                 AverageGrade = 3,
             };
 
+            Student student3 = new Student()
+            {
+                Id = 3,
+                FirstName = "Ole Markus",
+                LastName = "Roland",
+                DateOfBirth = DateTime.SpecifyKind(new DateTime(1996, 04, 15), DateTimeKind.Utc),
+                CourseID = 1,
+                AverageGrade = 3,
+            };
+
+            Student student4 = new Student()
+            {
+                Id = 4,
+                FirstName = "Alexander",
+                LastName = "Gatland",
+                DateOfBirth = DateTime.SpecifyKind(new DateTime(1996, 07, 15), DateTimeKind.Utc),
+                CourseID = 2,
+                AverageGrade = 3,
+            };
+
+            Student student5 = new Student()
+            {
+                Id = 5,
+                FirstName = "Nora",
+                LastName = "Hansen",
+                DateOfBirth = DateTime.SpecifyKind(new DateTime(1996, 01, 15), DateTimeKind.Utc),
+                CourseID = 2,
+                AverageGrade = 3,
+            };
+
+            Student student6 = new Student()
+            {
+                Id = 6,
+                FirstName = "Marit",
+                LastName = "Moe",
+                DateOfBirth = DateTime.SpecifyKind(new DateTime(1996, 09, 15), DateTimeKind.Utc),
+                CourseID = 2,
+                AverageGrade = 3,
+            };
+
             _courses.Add(course);
+            _courses.Add(course2);
             _students.Add(student);
             _students.Add(student2);
-
+            _students.Add(student3);
+            _students.Add(student4);
+            _students.Add(student5);
+            _students.Add(student6);
 
         }
 

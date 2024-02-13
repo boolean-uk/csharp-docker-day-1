@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using exercise.wwwapi.Data;
@@ -11,9 +12,11 @@ using exercise.wwwapi.Data;
 namespace exercise.wwwapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240213090622_extendedSeedData")]
+    partial class extendedSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,33 +126,6 @@ namespace exercise.wwwapi.Migrations
                             DateOfBirth = new DateTime(1996, 4, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Ole Markus",
                             LastName = "Roland"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AverageGrade = 3.0,
-                            CourseID = 2,
-                            DateOfBirth = new DateTime(1996, 7, 15, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FirstName = "Alexander",
-                            LastName = "Gatland"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AverageGrade = 3.0,
-                            CourseID = 2,
-                            DateOfBirth = new DateTime(1996, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FirstName = "Nora",
-                            LastName = "Hansen"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AverageGrade = 3.0,
-                            CourseID = 2,
-                            DateOfBirth = new DateTime(1996, 9, 15, 0, 0, 0, 0, DateTimeKind.Utc),
-                            FirstName = "Marit",
-                            LastName = "Moe"
                         });
                 });
 
