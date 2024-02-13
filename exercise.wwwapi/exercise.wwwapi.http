@@ -1,4 +1,4 @@
-@exercise.wwwapi_HostAddress = https://localhost:49175
+@exercise.wwwapi_HostAddress = https://localhost:8083
 
 ###
 ### GET ALL STUDENTS

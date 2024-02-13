@@ -8,8 +8,8 @@ services:
       context: .
       dockerfile: exercise.wwwapi/Dockerfile
     ports: 
-        - 7000:7000
-        - 7001:7001
+        - "8082:8080"
+        - "8083:8081"
     networks:
       - boolean-network
     depends_on:
