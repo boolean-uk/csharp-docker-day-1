@@ -10,10 +10,11 @@ namespace exercise.wwwapi.Data
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {           
-
+        {
+            modelBuilder.Entity<Student>().HasOne(s => s.Course).WithMany().HasForeignKey(s => s.CourseId);
         }
         public DbSet<Student> Students { get; set; }
+        
         public DbSet<Course> Courses { get; set; }
     }
 }
