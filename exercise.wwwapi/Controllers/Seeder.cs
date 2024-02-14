@@ -81,44 +81,6 @@ namespace exercise.wwwapi.Controllers
             "Spears"
         };
 
-        private static List<string> _courseTitles = new List<string>()
-        {
-            "Math",
-            "Physics",
-            "Chemistry",
-            "Biology",
-            "History",
-            "Geography",
-            "Literature",
-            "Philosophy",
-            "Psychology",
-            "Sociology",
-            "Economics",
-            "Political Science",
-            "Computer Science",
-            "Engineering",
-            "Medicine",
-            "Law",
-            "Business",
-            "Management",
-            "Marketing",
-            "Accounting",
-            "Finance",
-            "Human Resources",
-            "Education",
-            "Art",
-            "Music",
-            "Theater",
-            "Dance",
-            "Film",
-            "Photography",
-            "Design",
-            "Fashion",
-            "Culinary Arts",
-            "Hospitality",
-            "Tourism"
-        };
-
         private static List<string> _courseNames = new List<string>()
         {
             "C# programming 101",
@@ -202,7 +164,7 @@ namespace exercise.wwwapi.Controllers
             {
                 var course = new Course()
                 {
-                    CourseTitle = _courseTitles[i],
+                    CourseTitle = _courseNames[i],
                     StartDate = DateGenerator()
                 };
                 _courses.Add(course);

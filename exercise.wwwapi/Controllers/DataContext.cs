@@ -10,19 +10,27 @@ namespace exercise.wwwapi.Data
 {
     public class DataContext : DbContext
     {
-        private string? _connectionString;
+        //private string? _connectionString;
+        public static bool _migrations;
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            if(!_migrations)
+            {
+                this.Database.Migrate();
+                _migrations = true;
+            }
+            //var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            //_connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseNpgsql(_connectionString);
             optionsBuilder.LogTo(message => Debug.WriteLine(message)); //see the sql EF using in the console
         }
+        */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             Seeder seeder = new Seeder();
