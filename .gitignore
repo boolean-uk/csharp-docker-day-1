@@ -484,6 +484,7 @@ $RECYCLE.BIN/
 *.swp
 /exercise.wwwapi/appsettings.json
 /exercise.wwwapi/appsettings.Development.json
+.containers/
 
 /exercise.wwwapi/appsettings.json
 /exercise.wwwapi/appsettings.Development.json
