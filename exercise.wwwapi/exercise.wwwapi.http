@@ -7,7 +7,7 @@ Accept: application/json
 
 ###
 ### GET SPECIFIC STUDENT
-GET {{exercise.wwwapi_HostAddress}}/students/1
+GET {{exercise.wwwapi_HostAddress}}/students/2
 Accept: application/json
 
 ###
@@ -25,12 +25,11 @@ Content-Type: application/json
 
 ###
 ### PUT/UPDATE STUDENT
-PUT {{exercise.wwwapi_HostAddress}}/students/7
+PUT {{exercise.wwwapi_HostAddress}}/students/2
 Content-Type: application/json
 
 {
-  "lastName": "Olaison",
-  "dateOfBirth": "1999-10-02T09:23:42.211Z"
+  "courseId": 3
 }
 
 ###
