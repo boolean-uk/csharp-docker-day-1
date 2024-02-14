@@ -73,6 +73,8 @@ namespace exercise.wwwapi.Endpoints
             entity.CourseTitle = input.CourseTitle != null ? input.CourseTitle : entity.CourseTitle;
             entity.StartDate = (DateTime)(input.StartDate != null ? input.StartDate : entity.StartDate);
             entity.AverageGrade = ((double)(input.AverageGrade != null ? input.AverageGrade : entity.AverageGrade));
+
+            await repository.Update(entity);
             return TypedResults.Created($"/{entity.Id}", entity);
         }
     }

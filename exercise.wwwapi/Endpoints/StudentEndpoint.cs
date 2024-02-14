@@ -72,6 +72,7 @@ namespace exercise.wwwapi.Endpoints
             entity.LastName = input.LastName != null ? input.LastName : entity.LastName;
             entity.DoB = (DateTime)(input.DoB != null ? input.DoB : entity.DoB);
             entity.CourseId = ((int)(input.CourseId != null ? input.CourseId : entity.CourseId));
+            await repository.Update(entity);
             return TypedResults.Created($"/{entity.Id}", entity);
         }
 

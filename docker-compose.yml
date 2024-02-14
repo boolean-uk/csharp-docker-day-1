@@ -3,17 +3,16 @@ version: '3.4'
 services:
   exercise.wwwapi:
     image: ${DOCKER_REGISTRY-}exercisewwwapi
-    container_name: exercise.api
     build:
       context: .
       dockerfile: exercise.wwwapi/Dockerfile
     ports: 
-      - "5000:5000"
-      - "5001:5001"
+      - "7000:7000"
+      - "7001:7001"
 
   exercise.database:
-    container_name: exercise.database
     image: postgres:latest
+    container_name: exercise.database
     environment:
      - POSTGRES_DB=exercises
      - POSTGRES_USER=postgres
