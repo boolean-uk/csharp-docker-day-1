@@ -5,8 +5,14 @@ namespace exercise.wwwapi.Data
 {
     public class DataContext : DbContext
     {
+        private static bool _migration = false;
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+            if (!_migration)
+            {
+                _migration = true;
+                Database.Migrate();
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
