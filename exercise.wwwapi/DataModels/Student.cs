@@ -13,12 +13,8 @@ namespace exercise.wwwapi.DataModels
         [Column("last_name")]
         public string LastName { get; set; }
         [Column("date_of_birth")]
-        public DateOnly DateOfBirth { get; set; }
-        [Column("course_title")]
-        public string CourseTitle { get; set; }
-        [Column("course_start_date")]
-        public DateOnly CourseStartDate { get; set; }
-        [Column("average_grade")]
-        public float AverageGrade { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        [Column("course_id"), ForeignKey("Course")]
+        public int CourseId { get; set; }
     }
 }

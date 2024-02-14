@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>61fc7496-0f67-462e-a7ad-9336dc6b898c</ProjectGuid>
+    <ProjectGuid>cc03cfb6-24d0-4980-b6b4-903ec592100a</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>exercise.wwwapi</DockerServiceName>

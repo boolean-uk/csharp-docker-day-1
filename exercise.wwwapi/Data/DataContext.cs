@@ -13,6 +13,7 @@ namespace exercise.wwwapi.Data
         {
             Seeder seeder = new Seeder(modelBuilder);
             seeder.SeedStudents();
+            seeder.SeedCourses();
         }
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }

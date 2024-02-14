@@ -7,5 +7,11 @@ namespace exercise.wwwapi.DataModels
     {
         [Column("id")]
         public int Id { get; set; }
+        [Column("course_title")]
+        public string CourseTitle { get; set; }
+        [Column("course_start_date")]
+        public DateTime CourseStartDate { get; set; }
+        [Column("average_grade")]
+        public float AverageGrade { get; set; }
     }
 }

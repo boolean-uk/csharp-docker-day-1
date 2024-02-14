@@ -57,12 +57,9 @@ namespace exercise.wwwapi.Endpoints
             Student student = await repository.Get(id);
             if (student == null) return TypedResults.NotFound("Student not found");
             
-            student.CourseStartDate = studentDto.CourseStartDate;
             student.DateOfBirth = studentDto.DateOfBirth;
             student.FirstName = studentDto.FirstName;
             student.LastName = studentDto.LastName;
-            student.AverageGrade = studentDto.AverageGrade;
-            student.CourseTitle = studentDto.CourseTitle;
 
             student = await repository.Update(student);
 
