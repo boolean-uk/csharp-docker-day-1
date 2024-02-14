@@ -1,24 +1,53 @@
 ﻿using exercise.wwwapi.Data;
 using exercise.wwwapi.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T : class
     {
-        private DataContext _db;
+        private DataContext db;
+        private DbSet<T> table;
         public Repository(DataContext db)
         {
-            _db = db;
+            this.db = db;
         }
-        public async Task<IEnumerable<Course>> GetCourses()
+        public async Task<T?> DeleteById(object id)
         {
-            return await _db.Courses.ToListAsync();
+            T? entity = await table.FindAsync(id);
+            if (entity == null) return null;
+            table.Remove(entity);
+            await db.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            return await _db.Students.ToListAsync();
+            return await table.ToListAsync();
         }
+
+        public async Task<T?> GetById(object id)
+        {
+            return await table.FindAsync(id);
+        }
+
+        public async Task<T> Insert(T entity)
+        {
+            await table.AddAsync(entity);
+            await db.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<T> Update(T entity)
+        {
+            table.Attach(entity);
+            db.Entry(entity).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return entity;
+        }
+
+        public DataContext DB { get { return db; } }
+        public DbSet<T> Table { get { return table; } }
     }
 }
