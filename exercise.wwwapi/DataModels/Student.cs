@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace exercise.wwwapi.DataModels
 {
@@ -12,7 +13,7 @@ namespace exercise.wwwapi.DataModels
 
 
         [ForeignKey("course")]
-        public int CourseId { get; set; }
+        public int? CourseId { get; set; }
         public Course Course { get; set;}
 
         public Student() { }
@@ -44,10 +45,13 @@ namespace exercise.wwwapi.DataModels
 
     public class GetStudentDto : StudentDto
     {
+        [JsonIgnore]
+        public int? CourseId { get; set; }
         public CourseDto Course { get; set; }
 
         public GetStudentDto(Student student) : base(student) 
         {
+            CourseId = student.CourseId;
             Course = new CourseDto(student.Course);
         }
     }
@@ -57,6 +61,6 @@ namespace exercise.wwwapi.DataModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DOB { get; set; }
-        public int CourseId { get; set; }
+        public int? CourseId { get; set; }
     }
 }
