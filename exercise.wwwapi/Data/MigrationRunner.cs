@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace exercise.wwwapi.Data
+﻿namespace exercise.wwwapi.Data
 {
     public static class MigrationRunner
     {
@@ -9,7 +7,7 @@ namespace exercise.wwwapi.Data
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<DataContext>();
-                db.Database.Migrate();
+                //db.Database.Migrate();
             }
 
         }

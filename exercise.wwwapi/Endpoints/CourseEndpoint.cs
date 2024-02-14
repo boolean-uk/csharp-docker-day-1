@@ -1,5 +1,4 @@
-﻿using exercise.wwwapi.DataModels;
-using exercise.wwwapi.DataTransferObjects;
+﻿using exercise.wwwapi.DataTransferObjects;
 using exercise.wwwapi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +19,13 @@ namespace exercise.wwwapi.Endpoints
         public static async Task<IResult> GetCourses(IRepository repository)
         {
             var results = await repository.GetCourses();
-            var payload = new Payload<IEnumerable<Course>>() { data = results };
-            return TypedResults.Ok(payload);
+            List<CourseResponseDTO> listResults = new List<CourseResponseDTO>();
+            foreach (var course in results)
+            {
+                CourseResponseDTO returnCourse = new CourseResponseDTO(course);
+                listResults.Add(returnCourse);
+            }
+            return TypedResults.Ok(listResults);
         }
     }
 }
