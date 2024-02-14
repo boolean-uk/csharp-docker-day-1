@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
 builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
 builder.Services.AddDbContext<DataContext>(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("Local")));
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("LocalDocker")));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,7 +27,7 @@ app.UseHttpsRedirection();
 
 app.StudentEndpointConfiguration(); //core
 app.CourseEndpointConfiguration(); //extension
-app.ApplyProjectMigrations();
+//app.ApplyProjectMigrations();
 
 app.Run();
 

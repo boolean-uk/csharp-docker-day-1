@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace exercise.wwwapi.DataModels
 {
@@ -18,6 +19,7 @@ namespace exercise.wwwapi.DataModels
         public DateTime CreatedAt { get; set; }
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
+        [JsonIgnore]
         public ICollection<Student>? Students { get; set; }
     }
 

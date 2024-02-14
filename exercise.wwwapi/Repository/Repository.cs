@@ -14,14 +14,36 @@ namespace exercise.wwwapi.Repository
             _table = _db.Set<T>();
         }
 
+        public async Task<T> Delete(int id)
+        {
+            var entity = _table.Find(id);
+            _table.Remove(entity);
+            _db.SaveChanges();
+            return entity;
+        }
+
         public async Task<IEnumerable<T>> GetAll()
         {
             return await _table.ToListAsync();
         }
 
+        public async Task<T> GetById(int id)
+        {
+            var entity = _table.Find(id);
+            return entity;
+        }
+
         public async Task<T> Insert(T entity)
         {
             await _table.AddAsync(entity);
+            await _db.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<T> Update(T entity)
+        {
+            _table.Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
             await _db.SaveChangesAsync();
             return entity;
         }
