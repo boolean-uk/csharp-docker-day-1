@@ -13,7 +13,7 @@ namespace exercise.wwwapi.DataModels
         [Column("title")]
         public string Title { get; set; }
         [Column("startDate")]
-        public DateOnly StartDate { get; set; }
+        public DateTime StartDate { get; set; }
         [Column("students")]
         public IEnumerable<Student> Students { get; set; }
     }

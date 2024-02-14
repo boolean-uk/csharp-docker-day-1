@@ -11,7 +11,6 @@ namespace exercise.wwwapi.Data
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString");
-            this.Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -21,8 +20,12 @@ namespace exercise.wwwapi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Course>().HasMany(c => c.Students).WithMany(s => s.Courses);
-            modelBuilder.Entity<Student>().HasMany(s => s.Courses).WithMany(c => c.Students);
+            Seeder seeder = new Seeder();
+
+            modelBuilder.Entity<Course>().HasMany(c => c.Students).WithMany(s => s.Courses).UsingEntity<StudentCourse>();
+
+            modelBuilder.Entity<Course>().HasData(seeder.Courses);
+            modelBuilder.Entity<Student>().HasData(seeder.Students);
         }
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }

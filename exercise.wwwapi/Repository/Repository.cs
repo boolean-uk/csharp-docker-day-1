@@ -44,22 +44,22 @@ namespace exercise.wwwapi.Repository
 
         public async Task<Course> GetCourseById(int id)
         {
-            return await _db.Courses.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Courses.Include(c => c.Students).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Course>> GetCourses()
         {
-            return await _db.Courses.ToListAsync();
+            return await _db.Courses.Include(c => c.Students).ToListAsync();
         }
 
         public async Task<Student> GetStudentById(int id)
         {
-            return await _db.Students.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Students.Include(s => s.Courses).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            return await _db.Students.ToListAsync();
+            return await _db.Students.Include(s => s.Courses).ToListAsync();
         }
 
         public async Task<Course> UpdateCourse(Course course, int id)
