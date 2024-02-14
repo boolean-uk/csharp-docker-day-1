@@ -18,7 +18,7 @@ public class Student
     public int CourseId { get; set; }
     public Course Course { get; set; }
     [Column("average_grade")]
-    public int AverageGrade { get; set; }
+    public double AverageGrade { get; set; }
     [Column("start_date")]
     public DateTime StartDate { get; set; }
 }

@@ -40,7 +40,7 @@ public static class StudentEndpoint
             return TypedResults.NotFound($"There is no course with the id: {studentData.CourseId}!");
         }
         var result = await repository.Create(student);
-        var payload = new Payload<Student>() { data = result };
+        var payload = new Payload<StudentDTO>() { data = StudentDTO.ToDTO(result) };
         return TypedResults.Created($"/{student.Id}", payload);
     }
 
@@ -48,7 +48,12 @@ public static class StudentEndpoint
     public static async Task<IResult> GetStudents(IRepository<Student> repository)
     {
         var results = await repository.GetAll();
-        var payload = new Payload<IEnumerable<Student>>() { data = results };
+        var returnList = new List<StudentDTO>();
+        foreach ( var student in results )
+        {
+            returnList.Add(StudentDTO.ToDTO(student));
+        }
+        var payload = new Payload<IEnumerable<StudentDTO>>() { data = returnList };
         return TypedResults.Ok(payload);
     }
 
@@ -61,7 +66,7 @@ public static class StudentEndpoint
         {
             return TypedResults.NotFound($"There is no Student with the id: {id}!");
         }
-        var payload = new Payload<Student>() { data = result };
+        var payload = new Payload<StudentDTO>() { data = StudentDTO.ToDTO(result) };
         return TypedResults.Ok(payload);
     }
 
@@ -86,8 +91,7 @@ public static class StudentEndpoint
             return TypedResults.NotFound($"There is no course with the id: {studentData.CourseId}!");
         }
         var result = await repository.Update(toEdit);
-        result.Course = course;
-        var payload = new Payload<Student>() { data = result };
+        var payload = new Payload<StudentDTO>() { data = StudentDTO.ToDTO(result) };
         return TypedResults.Ok(payload);
     }
 
@@ -100,9 +104,7 @@ public static class StudentEndpoint
         {
             return TypedResults.NotFound($"There is no Student with the id: {id}!");
         }
-        var payload = new Payload<Student>() { data = result };
+        var payload = new Payload<StudentDTO>() { data = StudentDTO.ToDTO(result) };
         return TypedResults.Ok(payload);
     }
-
 }
-

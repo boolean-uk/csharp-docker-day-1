@@ -18,6 +18,8 @@ public class DataContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Student>().Navigation(s => s.Course).AutoInclude();
+
         modelBuilder.Entity<Course>().HasData(new List<Course>()
         {
             new Course() { Id = 1, Title = "C#", },

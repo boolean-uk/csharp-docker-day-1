@@ -22,7 +22,7 @@ namespace exercise.wwwapi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("exercise.wwwapi.DataModels.Course", b =>
+            modelBuilder.Entity("exercise.wwwapi.DataModels.CourseTypes.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace exercise.wwwapi.Migrations
                         });
                 });
 
-            modelBuilder.Entity("exercise.wwwapi.DataModels.Student", b =>
+            modelBuilder.Entity("exercise.wwwapi.DataModels.StudentTypes.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,8 +62,8 @@ namespace exercise.wwwapi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AverageGrade")
-                        .HasColumnType("integer")
+                    b.Property<double>("AverageGrade")
+                        .HasColumnType("double precision")
                         .HasColumnName("average_grade");
 
                     b.Property<int>("CourseId")
@@ -98,7 +98,7 @@ namespace exercise.wwwapi.Migrations
                         new
                         {
                             Id = 1,
-                            AverageGrade = 3,
+                            AverageGrade = 3.0,
                             CourseId = 1,
                             DateOfBirth = new DateTime(2000, 7, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Gudbrand",
@@ -107,9 +107,9 @@ namespace exercise.wwwapi.Migrations
                         });
                 });
 
-            modelBuilder.Entity("exercise.wwwapi.DataModels.Student", b =>
+            modelBuilder.Entity("exercise.wwwapi.DataModels.StudentTypes.Student", b =>
                 {
-                    b.HasOne("exercise.wwwapi.DataModels.Course", "Course")
+                    b.HasOne("exercise.wwwapi.DataModels.CourseTypes.Course", "Course")
                         .WithMany("Students")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -118,7 +118,7 @@ namespace exercise.wwwapi.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("exercise.wwwapi.DataModels.Course", b =>
+            modelBuilder.Entity("exercise.wwwapi.DataModels.CourseTypes.Course", b =>
                 {
                     b.Navigation("Students");
                 });
