@@ -1,24 +1,70 @@
 ﻿using exercise.wwwapi.Data;
 using exercise.wwwapi.DataModels;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Net.Sockets;
+using System.Xml.Linq;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T: class
     {
-        private DataContext _db;
+        DataContext _db;
+        private DbSet<T> _table_T = null;
+
         public Repository(DataContext db)
         {
             _db = db;
-        }
-        public async Task<IEnumerable<Course>> GetCourses()
-        {
-            return await _db.Courses.ToListAsync();
+            _table_T = _db.Set<T>();
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        /// <inheritdoc/>
+        public async Task<T?> Get(int id)
         {
-            return await _db.Students.ToListAsync();
+            return await _table_T.FindAsync(id);
         }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            return await _table_T.ToListAsync();
+        }
+
+
+        /// <inheritdoc/>
+        public async Task<T> Insert(T entity)
+        {
+            var addedEntity = _table_T.Add(entity);
+            await _db.SaveChangesAsync();
+            return addedEntity.Entity;
+        }
+
+        /// <inheritdoc/>
+        public async Task<T> Update(int id, T entity)
+        {
+            var dbEntity = await _table_T.FindAsync(id);
+            // Update values of the dbEntity
+            _db.Entry(dbEntity).CurrentValues.SetValues(entity);
+            await _db.SaveChangesAsync(); // Save changes
+            return dbEntity;
+        }
+
+        /// <inheritdoc/>
+        public async Task<T> Delete(int id)
+        {
+            T? entityToDelete = await _table_T.FindAsync(id);
+            _table_T.Remove(entityToDelete);
+            await _db.SaveChangesAsync();
+            return entityToDelete;
+        }
+
+        /// <inheritdoc/>
+        public async Task<T> Delete(T entity)
+        {
+            _table_T.Remove(entity);
+            await _db.SaveChangesAsync();
+            return entity;
+        }
+
     }
 }
