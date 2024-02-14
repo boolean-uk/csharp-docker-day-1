@@ -25,9 +25,15 @@ namespace exercise.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetCourses(IRepository repository)
         {
+            /*
             var results = await repository.GetCourses();
             var payload = (CourseDTO.FromCourses(results));
             return TypedResults.Ok(payload);
+            */
+            var results = await repository.GetCourses();
+            var payload = new Payload<IEnumerable<Course>>() { data = results };
+            return TypedResults.Ok(payload);
+            return TypedResults.Ok(CourseDTO.FromCourses(results));
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
