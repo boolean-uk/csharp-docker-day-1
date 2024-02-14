@@ -3,6 +3,7 @@ using exercise.wwwapi.DataModels.CourseTypes;
 using exercise.wwwapi.DataModels.StudentTypes;
 using exercise.wwwapi.Endpoints;
 using exercise.wwwapi.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>();
-//builder.Services.AddDbContext<DataContext>(
-//    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+builder.Services.AddDbContext<DataContext>(
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
 builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
 var app = builder.Build();
@@ -28,6 +28,6 @@ app.UseHttpsRedirection();
 
 app.StudentEndpointConfiguration(); //core
 app.CourseEndpointConfiguration(); //extension
-app.ApplyProjectMigrations();
+//app.ApplyProjectMigrations();
 
 app.Run();

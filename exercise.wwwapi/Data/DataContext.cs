@@ -7,11 +7,14 @@ namespace exercise.wwwapi.Data;
 
 public class DataContext : DbContext
 {
-    private string _connectionString;
+    private static bool _migrations;
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
-        var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
+        if (!_migrations)
+        {
+            this.Database.Migrate();
+            _migrations = true;
+        }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,9 +31,7 @@ public class DataContext : DbContext
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(_connectionString);
         optionsBuilder.LogTo(message => Debug.WriteLine(message));
-
     }
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }
