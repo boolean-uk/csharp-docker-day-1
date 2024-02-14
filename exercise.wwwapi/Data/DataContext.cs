@@ -16,8 +16,8 @@ namespace exercise.wwwapi.Data
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {           
-
+        {
+            modelBuilder.Entity<Student>().Navigation(x => x.Course).AutoInclude();
         }
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }

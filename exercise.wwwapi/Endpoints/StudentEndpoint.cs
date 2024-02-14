@@ -18,6 +18,7 @@ namespace exercise.wwwapi.Endpoints
             students.MapPost("/", CreateStudent);
             students.MapPut("/{id}", UpdateStudent);
             students.MapDelete("/{id}", DeleteStudent);
+            students.MapPut("/{studentId}/course/{courseId}", AddCourseToStudent);
 
         }
 
@@ -41,6 +42,21 @@ namespace exercise.wwwapi.Endpoints
             var payload = new Payload<Student>() { data = student };
             return TypedResults.Ok(payload);
         }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> AddCourseToStudent(IRepository repository, int id,  int courseId)
+        {
+            var student = await repository.GetStudentById(id);
+            if (student == null)
+            {
+                return Results.NotFound();
+            }
+            student.CourseId = courseId;
+            var updatedStudentWCourse = await repository.UpdateStudent(student, id);
+            var payload = new Payload<Student>() { data = updatedStudentWCourse };
+            return TypedResults.Ok(payload);
+        }
+
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> CreateStudent(IRepository repository, Student student)

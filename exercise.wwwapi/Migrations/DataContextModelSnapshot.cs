@@ -68,6 +68,10 @@ namespace exercise.wwwapi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("integer")
+                        .HasColumnName("course_id");
+
                     b.Property<string>("CourseTitle")
                         .IsRequired()
                         .HasColumnType("text")
@@ -97,7 +101,23 @@ namespace exercise.wwwapi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CourseId");
+
                     b.ToTable("students");
+                });
+
+            modelBuilder.Entity("exercise.wwwapi.DataModels.Student", b =>
+                {
+                    b.HasOne("exercise.wwwapi.DataModels.Course", "Course")
+                        .WithMany("students")
+                        .HasForeignKey("CourseId");
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("exercise.wwwapi.DataModels.Course", b =>
+                {
+                    b.Navigation("students");
                 });
 #pragma warning restore 612, 618
         }

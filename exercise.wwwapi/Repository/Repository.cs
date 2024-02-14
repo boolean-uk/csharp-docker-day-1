@@ -17,33 +17,12 @@ namespace exercise.wwwapi.Repository
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            var students = from student in _db.Students
-                           select new Student()
-                           {
-                               Id = student.Id,
-                               FirstName = student.FirstName,
-                               LastName = student.LastName,
-                               DateOfBirth = student.DateOfBirth,
-                               CourseTitle = student.CourseTitle,
-                               StartDate = student.StartDate,
-                               Grade = student.Grade,
-                           };
-            return await students.ToListAsync();
+            return await _db.Students.ToListAsync();
         }
          
         public async Task<Student> GetStudentById(int id)
         {
-            var student = await _db.Students.Select(student => new Student()
-            {
-                Id = student.Id,
-                FirstName = student.FirstName,
-                LastName = student.LastName,
-                DateOfBirth = student.DateOfBirth,
-                CourseTitle = student.CourseTitle,
-                StartDate = student.StartDate,
-                Grade = student.Grade,
-            }).SingleOrDefaultAsync(p => p.Id == id);
-            return student;
+            return await _db.Students.FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Student> CreateStudent(Student student)
@@ -70,17 +49,6 @@ namespace exercise.wwwapi.Repository
                 _db.Students.Remove(studentToDelete);
                 await _db.SaveChangesAsync();
             }
-
-            Student deleting = new Student()
-            {
-                Id = studentToDelete.Id,
-                FirstName = studentToDelete.FirstName,
-                LastName = studentToDelete.LastName,
-                DateOfBirth = studentToDelete.DateOfBirth,
-                CourseTitle = studentToDelete.CourseTitle,
-                StartDate = studentToDelete.StartDate,
-                Grade = studentToDelete.Grade,
-            };
             return studentToDelete;
         }
 

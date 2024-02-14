@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace exercise.wwwapi.DataModels
 {
@@ -22,5 +23,8 @@ namespace exercise.wwwapi.DataModels
 
         [Column("instructor")]
         public string Instructor { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Student>? students { get; set; } 
     }
 }

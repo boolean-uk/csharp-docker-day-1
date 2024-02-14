@@ -27,5 +27,10 @@ namespace exercise.wwwapi.DataModels
         [Column("grade")]
         public double Grade { get; set; }
 
+        [Column("course_id")]
+        [ForeignKey("courses")]
+        public int? CourseId { get; set; }
+        public Course? Course { get; set; }
+
     }
 }
