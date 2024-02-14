@@ -10,8 +10,7 @@ namespace exercise.wwwapi.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Student>().Property(s => s.DateOfBirth).HasColumnType("date");
-            modelBuilder.Entity<Course>().Navigation(c => c.Students).AutoInclude();
+            modelBuilder.Entity<Student>().Navigation(c => c.Course).AutoInclude();
         }
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }

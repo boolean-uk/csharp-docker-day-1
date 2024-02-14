@@ -12,6 +12,7 @@ namespace exercise.wwwapi.Repository
         public Repository(DataContext db)
         {
             this.db = db;
+            this.table = db.Set<T>();
         }
         public async Task<T?> DeleteById(object id)
         {

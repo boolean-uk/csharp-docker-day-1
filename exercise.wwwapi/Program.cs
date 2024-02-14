@@ -12,9 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(
     opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
-var app = builder.Build();
 builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
 builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -17,7 +17,7 @@ namespace exercise.wwwapi.DataModels
         public string LastName { get; set; }
 
         [Column("date_of_birth")]
-        public DateOnly DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         [Column("average_grade")]
         public decimal AverageGrade { get; set; }

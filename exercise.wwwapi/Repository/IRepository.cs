@@ -10,5 +10,4 @@ namespace exercise.wwwapi.Repository
         Task<T> Update(T entity);
         Task<T?> DeleteById(object id);
     }
-
 }
