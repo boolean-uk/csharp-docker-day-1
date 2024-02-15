@@ -20,6 +20,7 @@ namespace exercise.wwwapi.Endpoints
             courses.MapGet("/{id}", GetById);
             courses.MapPut("/{id}", UpdateById);
             courses.MapPost("/", Create);
+            courses.MapDelete("/{id}", DeleteById);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -44,6 +45,21 @@ namespace exercise.wwwapi.Endpoints
         private static async Task<IResult> GetById(IRepository<Course> repository, int id)
         {
             Course? course = await repository.GetById(id);
+            if (course == null) return TypedResults.NotFound($"No course with id={id}");
+            CourseResponseDTO response = new CourseResponseDTO()
+            {
+                Id = course.Id,
+                Title = course.Title,
+                StartDate = course.StartDate
+            };
+            return TypedResults.Ok(new Payload<CourseResponseDTO>() { data = response });
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        private static async Task<IResult> DeleteById(IRepository<Course> repository, int id)
+        {
+            Course? course = await repository.DeleteById(id);
             if (course == null) return TypedResults.NotFound($"No course with id={id}");
             CourseResponseDTO response = new CourseResponseDTO()
             {

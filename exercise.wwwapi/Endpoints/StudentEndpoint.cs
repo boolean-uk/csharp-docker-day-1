@@ -19,6 +19,7 @@ namespace exercise.wwwapi.Endpoints
             students.MapGet("/{id}", GetById);
             students.MapPut("/{id}", UpdateById);
             students.MapPost("/", Create);
+            students.MapDelete("/{id}", DeleteById);
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,6 +59,25 @@ namespace exercise.wwwapi.Endpoints
             };
             return TypedResults.Ok(new Payload<StudentResponseDTO>() { data = response });
         }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        private static async Task<IResult> DeleteById(IRepository<Student> studentRepository, int id)
+        {
+            Student? student = await studentRepository.DeleteById(id);
+            if (student == null) return TypedResults.NotFound($"No student with id={id}");
+            StudentResponseDTO response = new StudentResponseDTO()
+            {
+                Id = student.Id,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                DateOfBirth = student.DateOfBirth,
+                AverageGrade = student.AverageGrade,
+                CourseTitle = student.Course.Title
+            };
+            return TypedResults.Ok(new Payload<StudentResponseDTO>() { data = response });
+        }
+
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

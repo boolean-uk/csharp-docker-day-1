@@ -1,22 +1,29 @@
-@exercise.wwwapi_HostAddress = http://localhost:5137
+@exercise.wwwapi_HostAddress = http://localhost:8082
 
 GET {{exercise.wwwapi_HostAddress}}/students/
 Accept: application/json
 
 ###
 
-GET {{exercise.wwwapi_HostAddress}}/students/
+GET {{exercise.wwwapi_HostAddress}}/courses/
 Accept: application/json
 
 
 
 ###
 
+
+DELETE {{exercise.wwwapi_HostAddress}}/courses/4
+Accept: application/json
+
+
+
+###
 POST {{exercise.wwwapi_HostAddress}}/courses/
 Content-Type: application/json
 
 {
-  "courseTitle": "Fullstack PHP",
+  "courseTitle": "Fullstack C#",
   "startDate": "2024-01-04T08:00:00.000Z"
 }
 
@@ -30,5 +37,5 @@ Content-Type: application/json
   "lastName": "Gaustad",
   "dateOfBirth": "2000-08-05",
   "averageGrade": 3,
-  "courseId": 3
+  "courseId": 1
 }

@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  exercise.wwwapi:
+    container_name: 'exercise.wwwapi'
+    image: ${DOCKER_REGISTRY-}exercisewwwapi
+    build:
+      context: .
+      dockerfile: exercise.wwwapi/Dockerfile
+    ports:
+    - "8082:8080"
+    - "8083:8081"
+    networks:
+      - virtual-network-x
+    depends_on:
+      exercise.database:
+        condition: service_healthy
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Production
+
+  exercise.database:
+    container_name: 'exercise.database'
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+        - './.containers/postgresql/data:/var/lib/postgresql/data'
+    ports:
+        - 5432:5432
+    networks:
+      - virtual-network-x
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+networks:
+  virtual-network-x:
+    driver: bridge
+    

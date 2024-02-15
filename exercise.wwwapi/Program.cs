@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DockerDatabaseConnectionString")));
 builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
 builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
 
