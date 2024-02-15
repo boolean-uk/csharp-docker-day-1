@@ -35,24 +35,24 @@ namespace exercise.wwwapi.Migrations
                     first_name = table.Column<string>(type: "text", nullable: false),
                     last_name = table.Column<string>(type: "text", nullable: false),
                     date_of_birth = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CourseId = table.Column<int>(type: "integer", nullable: false),
+                    course_id = table.Column<int>(type: "integer", nullable: false),
                     average_grade = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_students", x => x.id);
                     table.ForeignKey(
-                        name: "FK_students_courses_CourseId",
-                        column: x => x.CourseId,
+                        name: "FK_students_courses_course_id",
+                        column: x => x.course_id,
                         principalTable: "courses",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_students_CourseId",
+                name: "IX_students_course_id",
                 table: "students",
-                column: "CourseId");
+                column: "course_id");
         }
 
         /// <inheritdoc />

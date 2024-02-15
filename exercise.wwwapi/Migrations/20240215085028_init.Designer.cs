@@ -12,7 +12,7 @@ using exercise.wwwapi.Data;
 namespace exercise.wwwapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240213093901_init")]
+    [Migration("20240215085028_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -62,7 +62,8 @@ namespace exercise.wwwapi.Migrations
                         .HasColumnName("average_grade");
 
                     b.Property<int>("CourseId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_id");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("timestamp with time zone")
