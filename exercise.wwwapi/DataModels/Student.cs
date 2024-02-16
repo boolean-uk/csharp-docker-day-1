@@ -11,14 +11,22 @@ namespace exercise.wwwapi.DataModels
         [Column("id")]
         [Required]
         public int Id { get; set; }
+
         [Column("first_name")]
         [Required]
         public string FirstName { get; set; } = "";
+
         [Column("last_name")]
         [Required]
         public string LastName { get; set; } = "";
+
         [Column("date_of_birth")]
         [Required]
         public DateTime DateOfBirth { get; set; }
+
+        [Column("fk_course")]
+        [ForeignKey("Course")]
+        [Required]
+        public int course { get; set; }
     }
 }

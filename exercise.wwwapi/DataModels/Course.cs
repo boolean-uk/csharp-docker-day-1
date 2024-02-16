@@ -11,6 +11,7 @@ namespace exercise.wwwapi.DataModels
         [Column("id")]
         [Required]
         public int Id { get; set; }
+
         [Column("course_title")]
         [Required]
         public string CourseTitle { get; set; } = "";
