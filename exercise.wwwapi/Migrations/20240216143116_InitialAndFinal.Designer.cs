@@ -12,8 +12,8 @@ using exercise.wwwapi.Data;
 namespace exercise.wwwapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240216100607_igiveup")]
-    partial class igiveup
+    [Migration("20240216143116_InitialAndFinal")]
+    partial class InitialAndFinal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,21 +57,21 @@ namespace exercise.wwwapi.Migrations
                             Id = 1,
                             AverageGrade = 'B',
                             CourseTitle = "Mathematics",
-                            StartDate = new DateTime(2024, 2, 16, 10, 6, 7, 298, DateTimeKind.Utc).AddTicks(2813)
+                            StartDate = new DateTime(2024, 2, 16, 14, 31, 16, 352, DateTimeKind.Utc).AddTicks(8835)
                         },
                         new
                         {
                             Id = 2,
                             AverageGrade = 'D',
                             CourseTitle = "Physics",
-                            StartDate = new DateTime(2024, 1, 17, 10, 6, 7, 298, DateTimeKind.Utc).AddTicks(2815)
+                            StartDate = new DateTime(2024, 1, 17, 14, 31, 16, 352, DateTimeKind.Utc).AddTicks(8837)
                         },
                         new
                         {
                             Id = 3,
                             AverageGrade = 'C',
                             CourseTitle = "Biology",
-                            StartDate = new DateTime(2023, 12, 18, 10, 6, 7, 298, DateTimeKind.Utc).AddTicks(2822)
+                            StartDate = new DateTime(2023, 12, 18, 14, 31, 16, 352, DateTimeKind.Utc).AddTicks(8845)
                         });
                 });
 
@@ -83,6 +83,10 @@ namespace exercise.wwwapi.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer")
+                        .HasColumnName("fk_course_id");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("timestamp with time zone")
@@ -98,11 +102,9 @@ namespace exercise.wwwapi.Migrations
                         .HasColumnType("text")
                         .HasColumnName("last_name");
 
-                    b.Property<int>("course")
-                        .HasColumnType("integer")
-                        .HasColumnName("fk_course");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.ToTable("students");
 
@@ -110,27 +112,46 @@ namespace exercise.wwwapi.Migrations
                         new
                         {
                             Id = 1,
+                            CourseId = 1,
                             DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "John",
-                            LastName = "Doe",
-                            course = 0
+                            LastName = "Doe"
                         },
                         new
                         {
                             Id = 2,
+                            CourseId = 2,
                             DateOfBirth = new DateTime(1999, 5, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Alice",
-                            LastName = "Smith",
-                            course = 0
+                            LastName = "Smith"
                         },
                         new
                         {
                             Id = 3,
+                            CourseId = 3,
                             DateOfBirth = new DateTime(2001, 8, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Bob",
-                            LastName = "Johnson",
-                            course = 0
+                            LastName = "Johnson"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CourseId = 1,
+                            DateOfBirth = new DateTime(2002, 9, 30, 0, 0, 0, 0, DateTimeKind.Utc),
+                            FirstName = "Charlie",
+                            LastName = "Brown"
                         });
+                });
+
+            modelBuilder.Entity("exercise.wwwapi.DataModels.Student", b =>
+                {
+                    b.HasOne("exercise.wwwapi.DataModels.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
                 });
 #pragma warning restore 612, 618
         }

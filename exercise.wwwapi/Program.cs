@@ -1,4 +1,5 @@
 using exercise.wwwapi.Data;
+using exercise.wwwapi.DataModels;
 using exercise.wwwapi.Endpoints;
 using exercise.wwwapi.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(
     opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
-builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
+builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
 
 var app = builder.Build();
 

@@ -2,10 +2,13 @@
 
 namespace exercise.wwwapi.Repository
 {
-    public interface IRepository
+    public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<Student>> GetStudents();
-        Task<IEnumerable<Course>> GetCourses();
+        Task<T> Insert(T entity);
+        Task<IEnumerable<T>> SelectAll();
+        Task<T?> SelectById(int id);
+        Task<T?> Update(int id, T entity);
+        Task<T?> Delete(int id);
     }
 
 }

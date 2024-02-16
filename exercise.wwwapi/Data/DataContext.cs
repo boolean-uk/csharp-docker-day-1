@@ -18,9 +18,10 @@ namespace exercise.wwwapi.Data
             );
 
             modelBuilder.Entity<Student>().HasData(
-                new Student { Id = 1, FirstName = "John", LastName = "Doe", DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
-                new Student { Id = 2, FirstName = "Alice", LastName = "Smith", DateOfBirth = new DateTime(1999, 5, 10, 0, 0, 0, DateTimeKind.Utc) },
-                new Student { Id = 3, FirstName = "Bob", LastName = "Johnson", DateOfBirth = new DateTime(2001, 8, 20, 0, 0, 0, DateTimeKind.Utc) }
+                new Student { Id = 1, FirstName = "John", LastName = "Doe", DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc), CourseId= 1 },
+                new Student { Id = 2, FirstName = "Alice", LastName = "Smith", DateOfBirth = new DateTime(1999, 5, 10, 0, 0, 0, DateTimeKind.Utc), CourseId = 2 },
+                new Student { Id = 3, FirstName = "Bob", LastName = "Johnson", DateOfBirth = new DateTime(2001, 8, 20, 0, 0, 0, DateTimeKind.Utc), CourseId = 3 },
+                new Student { Id = 4, FirstName = "Charlie", LastName = "Brown", DateOfBirth = new DateTime(2002, 9, 30, 0, 0, 0, DateTimeKind.Utc), CourseId = 1 }
             );
 
         }

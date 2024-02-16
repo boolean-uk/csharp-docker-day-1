@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using exercise.wwwapi.Interfaces;
 
 namespace exercise.wwwapi.DataModels
 {
     [Table("courses")]
     [PrimaryKey("Id")]
-    public class Course
+    public class Course : ICourse
     {
         [Column("id")]
         [Required]
@@ -14,7 +15,7 @@ namespace exercise.wwwapi.DataModels
 
         [Column("course_title")]
         [Required]
-        public string CourseTitle { get; set; } = "";
+        public string CourseTitle { get; set; }
 
         [Column("average_grade")]
         [Required]
