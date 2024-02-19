@@ -1,5 +1,7 @@
 using exercise.wwwapi.Data;
+using exercise.wwwapi.DataModels;
 using exercise.wwwapi.Endpoints;
+using exercise.wwwapi.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
+builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
 builder.Services.AddDbContext<DataContext>(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DockerDB")));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
