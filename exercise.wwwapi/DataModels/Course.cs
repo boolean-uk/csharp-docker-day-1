@@ -18,7 +18,7 @@ namespace exercise.wwwapi.DataModels
         [Column("start_date")]
         public DateTime StartDate { get; set; }
 
-
-        public ICollection<Student> Students { get; set; } = new List<Student>();
+        // a course can have many students in it 
+        public ICollection<CourseStudent> CourseStudents { get; set; } = new List<CourseStudent>();
     }
 }

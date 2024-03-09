@@ -15,7 +15,7 @@ namespace exercise.wwwapi.DTOs
 
         public DateTime DOB { get; set; }
 
-        public CourseDTO Course { get; set; }
+        public List<StudentCourseDTO> CourseStudents { get; set; } = new List<StudentCourseDTO>();
 
         public float AverageGrade { get; set; }
 
@@ -25,11 +25,36 @@ namespace exercise.wwwapi.DTOs
             FirstName = student.FirstName;
             LastName = student.LastName;
             DOB = student.DOB;
-            Course = new CourseDTO(student.Course);
             AverageGrade = student.AverageGrade;
+            foreach (CourseStudent cs in student.CourseStudent)
+            {
+                CourseStudents.Add(new StudentCourseDTO(cs));
+            }
         }
     }
 
+
+    class StudentCourseDTO
+    {
+        public CourseDTO Course { get; set; }
+
+        public StudentCourseDTO(CourseStudent cs)
+        {
+            Course = new CourseDTO(cs.Course);
+        }
+    }
+
+    class CourseStudentDTO
+    {
+        public CourseDTO Course { get; set; }
+        public StudentSingleDTO Student { get; set; }
+
+        public CourseStudentDTO(CourseStudent courseStudent)
+        { 
+            Course = new CourseDTO(courseStudent.Course);
+            Student = new StudentSingleDTO(courseStudent.Student);
+        }
+    }
 
     class StudentSingleDTO
     {
@@ -61,7 +86,7 @@ namespace exercise.wwwapi.DTOs
         public string Teacher { get; set; }
         public DateTime StartDate { get; set; }
 
-        public List<StudentSingleDTO> Students { get; set; } = new List<StudentSingleDTO>();
+        public List<SingleCourseStudentDTO> Students { get; set; } = new List<SingleCourseStudentDTO>();
 
         public CourseResponseDTO(Course course)
         {
@@ -71,10 +96,22 @@ namespace exercise.wwwapi.DTOs
 
             StartDate = course.StartDate;
 
-            foreach (Student student in course.Students)
+            foreach (CourseStudent cs in course.CourseStudents)
             {
-              Students.Add(new StudentSingleDTO(student));
-           }
+                Students.Add(new SingleCourseStudentDTO(cs));
+            }
+        }
+    }
+
+
+    class SingleCourseStudentDTO
+    {
+
+        public StudentSingleDTO Student { get; set; }
+
+        public SingleCourseStudentDTO(CourseStudent cs)
+        {
+            Student = new StudentSingleDTO(cs.Student);
         }
     }
 

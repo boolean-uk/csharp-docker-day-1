@@ -20,9 +20,9 @@ namespace exercise.wwwapi.DataModels
         [Column("dob")]
         public DateTime DOB { get; set; }
 
-        [Column("course_id")]
-        public int CourseId { get; set; }
-        public Course Course { get; set; }
+
+        // A student can attend many courses
+        public ICollection<CourseStudent> CourseStudent { get; set; } = new List<CourseStudent>();
 
         [Column("average_grade")]
         public float AverageGrade { get; set; }

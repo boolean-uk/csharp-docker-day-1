@@ -32,7 +32,9 @@ namespace exercise.wwwapi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Course>().HasMany(e => e.Students).WithOne(e => e.Course).HasForeignKey(e => e.CourseId);
+            modelBuilder.Entity<CourseStudent>().HasKey(e => new { e.CourseId, e.StudentId });
+
+            // modelBuilder.Entity<Course>().HasMany(e => e.Students).WithOne(e => e.Course).HasForeignKey(e => e.CourseId);
 
             modelBuilder.Entity<Course>().HasData(
              new Course { Id = 1, Title = "Math", Teacher = "Ms. Rosamund", StartDate = DateTime.Now.ToUniversalTime() },
@@ -41,18 +43,25 @@ namespace exercise.wwwapi.Data
 
 
             List<Student> students = new List<Student>();
-            students.Add(new Student { Id = 1, FirstName = "Sandra", LastName = "Collins", DOB = DateTime.Now.ToUniversalTime(), CourseId = 1, AverageGrade = 3.0F });
-            students.Add(new Student { Id = 2, FirstName = "Mike", LastName = "Smith", DOB = DateTime.Now.ToUniversalTime(), CourseId = 3, AverageGrade = 4.0F  });
-            students.Add(new Student { Id = 3, FirstName = "Heather", LastName = "Dunst", DOB = DateTime.Now.ToUniversalTime(), CourseId = 2, AverageGrade = 5.0F  });
+            students.Add(new Student { Id = 1, FirstName = "Sandra", LastName = "Collins", DOB = DateTime.Now.ToUniversalTime(), AverageGrade = 3.0F });
+            students.Add(new Student { Id = 2, FirstName = "Mike", LastName = "Smith", DOB = DateTime.Now.ToUniversalTime(), AverageGrade = 4.0F  });
+            students.Add(new Student { Id = 3, FirstName = "Heather", LastName = "Dunst", DOB = DateTime.Now.ToUniversalTime(), AverageGrade = 5.0F  });
 
             modelBuilder.Entity<Student>().HasData(students);
+
+            List<CourseStudent> mps = new List<CourseStudent>();
+            mps.Add(new CourseStudent { StudentId = 1, CourseId = 1 });
+            mps.Add(new CourseStudent { StudentId = 1, CourseId = 3 });
+            mps.Add(new CourseStudent { StudentId = 2, CourseId = 2 });
+            mps.Add(new CourseStudent { StudentId = 3, CourseId = 3 });
+            modelBuilder.Entity<CourseStudent>().HasData(mps);
+
 
         }
 
 
-
-
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseStudent> CourseStudents { get; set; }
     }
 }

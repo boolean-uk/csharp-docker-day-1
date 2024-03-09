@@ -84,7 +84,7 @@ namespace exercise.wwwapi.Endpoints
                 return Results.BadRequest("A non-empty Name is required");
             }
 
-            Student? d = await repository.CreateStudent(payload.FirstName, payload.LastName, payload.DOB, payload.CourseId, payload.AverageGrade);
+            Student? d = await repository.CreateStudent(payload.FirstName, payload.LastName, payload.DOB, payload.AverageGrade);
             
             if (d == null)
             {
@@ -115,7 +115,7 @@ namespace exercise.wwwapi.Endpoints
             }
 
 
-            Student? Student = await repository.UpdateStudent(id, payload.FirstName, payload.LastName, payload.DOB, payload.CourseId, payload.AverageGrad, PreloadPolicy.DoNotPreloadRelations);
+            Student? Student = await repository.UpdateStudent(id, payload.FirstName, payload.LastName, payload.DOB, payload.AverageGrad, PreloadPolicy.DoNotPreloadRelations);
 
 
             if (Student == null)

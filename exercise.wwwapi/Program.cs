@@ -32,6 +32,7 @@ app.UseHttpsRedirection();
 
 app.StudentEndpointConfiguration(); //core
 app.CourseEndpointConfiguration(); //extension
+app.CourseStudentEndpointConfiguration();
 app.ApplyProjectMigrations();
 
 app.Run();

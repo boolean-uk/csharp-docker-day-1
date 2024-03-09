@@ -6,9 +6,7 @@ using exercise.wwwapi.DTOs;
 
 namespace exercise.wwwapi.Endpoints
 {
-    /// <summary>
-    /// Extension endpoint
-    /// </summary>
+
     public static class CourseEndpoint
     {
         public static void CourseEndpointConfiguration(this WebApplication app)
