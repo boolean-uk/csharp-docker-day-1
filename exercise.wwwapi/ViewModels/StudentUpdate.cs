@@ -1,12 +1,11 @@
-﻿namespace exercise.wwwapi.DataTransferObjects
+﻿namespace exercise.wwwapi.ViewModels
 {
-    public class StudentDTO
+    public class StudentUpdate
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DateOfBirth { get; set; }
-        public string Course { get; set; }
+        public int CourseId { get; set; }
         public decimal AverageGrade { get; set; }
     }
 }

@@ -19,6 +19,13 @@ namespace exercise.wwwapi.Repository
             return course;
         }
 
+        public async Task<Student> CreateStudent(Student student)
+        {
+            _db.Students.Add(student);
+            await _db.SaveChangesAsync();
+            return student;
+        }
+
         public async Task<Course> DeleteCourse(Course course)
         {
             _db.Courses.Remove(course);
@@ -26,9 +33,21 @@ namespace exercise.wwwapi.Repository
             return course;
         }
 
+        public async Task<Student> DeleteStudent(Student student)
+        {
+            _db.Students.Remove(student);
+            await _db.SaveChangesAsync();
+            return student;
+        }
+
         public async Task<Course> GetACourse(int id)
         {
             return await _db.Courses.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<Student> GetAStudent(int id)
+        {
+            return await _db.Students.Include(s => s.Course).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Course>> GetCourses()
@@ -38,7 +57,7 @@ namespace exercise.wwwapi.Repository
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            return await _db.Students.ToListAsync();
+            return await _db.Students.Include(s => s.Course).ToListAsync();
         }
 
         public async Task<Course> UpdateCourse(Course course)
@@ -46,6 +65,13 @@ namespace exercise.wwwapi.Repository
             _db.Courses.Update(course);
             await _db.SaveChangesAsync();
             return course;
+        }
+
+        public async Task<Student> UpdateStudent(Student student)
+        {
+            _db.Students.Update(student);
+            await _db.SaveChangesAsync();
+            return student;
         }
     }
 }

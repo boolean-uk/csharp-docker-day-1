@@ -28,7 +28,9 @@ namespace exercise.wwwapi.Endpoints
         {
             var results = await repository.GetCourses();
             if (!results.Any()) return TypedResults.NotFound("No courses found");
-            var payload = new Payload<IEnumerable<Course>>() { data = results };
+
+            List<CourseDTO> resultsDTO = (from course in results select course.ToDTO()).ToList();
+            var payload = new Payload<IEnumerable<CourseDTO>>() { data = resultsDTO };
             return TypedResults.Ok(payload);
         }
 
