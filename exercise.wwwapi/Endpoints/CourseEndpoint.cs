@@ -14,11 +14,11 @@ namespace exercise.wwwapi.Endpoints
         private static string _path = AppContext.BaseDirectory;
         public static void CourseEndpointConfiguration(this WebApplication app)
         {
-            var students = app.MapGroup("courses");
-            students.MapGet("/", GetCourses);
-            students.MapPost("/", CreateCourse);
-            students.MapPut("/{id}", UpdateCourse);
-            students.MapDelete("/{id}", DeleteCourse);
+            var courses = app.MapGroup("courses");
+            courses.MapGet("/", GetCourses);
+            courses.MapPost("/", CreateCourse);
+            courses.MapPut("/{id}", UpdateCourse);
+            courses.MapDelete("/{id}", DeleteCourse);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
