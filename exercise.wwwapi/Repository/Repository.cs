@@ -11,7 +11,7 @@ namespace exercise.wwwapi.Repository
         {
             _db = db;
         }
-        public async Task<IEnumerable<Course>> GetCourses()
+        public async Task<IEnumerable<CourseDTO>> GetCourses()
         {
             return await _db.Courses.ToListAsync();
         }
