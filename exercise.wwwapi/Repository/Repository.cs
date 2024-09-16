@@ -15,10 +15,14 @@ namespace exercise.wwwapi.Repository
         {
             return await _db.Courses.ToListAsync();
         }
+        public async Task<Student> GetStudentById(int id)
+        {
+            return await _db.Students.Include(c => c.Course).FirstOrDefaultAsync(x => x.Id == id);
+        }
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            return await _db.Students.ToListAsync();
+            return await _db.Students.Include(c => c.Course).ToListAsync();
         }
     }
 }
