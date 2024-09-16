@@ -1,0 +1,6 @@
+﻿services:
+  exercise.wwwapi:
+    image: exercise.wwwapi
+    build:
+      context: .
+      dockerfile: exercise.wwwapi/Dockerfile
