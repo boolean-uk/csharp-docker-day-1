@@ -10,8 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepository, Repository>();
-builder.Services.AddDbContext<DataContext>(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+builder.Services.AddDbContext<DataContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +25,8 @@ app.UseHttpsRedirection();
 app.StudentEndpointConfiguration(); //core
 app.CourseEndpointConfiguration(); //extension
 app.ApplyProjectMigrations();
+
+app.SeedApi();
 
 app.Run();
 
