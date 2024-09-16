@@ -16,8 +16,8 @@ namespace exercise.wwwapi.DataModels
         [Column("lastName")]
         public string LastName { get; set; }
 
-        [Column("dob")]
-        public DateTime DateTime { get; set; }
+        [Column("dateOfBirth")]
+        public DateTime DateOfBirth { get; set; }
 
         [ForeignKey("Course")]
         public int CourseId { get; set; }
