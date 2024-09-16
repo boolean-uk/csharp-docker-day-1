@@ -1,5 +1,6 @@
 using exercise.wwwapi.Data;
 using exercise.wwwapi.Endpoints;
+using exercise.wwwapi.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -13,7 +14,12 @@ builder.Services.AddDbContext<DataContext>(opt => {
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
     opt.LogTo(message => Debug.WriteLine(message));
 });
-    
+
+builder.Services.AddControllers();
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddDbContext<DataContext>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
