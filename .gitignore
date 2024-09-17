@@ -491,3 +491,7 @@ $RECYCLE.BIN/
 */**/bin/Release   
 */**/obj/Debug   
 */**/obj/Release   
+/exercise.wwwapi/appsettings.Development.json
+/exercise.wwwapi/Migrations/20240917065318_newMigration.cs
+/exercise.wwwapi/Migrations/DataContextModelSnapshot.cs
+/exercise.wwwapi/appsettings.Development.json
