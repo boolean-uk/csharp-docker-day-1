@@ -11,12 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(opt => {
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("DockerPostgres"));
     opt.LogTo(message => Debug.WriteLine(message));
 });
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddDbContext<DataContext>();
 
 
@@ -28,7 +28,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+ 
 app.UseHttpsRedirection();
 
 app.StudentEndpointConfiguration(); //core
@@ -36,4 +36,4 @@ app.CourseEndpointConfiguration(); //extension
 app.ApplyProjectMigrations();
 
 app.Run();
-
+ 

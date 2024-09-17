@@ -8,8 +8,8 @@ namespace exercise.wwwapi.Data
         private string connectionString;
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString");
+          /* var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString"); */
             
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
