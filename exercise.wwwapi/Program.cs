@@ -1,5 +1,7 @@
 using exercise.wwwapi.Data;
+using exercise.wwwapi.DataModels;
 using exercise.wwwapi.Endpoints;
+using exercise.wwwapi.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -13,6 +15,8 @@ builder.Services.AddDbContext<DataContext>(opt => {
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DockerPostgres"));
     opt.LogTo(message => Debug.WriteLine(message));
 });
+builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
+builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
     
 var app = builder.Build();
 

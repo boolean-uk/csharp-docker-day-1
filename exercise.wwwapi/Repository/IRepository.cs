@@ -4,10 +4,11 @@ namespace exercise.wwwapi.Repository
 {
     public interface IRepository<T>
     {
-        Task<Student> AddNewObject(Student newStudent);
+        Task<T> AddNewObject(T newObject);
+        Task<T> DeleteObject(int id);
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
-        Task<Student> Update(int id, Student updateStudent);
+        Task<T> Update(T updateObject);
     }
 
 }

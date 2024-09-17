@@ -17,6 +17,7 @@ namespace exercise.wwwapi.Endpoints
             students.MapGet("/{id}", GetStudentById);
             students.MapPut("/{id}", UpdateStudent);
             students.MapPost("/", AddStudent);
+            students.MapDelete("/{id}", DeleteStudent);
 
         }
         
@@ -37,9 +38,9 @@ namespace exercise.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> UpdateStudent(IRepository<Student> repository, int id, Student updateStudent)
+        public static async Task<IResult> UpdateStudent(IRepository<Student> repository, Student updateStudent)
         {
-            var results = await repository.Update(id, updateStudent);
+            var results = await repository.Update(updateStudent);
             var payload = new Payload<Student>() { Data = results };
             return TypedResults.Ok(payload);
         }
@@ -48,6 +49,14 @@ namespace exercise.wwwapi.Endpoints
         public static async Task<IResult> AddStudent(IRepository<Student> repository, Student newStudent)
         {
             var results = await repository.AddNewObject(newStudent);
+            var payload = new Payload<Student>() { Data = results };
+            return TypedResults.Ok(payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> DeleteStudent(IRepository<Student> repository, int id)
+        {
+            var results = await repository.DeleteObject(id);
             var payload = new Payload<Student>() { Data = results };
             return TypedResults.Ok(payload);
         }
