@@ -1,24 +1,88 @@
 ﻿using exercise.wwwapi.Data;
 using exercise.wwwapi.DataModels;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class Repository<Model> : IRepository<Model> where Model : class
     {
         private DataContext _db;
+        private DbSet<Model> _dbSet;
+
         public Repository(DataContext db)
         {
             _db = db;
-        }
-        public async Task<IEnumerable<Course>> GetCourses()
-        {
-            return await _db.Courses.ToListAsync();
+            _dbSet = _db.Set<Model>();
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<Model> Create(string[] inclusions, Model model)
         {
-            return await _db.Students.ToListAsync();
+            _dbSet.Add(model);
+            await _db.SaveChangesAsync();
+            foreach (string inclusion in inclusions)
+            {
+                await _db.Entry(model).Reference(inclusion).LoadAsync();
+            }
+            return model;
+        }
+
+        public async Task<IEnumerable<Model>> GetAll(string[] inclusions, Expression<Func<Model, bool>> predicate)
+        {
+            var query = _dbSet.AsQueryable();
+            foreach (string inclusion in inclusions)
+            {
+                query = query.Include(inclusion);
+            }
+            return await query.Where(predicate).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Model>> GetAll(string[] inclusions)
+        {
+            var query = _dbSet.AsQueryable();
+            foreach (string inclusion in inclusions)
+            {
+                query = query.Include(inclusion);
+            }
+            return await query.ToListAsync();
+        }
+
+        public async Task<Model> Get(string[] inclusions, Expression<Func<Model, bool>> predicate)
+        {
+            var query = _dbSet.AsQueryable();
+            foreach (string inclusion in inclusions)
+            {
+                query = query.Include(inclusion);
+            }
+            return await query.FirstOrDefaultAsync(predicate);
+        }
+
+        public async Task<Model> Update(string[] inclusions, Model model)
+        {
+            _dbSet.Attach(model);
+            _db.Entry(model).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            foreach (string inclusion in inclusions)
+            {
+                await _db.Entry(model).Reference(inclusion).LoadAsync();
+            }
+            return model;
+        }
+
+        public async Task<Model> Delete(string[] inclusions, Model model)
+        {
+            _dbSet.Attach(model);
+            await _db.Entry(model).ReloadAsync();
+
+            foreach (string inclusion in inclusions)
+            {
+                await _db.Entry(model).Reference(inclusion).LoadAsync();
+            }
+
+            _dbSet.Remove(model);
+            await _db.SaveChangesAsync();
+            return model;
         }
     }
 }

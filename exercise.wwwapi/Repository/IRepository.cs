@@ -1,11 +1,16 @@
 ﻿using exercise.wwwapi.DataModels;
+using System.Linq.Expressions;
 
 namespace exercise.wwwapi.Repository
 {
-    public interface IRepository
+    public interface IRepository<Model> where Model : class
     {
-        Task<IEnumerable<Student>> GetStudents();
-        Task<IEnumerable<Course>> GetCourses();
+        public Task<IEnumerable<Model>> GetAll(string[] inclusions);
+        public Task<IEnumerable<Model>> GetAll(string[] inclusions, Expression<Func<Model, bool>> predicate);
+        public Task<Model> Get(string[] inclusions, Expression<Func<Model, bool>> predicate);
+        public Task<Model> Create(string[] inclusions, Model model);
+        public Task<Model> Update(string[] inclusions, Model model);
+        public Task<Model> Delete(string[] inclusions, Model model);
     }
 
 }
