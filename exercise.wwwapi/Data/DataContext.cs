@@ -5,9 +5,11 @@ namespace exercise.wwwapi.Data
 {
     public class DataContext : DbContext
     {
+        private string _connectionString;
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            _connectionString = configuration.GetValue<string>("DockerPostgres")!;
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {           
