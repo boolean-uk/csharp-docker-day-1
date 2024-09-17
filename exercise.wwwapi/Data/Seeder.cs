@@ -6,7 +6,7 @@ namespace exercise.wwwapi.Data
     public class Seeder
     {
         private List<Student> _students = new List<Student>();
-        private List<CourseDTO> _courses = new List<CourseDTO>();
+        private List<Course> _courses = new List<Course>();
 
         private List<string> _firstNames = new List<string>()
         {
@@ -89,12 +89,13 @@ namespace exercise.wwwapi.Data
                 student.AverageGrade = random1.Next(1, 5 + 1);
                 student.DateOfBirth = RandomizeDate();
                 student.CourseIds.Add(i);
+                student.CourseIds.Add(11-i);
                 _students.Add(student);
             }
 
             for(int i = 1; i < 11; i++)
             {
-                CourseDTO course = new CourseDTO();
+                Course course = new Course();
                 course.Id = i;
                 course.StartDateForCourse = RandomizeDate();
                 course.CourseTitle = _courseSelection[i - 1];
@@ -103,6 +104,6 @@ namespace exercise.wwwapi.Data
         }
 
         public List<Student> Students { get { return _students; } }
-        public List<CourseDTO> Courses { get { return _courses; }  }
+        public List<Course> Courses { get { return _courses; }  }
     }
 }

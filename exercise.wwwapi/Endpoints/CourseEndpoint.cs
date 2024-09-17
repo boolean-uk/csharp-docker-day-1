@@ -20,8 +20,8 @@ namespace exercise.wwwapi.Endpoints
         public static async Task<IResult> GetCourses(IRepository repository)
         {
             var results = await repository.GetCourses();
-            //var payload = new CourseDTO<IEnumerable<CourseDTO>>();
-            return TypedResults.Ok(true);
+            var payload = new Payload<IEnumerable<CourseDTO>>() { Data = results };
+            return TypedResults.Ok(payload);
         }
     }
 }

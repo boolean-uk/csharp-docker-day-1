@@ -23,7 +23,7 @@ namespace exercise.wwwapi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("exercise.wwwapi.DataModels.CourseDTO", b =>
+            modelBuilder.Entity("exercise.wwwapi.DataModels.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,61 +50,61 @@ namespace exercise.wwwapi.Migrations
                         {
                             Id = 1,
                             CourseTitle = "Maths",
-                            StartDateForCourse = new DateOnly(2026, 1, 20)
+                            StartDateForCourse = new DateOnly(2026, 5, 3)
                         },
                         new
                         {
                             Id = 2,
                             CourseTitle = "Science",
-                            StartDateForCourse = new DateOnly(2022, 7, 31)
+                            StartDateForCourse = new DateOnly(2030, 1, 18)
                         },
                         new
                         {
                             Id = 3,
                             CourseTitle = "Litterature",
-                            StartDateForCourse = new DateOnly(2025, 5, 20)
+                            StartDateForCourse = new DateOnly(2028, 2, 10)
                         },
                         new
                         {
                             Id = 4,
                             CourseTitle = "Arts and crafts",
-                            StartDateForCourse = new DateOnly(2023, 5, 8)
+                            StartDateForCourse = new DateOnly(2029, 1, 3)
                         },
                         new
                         {
                             Id = 5,
                             CourseTitle = "PE",
-                            StartDateForCourse = new DateOnly(2022, 11, 12)
+                            StartDateForCourse = new DateOnly(2030, 10, 29)
                         },
                         new
                         {
                             Id = 6,
                             CourseTitle = "Social sciences",
-                            StartDateForCourse = new DateOnly(2025, 8, 1)
+                            StartDateForCourse = new DateOnly(2026, 12, 24)
                         },
                         new
                         {
                             Id = 7,
                             CourseTitle = "Pyschology",
-                            StartDateForCourse = new DateOnly(2026, 8, 2)
+                            StartDateForCourse = new DateOnly(2030, 5, 31)
                         },
                         new
                         {
                             Id = 8,
                             CourseTitle = "Programming",
-                            StartDateForCourse = new DateOnly(2026, 4, 24)
+                            StartDateForCourse = new DateOnly(2026, 5, 2)
                         },
                         new
                         {
                             Id = 9,
                             CourseTitle = "Physics",
-                            StartDateForCourse = new DateOnly(2030, 3, 15)
+                            StartDateForCourse = new DateOnly(2028, 4, 28)
                         },
                         new
                         {
                             Id = 10,
                             CourseTitle = "History",
-                            StartDateForCourse = new DateOnly(2024, 6, 20)
+                            StartDateForCourse = new DateOnly(2023, 7, 24)
                         });
                 });
 
@@ -148,92 +148,92 @@ namespace exercise.wwwapi.Migrations
                         new
                         {
                             Id = 1,
-                            AverageGrade = 4,
-                            CourseIds = new List<int> { 1 },
-                            DateOfBirth = new DateOnly(2028, 1, 25),
-                            FirstName = "Kate",
-                            LastName = "Duck"
+                            AverageGrade = 1,
+                            CourseIds = new List<int> { 1, 10 },
+                            DateOfBirth = new DateOnly(2026, 1, 24),
+                            FirstName = "Ragnar",
+                            LastName = "Mouse"
                         },
                         new
                         {
                             Id = 2,
                             AverageGrade = 1,
-                            CourseIds = new List<int> { 2 },
-                            DateOfBirth = new DateOnly(2026, 7, 16),
-                            FirstName = "Kate",
-                            LastName = "Xavier"
+                            CourseIds = new List<int> { 2, 9 },
+                            DateOfBirth = new DateOnly(2026, 12, 24),
+                            FirstName = "Felix",
+                            LastName = "Mouse"
                         },
                         new
                         {
                             Id = 3,
-                            AverageGrade = 2,
-                            CourseIds = new List<int> { 3 },
-                            DateOfBirth = new DateOnly(2030, 10, 21),
-                            FirstName = "Felix",
-                            LastName = "Winslow"
+                            AverageGrade = 4,
+                            CourseIds = new List<int> { 3, 8 },
+                            DateOfBirth = new DateOnly(2022, 8, 27),
+                            FirstName = "Barack",
+                            LastName = "Mouse"
                         },
                         new
                         {
                             Id = 4,
-                            AverageGrade = 2,
-                            CourseIds = new List<int> { 4 },
-                            DateOfBirth = new DateOnly(2026, 12, 9),
-                            FirstName = "Adam",
-                            LastName = "Sandler"
+                            AverageGrade = 4,
+                            CourseIds = new List<int> { 4, 7 },
+                            DateOfBirth = new DateOnly(2030, 7, 8),
+                            FirstName = "Kate",
+                            LastName = "Presley"
                         },
                         new
                         {
                             Id = 5,
                             AverageGrade = 5,
-                            CourseIds = new List<int> { 5 },
-                            DateOfBirth = new DateOnly(2029, 10, 14),
-                            FirstName = "Elvis",
-                            LastName = "Schwarzenegger"
+                            CourseIds = new List<int> { 5, 6 },
+                            DateOfBirth = new DateOnly(2024, 10, 22),
+                            FirstName = "Neo",
+                            LastName = "Lothbrok"
                         },
                         new
                         {
                             Id = 6,
-                            AverageGrade = 5,
-                            CourseIds = new List<int> { 6 },
-                            DateOfBirth = new DateOnly(2022, 1, 11),
-                            FirstName = "Charles",
-                            LastName = "Xavier"
+                            AverageGrade = 1,
+                            CourseIds = new List<int> { 6, 5 },
+                            DateOfBirth = new DateOnly(2022, 5, 13),
+                            FirstName = "Arnold",
+                            LastName = "Mouse"
                         },
                         new
                         {
                             Id = 7,
                             AverageGrade = 2,
-                            CourseIds = new List<int> { 7 },
-                            DateOfBirth = new DateOnly(2027, 6, 12),
-                            FirstName = "Charles",
-                            LastName = "Andersson"
+                            CourseIds = new List<int> { 7, 4 },
+                            DateOfBirth = new DateOnly(2028, 1, 15),
+                            FirstName = "Barack",
+                            LastName = "Lothbrok"
                         },
                         new
                         {
                             Id = 8,
-                            AverageGrade = 3,
-                            CourseIds = new List<int> { 8 },
-                            DateOfBirth = new DateOnly(2030, 9, 23),
-                            FirstName = "Oprah",
-                            LastName = "Winslow"
+                            AverageGrade = 1,
+                            CourseIds = new List<int> { 8, 3 },
+                            DateOfBirth = new DateOnly(2025, 10, 15),
+                            FirstName = "Arnold",
+                            LastName = "Mathiasson"
                         },
                         new
                         {
                             Id = 9,
                             AverageGrade = 2,
-                            CourseIds = new List<int> { 9 },
-                            DateOfBirth = new DateOnly(2023, 5, 24),
-                            FirstName = "Oprah",
-                            LastName = "Schwarzenegger"
+                            CourseIds = new List<int> { 9, 2 },
+                            DateOfBirth = new DateOnly(2025, 4, 12),
+                            FirstName = "Neo",
+                            LastName = "Sandler"
                         },
                         new
                         {
                             Id = 10,
                             AverageGrade = 1,
-                            CourseIds = new List<int> { 10 },
-                            DateOfBirth = new DateOnly(2023, 11, 28),
-                            FirstName = "Elvis",
-                            LastName = "Winslow"
+                            CourseIds = new List<int> { 10, 1 },
+                            DateOfBirth = new DateOnly(2028, 1, 28),
+                            FirstName = "Arnold",
+                            LastName = "Andersson"
                         });
                 });
 #pragma warning restore 612, 618

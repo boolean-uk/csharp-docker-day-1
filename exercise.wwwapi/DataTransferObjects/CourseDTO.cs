@@ -4,7 +4,7 @@ namespace exercise.wwwapi.DataTransferObjects
 {
     public class CourseDTO
     {
-        public string StartDateForCourse { get; set; }
+        public DateOnly StartDateForCourse { get; set; }
 
 
         public string CourseTitle { get; set; }

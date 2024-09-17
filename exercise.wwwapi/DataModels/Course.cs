@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace exercise.wwwapi.DataModels
 {
-    public class CourseDTO
+    public class Course
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

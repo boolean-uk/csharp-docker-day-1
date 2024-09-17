@@ -21,17 +21,16 @@ namespace exercise.wwwapi.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Student>().HasKey(i => new { i.Id });
-            modelBuilder.Entity<CourseDTO>().HasKey(i => new { i.Id });
+            //modelBuilder.Entity<Student>().
 
             Seeder seeder = new Seeder();
 
             modelBuilder.Entity<Student>().HasData(seeder.Students);
-            modelBuilder.Entity<CourseDTO>().HasData(seeder.Courses);
+            modelBuilder.Entity<Course>().HasData(seeder.Courses);
 
 
         }
         public DbSet<Student> Students { get; set; }
-        public DbSet<CourseDTO> Courses { get; set; }
+        public DbSet<Course> Courses { get; set; }
     }
 }
