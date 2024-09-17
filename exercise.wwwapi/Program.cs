@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
+builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
 builder.Services.AddDbContext<DataContext>(opt => {
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DockerPostgres"));
     opt.LogTo(message => Debug.WriteLine(message));
@@ -34,3 +35,4 @@ app.CourseEndpointConfiguration(); //extension
 
 app.Run();
 
+ 

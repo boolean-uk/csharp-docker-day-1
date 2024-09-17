@@ -47,7 +47,7 @@ namespace exercise.wwwapi.Endpoints
                 };
                 courseDTOs.Add(courseDTO);
             }
-            var payload = new Payload<IEnumerable<Course>>() { Data = results };
+            var payload = new Payload<IEnumerable<CourseDTO>>() { Data = courseDTOs };
             return TypedResults.Ok(payload);
         }
         
