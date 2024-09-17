@@ -17,6 +17,6 @@ namespace exercise.wwwapi.DataModels
         [Column("averageGrade")]
         public float AverageGrade { get; set; }
 
-        List<Student> Students { get; set; } = new List<Student>();
+        public List<Student> Students { get; set; } = new List<Student>();
     }
 }

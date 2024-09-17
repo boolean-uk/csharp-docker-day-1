@@ -1,71 +1,88 @@
 ﻿using exercise.wwwapi.Data;
 using exercise.wwwapi.DataModels;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class Repository<Model> : IRepository<Model> where Model : class
     {
         private DataContext _db;
+        private DbSet<Model> _dbSet;
+
         public Repository(DataContext db)
         {
             _db = db;
+            _dbSet = _db.Set<Model>();
         }
 
-        // --- Student ---
-        public async Task<Student> AddStudent(Student entity)
+        public async Task<Model> Create(string[] inclusions, Model model)
         {
-            await _db.AddAsync(entity);
+            _dbSet.Add(model);
             await _db.SaveChangesAsync();
-            return await _db.Students
-                .Include(x => x.Course)
-                .FirstOrDefaultAsync(x => x.Id == entity.Id);
+            foreach (string inclusion in inclusions)
+            {
+                await _db.Entry(model).Reference(inclusion).LoadAsync();
+            }
+            return model;
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<IEnumerable<Model>> GetAll(string[] inclusions, Expression<Func<Model, bool>> predicate)
         {
-            return await _db.Students.ToListAsync();
+            var query = _dbSet.AsQueryable();
+            foreach (string inclusion in inclusions)
+            {
+                query = query.Include(inclusion);
+            }
+            return await query.Where(predicate).ToListAsync();
         }
 
-        public Task<Student> GetStudent(int id)
+        public async Task<IEnumerable<Model>> GetAll(string[] inclusions)
         {
-            throw new NotImplementedException();
+            var query = _dbSet.AsQueryable();
+            foreach (string inclusion in inclusions)
+            {
+                query = query.Include(inclusion);
+            }
+            return await query.ToListAsync();
         }
 
-        public Task<Student> UpdateStudent(int id, Student entity)
+        public async Task<Model> Get(string[] inclusions, Expression<Func<Model, bool>> predicate)
         {
-            throw new NotImplementedException();
+            var query = _dbSet.AsQueryable();
+            foreach (string inclusion in inclusions)
+            {
+                query = query.Include(inclusion);
+            }
+            return await query.FirstOrDefaultAsync(predicate);
         }
 
-        public Task<Student> DeleteStudent(Student entity)
+        public async Task<Model> Update(string[] inclusions, Model model)
         {
-            throw new NotImplementedException();
+            _dbSet.Attach(model);
+            _db.Entry(model).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            foreach (string inclusion in inclusions)
+            {
+                await _db.Entry(model).Reference(inclusion).LoadAsync();
+            }
+            return model;
         }
 
-        // --- Course ---
-        public Task<Course> AddCourse(Course entity)
+        public async Task<Model> Delete(string[] inclusions, Model model)
         {
-            throw new NotImplementedException();
-        }
+            _dbSet.Attach(model);
+            await _db.Entry(model).ReloadAsync();
 
-        public async Task<IEnumerable<Course>> GetCourses()
-        {
-            return await _db.Courses.ToListAsync();
-        }
+            foreach (string inclusion in inclusions)
+            {
+                await _db.Entry(model).Reference(inclusion).LoadAsync();
+            }
 
-        public Task<Course> GetCourse(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Course> UpdateCourse(int id, Course entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Course> DeleteCourse(Course entity)
-        {
-            throw new NotImplementedException();
+            _dbSet.Remove(model);
+            await _db.SaveChangesAsync();
+            return model;
         }
     }
 }
