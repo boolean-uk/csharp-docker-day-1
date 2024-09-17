@@ -15,7 +15,7 @@ namespace exercise.wwwapi.Repository
         public async Task<IEnumerable<CoursePayload>> GetCourses()
         {
             //Get courses
-            var courses = await _db.Courses.Include(s => s.StudentCourses).ToListAsync();
+            var courses = await _db.Courses.Include(c => c.StudentCourses).ThenInclude(sc => sc.Student).ToListAsync();
             List<CoursePayload> result = new List<CoursePayload>();
             foreach (var course in courses)
             {
@@ -25,15 +25,93 @@ namespace exercise.wwwapi.Repository
             //Response
             return result;
         }
+        public async Task<CoursePayload> AddCourse(InputCourseDTO entity)
+        {
+            //Randomize the grade
+            Random rand = new Random();
+            int randomNumber = rand.Next(1, 7);
+            string grade = "-";
+            switch(randomNumber)
+            {
+                case 1:
+                    grade = "A";
+                    break;
+                case 2:
+                    grade = "B";
+                    break;
+                case 3:
+                    grade = "C";
+                    break;
+                case 4:
+                    grade = "D";
+                    break;
+                case 5:
+                    grade = "E";
+                    break;
+                case 6:
+                    grade = "F";
+                    break;
+            }
+            //Construct new course
+            var course = new Course()
+            {
+                CourseTitle = entity.CourseTitle,
+                CourseStartDate = DateOnly.ParseExact(entity.CourseStartDate, "yyyy-MM-dd"),
+                AverageGrade = grade
+            };
+
+            //Add course to database
+            await _db.AddAsync(course);
+            await _db.SaveChangesAsync();
+
+            //Response
+            return ConstructCoursePayload(course);
+        }
+        public async Task<CoursePayload> UpdateCourse(int id, InputCourseDTO entity)
+        {
+            var course = await _db.Courses.Include(c => c.StudentCourses).Where(sc => sc.Id == id).FirstOrDefaultAsync();
+            if (course == null)
+            {
+                throw new Exception("Course not found");
+            }
+
+            course.CourseTitle = entity.CourseTitle;
+            course.CourseStartDate = DateOnly.ParseExact(entity.CourseStartDate, "yyyy-MM-dd");
+
+            //Update the database
+            _db.Attach(course).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            //Response
+            return ConstructCoursePayload(course);
+        }
+        public async Task<CoursePayload> RemoveCourse(int id)
+        {
+            var course = await _db.Courses.Include(c => c.StudentCourses).Where(c => c.Id == id).FirstOrDefaultAsync();
+            if (course == null)
+            {
+                throw new Exception("Course not found");
+            }
+
+            //Remove course
+            _db.Courses.Remove(course);
+            await _db.SaveChangesAsync();
+
+            //Response
+            return ConstructCoursePayload(course);
+        }
         private CoursePayload ConstructCoursePayload(Course course)
         {
             return new CoursePayload(course);
         }
 
+
+
+
         public async Task<IEnumerable<StudentPayload>> GetStudents()
         {
             //Get students
-            var students = await _db.Students.Include(s => s.StudentCourses).ToListAsync();
+            var students = await _db.Students.Include(s => s.StudentCourses).ThenInclude(c => c.Course).ToListAsync();
             List<StudentPayload> result = new List<StudentPayload>();
             foreach (var student in students)
             {
@@ -67,7 +145,8 @@ namespace exercise.wwwapi.Repository
                 {
                     foreach (var id in entity.CourseIds)
                     {
-                        if (_db.Courses.Where(c => c.Id == id).FirstOrDefault() != null)
+                        var course = await _db.Courses.Where(c => c.Id == id).FirstOrDefaultAsync();
+                        if (course != null)
                         {
                             updateStudent.StudentCourses.Add(new StudentCourse() { CourseId = id });
                         }

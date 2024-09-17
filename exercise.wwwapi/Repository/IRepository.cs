@@ -10,6 +10,9 @@ namespace exercise.wwwapi.Repository
         Task<StudentPayload> UpdateStudent(int id, InputStudentDTO entity);
         Task<StudentPayload> RemoveStudent(int id);
         Task<IEnumerable<CoursePayload>> GetCourses();
+        Task<CoursePayload> AddCourse(InputCourseDTO entity);
+        Task<CoursePayload> UpdateCourse(int id, InputCourseDTO entity);
+        Task<CoursePayload> RemoveCourse(int id);
     }
 
 }
