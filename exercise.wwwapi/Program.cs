@@ -13,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
 builder.Services.AddDbContext<DataContext>(opt => {
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("DockerPostgres"));
     opt.LogTo(message => Debug.WriteLine(message));
 });
     
