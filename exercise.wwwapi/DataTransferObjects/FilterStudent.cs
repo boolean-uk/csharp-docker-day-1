@@ -1,10 +1,14 @@
 ﻿using exercise.wwwapi.DataModels;
-using System.Runtime.InteropServices;
 
 namespace exercise.wwwapi.DataTransferObjects
 {
     public class FilterStudent : IFilter<Student>
     {
+        public Student AssignIdToEntity(IEnumerable<Student> table, Student entity)
+        {
+            entity.Id = table.Max(x => x.Id) + 1;
+            return entity;
+        }
 
         IEnumerable<Student> IFilter<Student>.FilterById(IEnumerable<Student> table, int id)
         {

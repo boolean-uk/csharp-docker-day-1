@@ -61,11 +61,11 @@ namespace exercise.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        private static async Task<IResult> CreateStudent(IRepository<Student> repository, string FirstName, string LastName, DateTime DoB)
+        private static async Task<IResult> CreateStudent(IRepository<Student> repository, IFilter<Student> filter ,string FirstName, string LastName, DateTime DoB)
         {
             try
             {
-                var results = await repository.CreateObject(FirstName, LastName, DoB);
+                var results = await repository.CreateObject(filter ,new Student() { FirstName = FirstName, LastName = LastName, DoB = DoB });
                 var payload = new Payload<Student>() { Data = results };
                 payload.status = payload.Data != null ? "Success" : "Failure";
                 return payload.Data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest();

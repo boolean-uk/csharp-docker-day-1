@@ -2,6 +2,7 @@
 using exercise.wwwapi.DataModels;
 using exercise.wwwapi.DataTransferObjects;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Runtime.CompilerServices;
 
 namespace exercise.wwwapi.Repository
@@ -16,17 +17,20 @@ namespace exercise.wwwapi.Repository
             _table = _db.Set<T>();
         }
 
-        public Task<T> CreateObject(string stringOne, string stringTwo, DateTime date)
+        public async Task<T> CreateObject(IFilter<T> filter, T entity)
+        {
+            T newEntity = filter.AssignIdToEntity(_table.AsQueryable(), entity);
+            _table.Add(entity);
+            await _db.SaveChangesAsync();
+            return newEntity;
+        }
+
+        public T DeleteObject(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> DeleteObject(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public T GetObject(IFilter<T> filter ,int id)
+        public async Task<T> GetObject(IFilter<T> filter, int id)
         {
             return filter.FilterById(_table.AsQueryable(), id).First();
         }
@@ -37,7 +41,7 @@ namespace exercise.wwwapi.Repository
         }
 
 
-        public async Task<T> UpdateObject(int id, string stringOne, string stringTwo, DateTime date)
+        public T UpdateObject(int id, string stringOne, string stringTwo, DateTime date)
         {
             throw new NotImplementedException();
         }
