@@ -492,3 +492,5 @@ exercise.wwwapi/appsettings.Development.json
 */**/obj/Debug   
 */**/obj/Release   
 /exercise.wwwapi/appsettings.Development.json
+/docker-compose.yml
+/docker-compose.yml
