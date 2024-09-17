@@ -26,6 +26,7 @@ namespace exercise.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> GetCourses(IRepository repository)
         {
+            Console.WriteLine("GOT GET");
             var results = await repository.GetCourses();
             if (!results.Any()) return TypedResults.NotFound("No courses found");
 

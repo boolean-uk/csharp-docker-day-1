@@ -1,0 +1,22 @@
+services:
+    exercise.wwwapi:
+        image: ${DOCKER_REGISTRY-}exercise.wwwapi
+        container_name: exercise.api
+        build:
+            context: .
+            dockerfile: exercise.wwwapi/Dockerfile
+        ports:
+          - "5000:5000"
+          - "5001:5001"
+
+    exercise.database:
+        container_name: 'exercise.database'
+        image: postgres:latest
+        environment:
+          POSTGRES_DB: academics
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        volumes:
+            - './.containers/cars-data:/var/lib/postgresql/data'
+        ports:
+            - 5432:5432
