@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string CourseTitle { get; set; }
         public DateTime CourseStartDate { get; set; }
-        public char AverageGrade { get; set; }
+        public string AverageGrade { get; set; }
 
     }
 }

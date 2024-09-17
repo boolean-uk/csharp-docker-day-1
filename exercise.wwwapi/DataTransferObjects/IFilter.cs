@@ -1,4 +1,5 @@
-﻿using exercise.wwwapi.DataModels;
+﻿using exercise.wwwapi.Data;
+using exercise.wwwapi.DataModels;
 
 namespace exercise.wwwapi.DataTransferObjects
 {
@@ -7,6 +8,8 @@ namespace exercise.wwwapi.DataTransferObjects
         IEnumerable<T> FilterById(IEnumerable<T> db, int id);
 
         T AssignIdToEntity(IEnumerable<T> table, T entity);
+
+        T AssignNewData(DataContext db, int id, string stringOne, string stringTwo, DateTime date);
         
     }
 }

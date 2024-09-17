@@ -90,14 +90,14 @@ namespace exercise.wwwapi.Data
             "2024-09-12 15:45:00 UTC",
             "2024-09-12 16:00:00 UTC"
         };
-        List<char> _grades = new List<char>()
+        List<string> _grades = new List<string>()
         {
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F'
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F"
         };
 
         private List<Student> _students = new List<Student>();

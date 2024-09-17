@@ -25,11 +25,11 @@ namespace exercise.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        private static async Task<IResult> DeleteStudent(IRepository<Student> repository, int id)
+        private static async Task<IResult> DeleteStudent(IRepository<Student> repository, IFilter<Student> filter, int id)
         {
             try
             {
-                var results = await repository.DeleteObject(id);
+                var results = await repository.DeleteObject(filter, id);
                 var payload = new Payload<Student>() { Data = results };
                 payload.status = payload.Data != null ? "Success" : "Failure";
                 return payload.Data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
@@ -43,11 +43,11 @@ namespace exercise.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        private static async Task<IResult> UpdateStudent(IRepository<Student> repository, int id, string FirstName, string LastName, DateTime DoB)
+        private static async Task<IResult> UpdateStudent(IRepository<Student> repository, IFilter<Student> filter, int id, string FirstName, string LastName, DateTime DoB)
         {
             try
             {
-                var results = await repository.UpdateObject(id, FirstName, LastName, DoB);
+                var results = await repository.UpdateObject(filter, id, FirstName, LastName, DoB);
                 var payload = new Payload<Student>() { Data = results };
                 payload.status = payload.Data != null ? "Success" : "Failure";
                 return payload.Data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();

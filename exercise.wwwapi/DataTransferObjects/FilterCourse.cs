@@ -1,4 +1,5 @@
-﻿using exercise.wwwapi.DataModels;
+﻿using exercise.wwwapi.Data;
+using exercise.wwwapi.DataModels;
 
 namespace exercise.wwwapi.DataTransferObjects
 {
@@ -8,6 +9,11 @@ namespace exercise.wwwapi.DataTransferObjects
         {
             entity.Id = table.Max(x => x.Id) + 1;
             return entity;
+        }
+
+        public Course AssignNewData(DataContext db, int id, string stringOne, string stringTwo, DateTime date)
+        {
+            throw new NotImplementedException();
         }
 
         IEnumerable<Course> IFilter<Course>.FilterById(IEnumerable<Course> table, int id)

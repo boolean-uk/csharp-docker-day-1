@@ -25,12 +25,15 @@ namespace exercise.wwwapi.Repository
             return newEntity;
         }
 
-        public T DeleteObject(int id)
+        public async Task<T> DeleteObject(IFilter<T> filter, int id)
         {
-            throw new NotImplementedException();
+            T newEntity = GetObject(filter, id);
+            _table.Remove(newEntity);
+            await _db.SaveChangesAsync();
+            return newEntity;
         }
 
-        public async Task<T> GetObject(IFilter<T> filter, int id)
+        public T GetObject(IFilter<T> filter, int id)
         {
             return filter.FilterById(_table.AsQueryable(), id).First();
         }
@@ -41,9 +44,10 @@ namespace exercise.wwwapi.Repository
         }
 
 
-        public T UpdateObject(int id, string stringOne, string stringTwo, DateTime date)
+        public async Task<T> UpdateObject(IFilter<T> filter, int id, string stringOne, string stringTwo, DateTime date)
         {
-            throw new NotImplementedException();
+            T newEntity = filter.AssignNewData(_db, id, stringOne, stringTwo, date);
+            return newEntity;
         }
     }
 }
