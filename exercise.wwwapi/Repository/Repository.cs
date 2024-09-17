@@ -4,21 +4,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T : class
     {
         private DataContext _db;
+        private DbSet<T> _dbSet;
         public Repository(DataContext db)
         {
             _db = db;
+            _dbSet = _db.Set<T>();
+
         }
-        public async Task<IEnumerable<Course>> GetCourses()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            return await _db.Courses.ToListAsync();
+            return await _dbSet.ToListAsync();
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
-        {
-            return await _db.Students.ToListAsync();
-        }
+
     }
 }

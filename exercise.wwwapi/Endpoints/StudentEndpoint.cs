@@ -14,15 +14,46 @@ namespace exercise.wwwapi.Endpoints
         {
             var students = app.MapGroup("students");
             students.MapGet("/", GetStudents);
+            students.MapGet("/{id}", GetStudentById);
+            students.MapPut("/{id}", UpdateStudent);
+            students.MapPost("/", AddStudent);
+
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetStudents(IRepository repository)
+        public static async Task<IResult> GetStudents(IRepository<Student> repository)
         {
-            var results = await repository.GetStudents();
+            var results = await repository.GetAll();
             var payload = new Payload<IEnumerable<Student>>() { Data = results };
             return TypedResults.Ok(payload);
         }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetStudentById(IRepository<Student> repository, int id)
+        {
+            var results = await repository.GetById(id);
+            var payload = new Payload<Student>() { Data = results };
+            return TypedResults.Ok(payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> UpdateStudent(IRepository<Student> repository, int id, Student updateStudent)
+        {
+            var results = await repository.Update(id, updateStudent);
+            var payload = new Payload<Student>() { Data = results };
+            return TypedResults.Ok(payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> AddStudent(IRepository<Student> repository, Student newStudent)
+        {
+            var results = await repository.AddNewObject(newStudent);
+            var payload = new Payload<Student>() { Data = results };
+            return TypedResults.Ok(payload);
+        }
+
+
+
 
     }
   
