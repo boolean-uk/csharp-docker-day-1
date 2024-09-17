@@ -49,6 +49,13 @@ namespace exercise.wwwapi.Repository
 
         public async Task<T> GetById(int id)
         {
+            //for including all students
+            if (typeof(T) == typeof(Course))
+            {
+                var course = await _db.Courses.Include(c => c.Students).FirstOrDefaultAsync(c => c.Id == id);
+                // Cast the result to IEnumerable<T> since we know T is Course
+                return course as T;
+            }
             IQueryable<T> query = _dbSet.AsQueryable();
 
             foreach (var property in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
