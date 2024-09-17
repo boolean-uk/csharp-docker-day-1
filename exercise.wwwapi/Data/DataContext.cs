@@ -14,6 +14,13 @@ namespace exercise.wwwapi.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {           
+            modelBuilder.Entity<Student>().HasKey(x => x.Id);
+            modelBuilder.Entity<Course>().HasKey(x => x.Id);
+
+            Seeder seeder = new Seeder();
+
+            modelBuilder.Entity<Student>().HasData(seeder.Students);
+            modelBuilder.Entity<Course>().HasData(seeder.Courses);
 
         }
         public DbSet<Student> Students { get; set; }

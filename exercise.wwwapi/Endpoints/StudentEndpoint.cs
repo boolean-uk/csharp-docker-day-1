@@ -20,49 +20,94 @@ namespace exercise.wwwapi.Endpoints
             students.MapDelete("/", DeleteStudent);
         }
 
+        //fixa resten
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        private static async Task DeleteStudent(IRepository repository, int id)
+        private static async Task<IResult> DeleteStudent(IRepository<Student> repository, int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var results = await repository.DeleteObject(id);
+                var payload = new Payload<Student>() { Data = results };
+                payload.status = payload.Data != null ? "Success" : "Failure";
+                return payload.Data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest(ex);
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        private static async Task UpdateStudent(IRepository repository, int id, string FirstName, string LastName, DateTime DoB)
+        private static async Task<IResult> UpdateStudent(IRepository<Student> repository, int id, string FirstName, string LastName, DateTime DoB)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var results = await repository.UpdateObject(id, FirstName, LastName, DoB);
+                var payload = new Payload<Student>() { Data = results };
+                payload.status = payload.Data != null ? "Success" : "Failure";
+                return payload.Data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest(ex);
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        private static async Task CreateStudent(IRepository repository, string FirstName, string LastName, DateTime DoB)
+        private static async Task<IResult> CreateStudent(IRepository<Student> repository, string FirstName, string LastName, DateTime DoB)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var results = await repository.CreateObject(FirstName, LastName, DoB);
+                var payload = new Payload<Student>() { Data = results };
+                payload.status = payload.Data != null ? "Success" : "Failure";
+                return payload.Data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest(ex);
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        private static async Task GetStudent(IRepository repository, int id)
+        private static async Task<IResult> GetStudent(IRepository<Student> repository, IFilter<Student> filter, int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var results = repository.GetObject(filter, id);
+                var payload = new Payload<Student>() { Data = results };
+                payload.status = payload.Data != null ? "Success" : "Failure";
+                return payload.Data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest(ex);
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> GetStudents(IRepository repository)
+        public static async Task<IResult> GetStudents(IRepository<Student> repository)
         {
-            var results = await repository.GetStudents();
-            var payload = new Payload<IEnumerable<Student>>() { Data = results };
-            return TypedResults.Ok(payload);
+            try
+            {
+                var results = await repository.GetObjects();
+                var payload = new Payload<IEnumerable<Student>>() { Data = results };
+                payload.status = payload.Data != null ? "Success" : "Failure";
+                return TypedResults.Ok(payload);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest(ex);
+            }
         }
-
     }
-  
-
 }

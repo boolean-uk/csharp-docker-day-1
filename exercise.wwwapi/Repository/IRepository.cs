@@ -1,11 +1,14 @@
 ﻿using exercise.wwwapi.DataModels;
+using exercise.wwwapi.DataTransferObjects;
 
 namespace exercise.wwwapi.Repository
 {
-    public interface IRepository
+    public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<Student>> GetStudents();
-        Task<IEnumerable<Course>> GetCourses();
+        Task<IEnumerable<T>> GetObjects();
+        T GetObject(IFilter<T> filter, int id);
+        Task<T> CreateObject(string stringOne, string stringTwo, DateTime date);
+        Task<T> UpdateObject(int id, string stringOne, string stringTwo, DateTime date);
+        Task<T> DeleteObject(int id);
     }
-
 }

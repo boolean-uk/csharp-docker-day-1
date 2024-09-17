@@ -1,4 +1,6 @@
 using exercise.wwwapi.Data;
+using exercise.wwwapi.DataModels;
+using exercise.wwwapi.DataTransferObjects;
 using exercise.wwwapi.Endpoints;
 using exercise.wwwapi.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +17,10 @@ builder.Services.AddDbContext<DataContext>(opt => {
     opt.LogTo(message => Debug.WriteLine(message));
 });
    
-builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
+builder.Services.AddScoped<IRepository<Course>, Repository<Course>>();
+builder.Services.AddScoped<IFilter<Student>, FilterStudent>();
+builder.Services.AddScoped<IFilter<Course>, FilterCourse>();
 
 var app = builder.Build();
 

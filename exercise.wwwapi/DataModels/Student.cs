@@ -1,4 +1,6 @@
-﻿namespace exercise.wwwapi.DataModels
+﻿using System.Runtime.CompilerServices;
+
+namespace exercise.wwwapi.DataModels
 {
     public class Student
     {
@@ -9,4 +11,5 @@
 
 
     }
+
 }
