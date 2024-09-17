@@ -13,8 +13,10 @@ namespace exercise.wwwapi.Endpoints
     {
         public static void CourseEndpointConfiguration(this WebApplication app)
         {
-            var students = app.MapGroup("courses");
-            students.MapGet("/", GetCourses);
+            var courses = app.MapGroup("courses");
+            courses.MapGet("/", GetCourses);
+            courses.MapGet("/{id}", GetCourse);
+            
         }
         
 
@@ -53,7 +55,7 @@ namespace exercise.wwwapi.Endpoints
 
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetStudent(IRepository<Course> repository, int id)
+        public static async Task<IResult> GetCourse(IRepository<Course> repository, int id)
         {
             try
             {
