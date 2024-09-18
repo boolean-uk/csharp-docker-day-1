@@ -1,0 +1,37 @@
+services:
+  exercise.wwwapi:
+    image: ${DOCKER_REGISTRY-}exercisewwwapi
+    build:
+      context: .
+      dockerfile: exercise.wwwapi/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    depends_on:
+        exercise.database:
+            condition: service_healthy
+  exercise.database:
+    container_name: exercise.database
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: student_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123
+    volumes:
+        - './.containers/student_db:/var/lib/postgresql/data'
+    ports:
+        - 5432:5432
+    networks:
+        - my-network
+    healthcheck:
+        test: ["CMD", "pg_isready", "-q", "-d", "student_db", "-U", "postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+networks:
+  my-network:
+    driver: bridge  

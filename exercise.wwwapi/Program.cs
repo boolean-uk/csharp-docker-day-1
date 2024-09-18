@@ -1,5 +1,6 @@
 using exercise.wwwapi.Data;
 using exercise.wwwapi.Endpoints;
+using exercise.wwwapi.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -10,10 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(opt => {
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("DockerPostgres"));
     opt.LogTo(message => Debug.WriteLine(message));
 });
-    
+builder.Services.AddScoped<IRepository, Repository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,10 +26,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.ApplyProjectMigrations();
 app.StudentEndpointConfiguration(); //core
 app.CourseEndpointConfiguration(); //extension
-app.ApplyProjectMigrations();
+
 
 app.Run();
 
