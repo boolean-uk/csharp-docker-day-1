@@ -16,7 +16,7 @@ namespace exercise.wwwapi.Repository
             return await _db.Courses.ToListAsync();
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<List<Student>> GetStudents()
         {
             return await _db.Students.ToListAsync();
         }
