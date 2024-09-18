@@ -24,7 +24,6 @@ namespace exercise.wwwapi.Endpoints
             try
             {
                 var results = await repository.GetAll();
-
                 List<StudentDTO> studentDTOs = new List<StudentDTO>();
                 foreach (var student in results)
                 {
@@ -66,7 +65,7 @@ namespace exercise.wwwapi.Endpoints
                 return TypedResults.Ok(payload);
             }
             catch (Exception ex) 
-            {
+            { 
                 return TypedResults.Problem(ex.Message);
             }
 
