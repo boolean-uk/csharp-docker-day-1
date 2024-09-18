@@ -4,7 +4,7 @@ namespace exercise.wwwapi.Repository
 {
     public interface IRepository
     {
-        Task<IEnumerable<Student>> GetStudents();
+        Task<List<Student>> GetStudents();
         Task<IEnumerable<Course>> GetCourses();
     }
 
