@@ -1,5 +1,3 @@
-version: '3.4'
-
 services:
   exercise.wwwapi:
     image: ${DOCKER_REGISTRY-}exercisewwwapi
@@ -9,33 +7,31 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
-    networks:
-      - sibbs-network
     depends_on:
-      exercise.database:
-        condition: service_healthy
+        exercise.database:
+            condition: service_healthy
   exercise.database:
-    container_name: 'exercise.database'
+    container_name: exercise.database
     image: postgres:latest
     environment:
       POSTGRES_DB: student_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pass123
     volumes:
-        - './.containers/student-db:/var/lib/postgresql/data'
+        - './.containers/student_db:/var/lib/postgresql/data'
     ports:
         - 5432:5432
     networks:
-      - sibbs-network
+        - my-network
     healthcheck:
-      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
-      interval: 1s
-      timeout: 5s
-      retries: 5
+        test: ["CMD", "pg_isready", "-q", "-d", "student_db", "-U", "postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
 
 volumes:
   postgres_data:
     driver: local
 networks:
-  sibbs-network:
-    driver: bridge
+  my-network:
+    driver: bridge  

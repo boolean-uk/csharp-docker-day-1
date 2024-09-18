@@ -2,19 +2,18 @@
 using exercise.wwwapi.DataTransferObjects;
 using exercise.wwwapi.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using NpgsqlTypes;
 
 namespace exercise.wwwapi.Endpoints
 {
-    /// <summary>
-    /// Extension endpoint
-    /// </summary>
     public static class CourseEndpoint
     {
         public static void CourseEndpointConfiguration(this WebApplication app)
         {
             var students = app.MapGroup("courses");
             students.MapGet("/", GetCourses);
+            //students.MapGet("/{id:int}", GetACourse);
             students.MapPost("/", AddCourse);
             students.MapDelete("/{id:int}", DeleteCourse);
             students.MapPut("/{id:int}", UpdateCourse);
@@ -26,6 +25,18 @@ namespace exercise.wwwapi.Endpoints
             var results = await repository.GetCourses();
             var payload = new Payload<IEnumerable<Course>>() { Data = results };
             return TypedResults.Ok(payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetACourse(IRepository repository, int id)
+        {
+            var result = await repository.GetACourse(id);
+            if(result != null)
+            {
+                return TypedResults.Ok(new {Title = result.Title, StartDate = result.StartDate});
+            }
+            return TypedResults.NotFound(); 
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

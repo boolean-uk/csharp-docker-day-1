@@ -26,10 +26,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.ApplyProjectMigrations();
 app.StudentEndpointConfiguration(); //core
 app.CourseEndpointConfiguration(); //extension
-app.ApplyProjectMigrations();
+
 
 app.Run();
 
