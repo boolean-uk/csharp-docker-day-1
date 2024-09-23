@@ -13,12 +13,12 @@ namespace exercise.wwwapi.Repository
         }
         public async Task<IEnumerable<Course>> GetCourses()
         {
-            return await _db.Courses.ToListAsync();
+            return await _db.Courses.Include(a => a.Students).ToListAsync();
         }
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            return await _db.Students.ToListAsync();
+            return await _db.Students.Include(a => a.Course).ToListAsync();
         }
     }
 }
