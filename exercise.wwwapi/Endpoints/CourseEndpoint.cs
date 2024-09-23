@@ -12,15 +12,42 @@ namespace exercise.wwwapi.Endpoints
     {
         public static void CourseEndpointConfiguration(this WebApplication app)
         {
-            var students = app.MapGroup("courses");
-            students.MapGet("/", GetCourses);
+            var courses = app.MapGroup("courses");
+            courses.MapGet("/", GetCourses);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetCourses(IRepository repository)
         {
             var results = await repository.GetCourses();
-            var payload = new Payload<IEnumerable<Course>>() { Data = results };
+            var courses = new List<CourseWithStudentsDTO>();
+            foreach (Course course in results)
+            {
+                CourseWithStudentsDTO courseDTO = new CourseWithStudentsDTO()
+                {
+                    Id = course.Id,
+                    Title = course.Title,
+                    StartTime = course.StartTime,
+                    AverageGrade = course.AverageGrade
+                };
+
+                foreach (Student student in course.Students) 
+                {
+                    StudentWithNoCourseDTO studentDTO = new StudentWithNoCourseDTO()
+                    {
+                        Id = student.Id,
+                        FirstName = student.FirstName,
+                        LastName = student.LastName,
+                        DOB = student.DOB
+                    };
+
+                    courseDTO.Students.Add(studentDTO);
+                }
+
+                courses.Add(courseDTO);
+            };
+
+            var payload = new Payload<IEnumerable<CourseWithStudentsDTO>>() { Data = courses };
             return TypedResults.Ok(payload);
         }
     }
