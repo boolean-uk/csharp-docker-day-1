@@ -16,6 +16,7 @@ builder.Services.AddDbContext<DataContext>(opt => {
 });
 
 builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
