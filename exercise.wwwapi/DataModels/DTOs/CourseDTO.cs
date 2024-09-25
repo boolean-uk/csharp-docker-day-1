@@ -8,6 +8,14 @@ namespace exercise.wwwapi.DataModels.DTOs
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
         public double AverageGrade { get; set; }
+        public List<GetCourseStudentDTO> Students { get; set; } = new List<GetCourseStudentDTO>();
+    }
+
+    public class GetStudentCourseDTO
+    {
+        public string Title { get; set; }
+        public DateTime StartDate { get; set; }
+        public double AverageGrade { get; set; }
     }
 
     public class PostCourseDTO

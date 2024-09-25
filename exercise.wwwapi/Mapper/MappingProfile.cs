@@ -9,8 +9,18 @@ public class MappingProfile : Profile
     {
         CreateMap<Course, GetCourseDTO>();
 
+        CreateMap<Student, GetCourseStudentDTO>();
+
         CreateMap<PostCourseDTO, Course>()
            .ForMember(dest => dest.Id, opt => opt.Ignore())
            .ForMember(dest => dest.Students, opt => opt.Ignore());
+
+        CreateMap<Student, GetStudentDTO>();
+
+        CreateMap<Course, GetStudentCourseDTO>();
+
+        CreateMap<PostStudentDTO, Student>()
+           .ForMember(dest => dest.Id, opt => opt.Ignore())
+           .ForMember(dest => dest.Course, opt => opt.Ignore());
     }
 }
