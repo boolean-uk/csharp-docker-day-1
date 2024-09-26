@@ -16,6 +16,7 @@ namespace exercise.wwwapi.Endpoints
         {
             var courses = app.MapGroup("courses");
             courses.MapGet("/", GetCourses);
+            courses.MapGet("/{id}", GetCourse);
             courses.MapPost("/", AddCourse);
             courses.MapPatch("/{id}", UpdateCourse);
             courses.MapDelete("/{id}", DeleteCourse);
@@ -30,6 +31,26 @@ namespace exercise.wwwapi.Endpoints
             var payload = new Payload<IEnumerable<GetCourseDTO>>() { Data = courseDtos };
             return TypedResults.Ok(payload);
         }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetCourse(IRepository repository, IMapper mapper, int id)
+        {
+            Course course = null;
+            try
+            {
+                course = await repository.GetCourse(id);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.NotFound(ex.Message);
+            }
+            var courseDTO = mapper.Map<GetCourseDTO>(course);
+
+            var payload = new Payload<GetCourseDTO>() { Data = courseDTO };
+            return TypedResults.Ok(payload);
+        }
+
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> AddCourse(IRepository repository, IMapper mapper, PostCourseDTO courseDTO)

@@ -22,6 +22,25 @@ namespace exercise.wwwapi.Repository
             return await _db.Students.Include(c => c.Course).ToListAsync();
         }
 
+        public async Task<Course> GetCourse(int id)
+        {
+            var course = await _db.Courses.Include(c => c.Students).FirstOrDefaultAsync(c => c.Id == id);
+            if (course == null)
+                throw new KeyNotFoundException("Course not found");
+
+            return course;
+        }
+
+        public async Task<Student> GetStudent(int id)
+        {
+            var student = await _db.Students.Include(s => s.Course).FirstOrDefaultAsync(s => s.Id == id);
+            if (student == null)
+                throw new KeyNotFoundException("Student not found");
+
+            return student;
+        }
+
+
         public async Task<Course> AddCourse(Course course)
         {
             _db.Courses.Add(course);
@@ -104,6 +123,18 @@ namespace exercise.wwwapi.Repository
             return existingCourse;
         }
 
+        public async Task<Student> DeleteStudent(int id)
+        {
+            var existingStudent = await _db.Students.Include(s => s.Course).FirstOrDefaultAsync(s => s.Id == id);
+            if (existingStudent == null)
+                throw new KeyNotFoundException("Student not found");
+
+            _db.Students.Remove(existingStudent);
+
+            await _db.SaveChangesAsync();
+
+            return existingStudent;
+        }
 
     }
 }

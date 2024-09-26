@@ -16,8 +16,10 @@ namespace exercise.wwwapi.Endpoints
         {
             var students = app.MapGroup("students");
             students.MapGet("/", GetStudents);
+            students.MapGet("/{id}", GetStudent);
             students.MapPost("/", AddStudent);
             students.MapPatch("/{id}", UpdateStudent);
+            students.MapDelete("/{id}", DeleteStudent);
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -27,6 +29,25 @@ namespace exercise.wwwapi.Endpoints
             var studentDtos = mapper.Map<IEnumerable<GetStudentDTO>>(results);
 
             var payload = new Payload<IEnumerable<GetStudentDTO>>() { Data = studentDtos };
+            return TypedResults.Ok(payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetStudent(IRepository repository, IMapper mapper, int id)
+        {
+            Student student = null;
+            try
+            {
+                student = await repository.GetStudent(id);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.NotFound(ex.Message);
+            }
+            var studentDTO = mapper.Map<GetStudentDTO>(student);
+
+            var payload = new Payload<GetStudentDTO>() { Data = studentDTO };
             return TypedResults.Ok(payload);
         }
 
@@ -67,6 +88,31 @@ namespace exercise.wwwapi.Endpoints
             };
 
             return TypedResults.Created(location, payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> DeleteStudent(IRepository repository, IMapper mapper, int id)
+        {
+            Student deletedStudent = null;
+
+            try
+            {
+                deletedStudent = await repository.DeleteStudent(id);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.NotFound(ex.Message);
+            }
+
+            var getStudentDTO = mapper.Map<GetStudentDTO>(deletedStudent);
+
+            var payload = new Payload<GetStudentDTO>
+            {
+                Data = getStudentDTO
+            };
+
+            return TypedResults.Ok(payload);
         }
 
     }

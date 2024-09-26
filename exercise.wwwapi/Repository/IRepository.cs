@@ -7,6 +7,10 @@ namespace exercise.wwwapi.Repository
     {
         Task<IEnumerable<Student>> GetStudents();
         Task<IEnumerable<Course>> GetCourses();
+
+        Task<Course> GetCourse(int id);
+
+        Task<Student> GetStudent(int id);
         Task<Course> AddCourse(Course course);
 
         Task<Student> AddStudent(Student student);
@@ -16,7 +20,9 @@ namespace exercise.wwwapi.Repository
 
         Task<Course> DeleteCourse(int id);
 
-       
+        Task<Student> DeleteStudent(int id);
+
+
     }
 
 }
