@@ -14,6 +14,8 @@ namespace exercise.wwwapi.Endpoints
         {
             var students = app.MapGroup("students");
             students.MapGet("/", GetStudents);
+            students.MapGet("/student/:{id}", GetStudent);
+            students.MapPost("/createstudent", CreateStudent);
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -24,6 +26,18 @@ namespace exercise.wwwapi.Endpoints
             return TypedResults.Ok(payload);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetStudent(IRepository repository, int id)
+        {
+            var result = await repository.GetStudent(id);
+            return TypedResults.Ok(result);
+        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> CreateStudent(IRepository repository, StudentDTO student)
+        {
+            var result = await repository.CreateStudent(student);
+            return TypedResults.Ok(result);
+        }
     }
   
 
