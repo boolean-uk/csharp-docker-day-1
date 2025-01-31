@@ -5,7 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{84176869-3BC7-4553-8F9F-21A3229CC044}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
 		.gitignore = .gitignore
+		Dockerfile = Dockerfile
+		README.Docker.md = README.Docker.md
 		README.md = README.md
 	EndProjectSection
 EndProject
