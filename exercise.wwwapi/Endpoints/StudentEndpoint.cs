@@ -18,16 +18,18 @@ namespace exercise.wwwapi.Endpoints
             students.MapPost("/", InsertStudent);
             students.MapPut("/{id}", UpdateStudent);
             students.MapDelete("/{id}", DeleteStudent);
+
+            students.MapPost("/{studentId}/{courseId}", AddStudentToCourse);
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetStudents(IRepository<Student> repository)
+        public static async Task<IResult> GetStudents(IRepository<Student> repository, IMapper mapper)
         {
             try
             {
                 var results = await repository.GetAll();
-                var payload = new Payload<IEnumerable<Student>>() { Data = results };
-                return TypedResults.Ok(payload);
+                var response = mapper.Map<List<StudentGetDTO>>(results);
+                return TypedResults.Ok(response);
             }
             catch (Exception ex)
             {
@@ -97,7 +99,33 @@ namespace exercise.wwwapi.Endpoints
             }
         }
 
-    }
-  
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> AddStudentToCourse(IRepository<StudentCourse> repository, IRepository<Student> studentRepository, IRepository<Course> courseRepository, int studentId, int courseId)
+        {
+            try
+            {
+                var student = await studentRepository.GetById(studentId);
+                var course = await courseRepository.GetById(courseId);
 
+                if (student == null)
+                    return TypedResults.NotFound("Student not found");
+                if (course == null)
+                    return TypedResults.NotFound("Course not found");
+
+                await repository.Insert(new StudentCourse
+                {
+                    StudentId = studentId,
+                    CourseId = courseId
+                });
+
+                return TypedResults.Ok("Student added.");
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+    }
 }

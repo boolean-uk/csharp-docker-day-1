@@ -21,13 +21,13 @@ namespace exercise.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetCourses(IRepository<Course> repository)
+        public static async Task<IResult> GetCourses(IRepository<Course> repository, IMapper mapper)
         {
             try
             {
                 var results = await repository.GetAll();
-                var payload = new Payload<IEnumerable<Course>>() { Data = results };
-                return TypedResults.Ok(payload);
+                var response = mapper.Map<List<CourseGetDTO>>(results);
+                return TypedResults.Ok(response);
             }
             catch (Exception ex)
             {

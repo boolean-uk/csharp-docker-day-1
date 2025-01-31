@@ -4,8 +4,7 @@ namespace exercise.wwwapi.DTO
 {
     public class StudentGetDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public List<CourseGetDTO> Courses { get; }
-        public List<StudentCourseDTO> StudentCourses { get; }
     }
 }
