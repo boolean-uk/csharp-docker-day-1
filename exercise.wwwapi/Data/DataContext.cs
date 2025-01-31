@@ -1,19 +1,37 @@
-﻿using exercise.wwwapi.DataModels;
+﻿using exercise.wwwapi.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using Newtonsoft.Json.Linq;
 
 namespace exercise.wwwapi.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        private string _connectionString;
+        public DataContext()
+        {
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
+            this.Database.EnsureCreated();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql(_connectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {           
+
 
         }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Course> Courses { get; set; }
+
+
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
+
+
     }
 }

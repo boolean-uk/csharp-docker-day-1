@@ -1,19 +1,21 @@
 using exercise.wwwapi.Data;
 using exercise.wwwapi.Endpoints;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
+using exercise.wwwapi.Repository;
+using exercise.wwwapi.Data;
+using exercise.wwwapi.Endpoints;
+using exercise.wwwapi.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>(opt => {
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-    opt.LogTo(message => Debug.WriteLine(message));
-});
-    
+builder.Services.AddDbContext<DataContext>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,9 +27,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.StudentEndpointConfiguration(); //core
-app.CourseEndpointConfiguration(); //extension
-app.ApplyProjectMigrations();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.ConfigureCustomerApi();
+app.ConfigureMovieApi();
+
+app.SeedCinemaApi();
 
 app.Run();
-
