@@ -1,5 +1,8 @@
+using AutoMapper;
 using exercise.wwwapi.Data;
+using exercise.wwwapi.DataModels;
 using exercise.wwwapi.Endpoints;
+using exercise.wwwapi.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -9,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<DataContext>(opt => {
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
     opt.LogTo(message => Debug.WriteLine(message));
