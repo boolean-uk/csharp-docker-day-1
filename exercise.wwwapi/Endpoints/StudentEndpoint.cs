@@ -14,6 +14,9 @@ namespace exercise.wwwapi.Endpoints
         {
             var students = app.MapGroup("students");
             students.MapGet("/", GetStudents);
+            students.MapPost("/", CreateStudent);
+            students.MapPut("/{id}", EditStudent);
+            students.MapDelete("/{id}", DeleteStudent);
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -24,6 +27,39 @@ namespace exercise.wwwapi.Endpoints
             return TypedResults.Ok(payload);
         }
 
+        public static async Task<IResult> CreateStudent(IRepository repo, StudentDTO dto)
+        {
+            var payload = new Payload<Student>();
+            Student student = new Student()
+            {
+                Name = dto.Name
+            };
+            await repo.CreateStudent(student);
+
+            payload.Data = student;
+            return TypedResults.Ok(payload);
+            
+        }
+
+        public static async Task<IResult> DeleteStudent(IRepository repo, int id)
+        {
+            var payload = new Payload<Student>();
+            Student student = await repo.GetStudentById(id);
+            await repo.DeleteStudent(student);
+
+            payload.Data = student;
+
+            return TypedResults.Ok(payload);
+        }
+
+        public static async Task<IResult>EditStudent(IRepository repo, StudentDTO dto, int id)
+        {
+            var payload = new Payload<Student>();
+            Student student = await repo.GetStudentById(id);
+            await repo.EditStudent(student, dto.Name);
+            payload.Data = student;
+            return TypedResults.Ok(payload);
+        }
     }
   
 
