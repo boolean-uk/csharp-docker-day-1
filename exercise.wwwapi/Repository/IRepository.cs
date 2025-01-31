@@ -1,11 +1,24 @@
-﻿using exercise.wwwapi.DataModels;
+﻿using System.Linq.Expressions;
 
-namespace exercise.wwwapi.Repository
+namespace exercise.wwwapi.Repository;
+
+// CRUD = Create, Read, Update, Delete
+public interface IRepository<T>
 {
-    public interface IRepository
-    {
-        Task<IEnumerable<Student>> GetStudents();
-        Task<IEnumerable<Course>> GetCourses();
-    }
+    // Create
+    Task<T> Insert(T entity);
 
+    // Read
+    Task<IEnumerable<T>> Get();
+    Task<T> GetById(int id);
+    Task<IEnumerable<T>> GetWithIncludes(params Expression<Func<T, object>>[] includes);
+
+    // Update
+    Task<T> Update(T entity);
+
+    // Delete
+    Task<T> Delete(object id);
+
+    // Save
+    Task Save();
 }
