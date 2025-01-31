@@ -1,24 +1,60 @@
-﻿using exercise.wwwapi.Data;
-using exercise.wwwapi.DataModels;
+﻿using System.Linq.Expressions;
+using exercise.wwwapi.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T>(DataContext _db) : IRepository<T> where T : class
     {
-        private DataContext _db;
-        public Repository(DataContext db)
+        
+        public Task<IEnumerable<T>> GetAll(params Expression<Func<T, object>>[] includes)
         {
-            _db = db;
+            var query = _db.Set<T>().AsQueryable();
+            
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            
+            return Task.FromResult(query.AsEnumerable());
         }
-        public async Task<IEnumerable<Course>> GetCourses()
+        
+        public Task<T?> Get(Expression<Func<T, bool>> predicate)
         {
-            return await _db.Courses.ToListAsync();
+            return Task.FromResult(_db.Set<T>().FirstOrDefault(predicate));
         }
-
-        public async Task<IEnumerable<Student>> GetStudents()
+        
+        public Task<T?> Get(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
-            return await _db.Students.ToListAsync();
+            var query = _db.Set<T>().AsQueryable();
+            
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            
+            return Task.FromResult(query.FirstOrDefault(predicate));
+        }
+        
+        public Task<T> Add(T entity)
+        {
+            _db.Set<T>().Add(entity);
+            _db.SaveChanges();
+            return Task.FromResult(entity);
+        }
+        
+        public Task<T> Update(T entity)
+        {
+            _db.Set<T>().Update(entity);
+            _db.SaveChanges();
+            return Task.FromResult(entity);
+        }
+        
+        public Task<T> Delete(T entity)
+        {
+            _db.Set<T>().Remove(entity);
+            _db.SaveChanges();
+            return Task.FromResult(entity);
         }
     }
 }
