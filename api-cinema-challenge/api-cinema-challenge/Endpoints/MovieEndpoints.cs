@@ -46,7 +46,7 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 Movie movie = await repository.Get(id, q => q.Include(x => x.Screenings).ThenInclude(x => x.Screen));
-                return TypedResults.Ok(mapper.Map<MovieView>(movie));
+                return TypedResults.Ok(new Payload { Data = mapper.Map<MovieView>(movie) });
             }
             catch (IdNotFoundException ex)
             {

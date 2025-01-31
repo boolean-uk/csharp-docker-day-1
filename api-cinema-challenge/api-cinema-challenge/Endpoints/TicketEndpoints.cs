@@ -50,7 +50,7 @@ namespace api_cinema_challenge.Endpoints
                     q => q.Include(x => x.Screening).ThenInclude(x => x.Screen),
                     q => q.Include(x => x.Screening).ThenInclude(x => x.Movie)
                 );
-                return TypedResults.Ok(mapper.Map<TicketView>(ticket));
+                return TypedResults.Ok(new Payload { Data = mapper.Map<TicketView>(ticket) });
             }
             catch (IdNotFoundException ex)
             {
@@ -76,7 +76,7 @@ namespace api_cinema_challenge.Endpoints
                     q => q.Include(x => x.Screening).ThenInclude(x => x.Screen),
                     q => q.Include(x => x.Screening).ThenInclude(x => x.Movie)]
                 ); 
-                return TypedResults.Ok(mapper.Map<List<TicketView>>(ticket));
+                return TypedResults.Ok(new Payload { Data = mapper.Map<List<TicketView>>(ticket) });
             }
             catch (IdNotFoundException ex)
             {

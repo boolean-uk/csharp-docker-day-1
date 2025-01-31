@@ -46,14 +46,10 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                Seat seat = await repository.Find(x => x.ScreenId == screenId && x.Id == id,
+                Seat seat = await repository.GetComposite([id, screenId], ["Id", "ScreenId"],
                     q => q.Include(x => x.Screen)
                 );
-
-                Seat seat2 = await repository.GetComposite([id, screenId], ["Id", "ScreenId"],
-                    q => q.Include(x => x.Screen)
-                );
-                return TypedResults.Ok(mapper.Map<SeatView>(seat2));
+                return TypedResults.Ok(new Payload { Data = mapper.Map<SeatView>(seat) });
             }
             catch (IdNotFoundException ex)
             {

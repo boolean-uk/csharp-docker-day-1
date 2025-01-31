@@ -64,7 +64,7 @@ namespace api_cinema_challenge.Endpoints
                         q => q.Include(x => x.Tickets).ThenInclude(x => x.Seat)
                     ]
                 );
-                return TypedResults.Ok(mapper.Map<ScreeningView>(screening));
+                return TypedResults.Ok(new Payload { Data = mapper.Map<ScreeningView>(screening) });
             }
             catch (IdNotFoundException ex)
             {
