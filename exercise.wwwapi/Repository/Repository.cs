@@ -1,24 +1,84 @@
 ﻿using exercise.wwwapi.Data;
-using exercise.wwwapi.DataModels;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
-namespace exercise.wwwapi.Repository
+namespace exercise.wwwapi.Repository;
+
+// CRUD = Create, Read, Update, Delete
+public class Repository<T> : IRepository<T> where T : class
 {
-    public class Repository : IRepository
+    private DataContext _db;
+    private DbSet<T> _table = null!;
+
+    public Repository(DataContext cinemaContext)
     {
-        private DataContext _db;
-        public Repository(DataContext db)
+        _db = cinemaContext;
+        _table = _db.Set<T>();
+    }
+
+    // Create
+    public async Task<T> Insert(T entity)
+    {
+        try
         {
-            _db = db;
+            _table.Add(entity);
+            await _db.SaveChangesAsync();
+            return entity;
         }
-        public async Task<IEnumerable<Course>> GetCourses()
+        catch (Exception ex)
         {
-            return await _db.Courses.ToListAsync();
+            throw new Exception("Error inserting entity", ex);
+        }
+    }
+
+    // Read
+    public async Task<IEnumerable<T>> Get()
+    {
+        return await _table.ToListAsync();
+    }
+
+
+    public async Task<T> GetById(int id)
+    {
+        return await _table.FindAsync(id);
+    }
+
+    public async Task<IEnumerable<T>> GetWithIncludes(params Expression<Func<T, object>>[] includes)
+    {
+        IQueryable<T> query = _table;
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+        return await query.ToListAsync();
+    }
+
+    // Update
+    public async Task<T> Update(T entity)
+    {
+        _table.Attach(entity);
+        _db.Entry(entity).State = EntityState.Modified;
+        await _db.SaveChangesAsync();
+        return entity;
+    }
+
+    // Delete
+    public async Task<T> Delete(object id)
+    {
+        T entity = await _table.FindAsync(id);
+        if (entity == null)
+        {
+            throw new KeyNotFoundException("Entity not found for deletion.");
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
-        {
-            return await _db.Students.ToListAsync();
-        }
+        _table.Remove(entity);
+        await _db.SaveChangesAsync();
+        return entity;
+    }
+
+    // Save
+    public async Task Save()
+    {
+        await _db.SaveChangesAsync();
     }
 }
