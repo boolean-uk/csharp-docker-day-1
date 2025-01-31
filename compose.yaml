@@ -1,0 +1,21 @@
+﻿services:
+  exercise.wwwapi:
+    image: exercise.wwwapi
+    build:
+      context: .
+      dockerfile: exercise.wwwapi/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=SERVERNAME;Database=DATABASE;Username=USERNAME;Password=PASSWORD;
+    depends_on:
+      - database
+    ports:
+        - "8080:8080"
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
