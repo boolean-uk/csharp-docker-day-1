@@ -10,13 +10,13 @@ namespace api_cinema_challenge.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
         public Customer Customer { get; set; }
-        public int ScreeningId { get; set; }
+        public int? ScreeningId { get; set; }
         public Screening Screening { get; set; }
-        public int SeatId { get; set; }
-        private int _screenId;
-        public int ScreenId { get { return Screening?.ScreenId ?? _screenId; } set { _screenId = value; } }
+        public int? SeatId { get; set; }
+        private int? _screenId;
+        public int? ScreenId { get { return Screening?.ScreenId ?? _screenId; } set { _screenId = value; } }
         public Seat Seat { get; set; }
 
         [NotMapped]

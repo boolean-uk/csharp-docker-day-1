@@ -73,7 +73,6 @@ namespace api_cinema_challenge.Endpoints
                     Name = entity.Name,
                     Capacity = entity.Capacity,
                 });
-                screen = await repository.Add(screen);
                 return TypedResults.Created($"{Path}/{screen.Id}", new Payload
                 {
                     Data = mapper.Map<ScreenView>(screen)

@@ -123,7 +123,7 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                Seat seat = await repository.Find(x => x.Id == id && x.ScreenId == screenId, q => q.Include(x => x.Screen));
+                Seat seat = await repository.GetComposite([id, screenId], ["Id", "ScreenId"], q => q.Include(x => x.Screen));
 
                 await repository.Delete(seat);
                 return TypedResults.Created($"{Path}/{seat.Id}", new Payload { Data = mapper.Map<SeatView>(seat) });

@@ -25,9 +25,6 @@ namespace api_cinema_challenge.Data
                 .HasForeignKey(x => new { x.SeatId, x.ScreenId })
                 .OnDelete(DeleteBehavior.SetNull);
             modelBuilder.Entity<Ticket>()
-                .HasIndex(x => new { x.SeatId, x.ScreeningId })
-                .IsUnique();
-            modelBuilder.Entity<Ticket>()
                 .Property(x => x.TicketType)
                 .HasConversion<string>();
 
