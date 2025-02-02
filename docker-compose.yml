@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres         
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"         # Ensure that no other programs uses this port, also make sure no already running docker containers uses this port...
+    networks:
+      my_first_network3:    # The `my_first_network3` can be created with `docker network create my_first_network`, BUT what you most likely want is to not have it defined prior to running the docker-compose...
+        ipv4_address: 172.66.0.66   # Pick address that we will use to connect from our project with...
+
+  exercise.wwwapi:
+    image: ${DOCKER_REGISTRY-}exercisewwwapi
+    build:
+      context: .
+      dockerfile: exercise.wwwapi/Dockerfile
+    networks:
+      my_first_network3:    # Needs to define that the exersice.wwwwapi project will communicate with other containerized applications...
+        ipv4_address: 172.66.0.65
+
+networks:                   # Define the driver for our created network 
+  my_first_network3:
+    driver: bridge 
+    ipam: 
+      driver: default
+      config: 
+        - subnet: 172.66.0.0/16
+
+
+# DEBUGGING TIPS: 
+# NOTE: The IP Adress we need to use to connect to our postgresql server is changed; It's no longer local host (127.0.0.1)
+#       To find the IP-adress you can enter the following commands:  
+# Get the name of the network both services (postgres and exercise.wwwapi) is connected to, it will have something to do with our network name `my_first_network`: 
+#       docker network ls
+#
+# This should return a list of all networks; identify yours. To see which containers is connected along with the IP-addresses you can run this command: 
+#       
+#  $ docker inspect dockercompose10790856979179560925_my_first_network2
+# 
+# The result will show each containers along with their local ip; Select the local ip for the postgresql container, and use it in the connection string in appsettings.json
+
+# NOTE 2: be careful what subnet and ipv4 addresses you pick for the services and network... Don't pick one that is already busy...
+
+# NOTE 3: If you get `Resources cannnot be shared`, check the `Output` tab for more information that's most likely not the real issue...  
