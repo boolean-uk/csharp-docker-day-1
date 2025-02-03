@@ -1,19 +1,20 @@
-using exercise.wwwapi.Data;
-using exercise.wwwapi.Endpoints;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
+using api_cinema_challenge.Data;
+using api_cinema_challenge.Endpoints;
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>(opt => {
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-    opt.LogTo(message => Debug.WriteLine(message));
-});
-    
+builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddDbContext<CinemaContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,11 +24,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.SeedData();
 app.UseHttpsRedirection();
+app.ConfigureMovieEndpoints();
+app.ConfigureScreeningEndpoints();
+app.ConfigureCustomerEndpoints();
+app.ConfigureTicketEndpoints();
 
-app.StudentEndpointConfiguration(); //core
-app.CourseEndpointConfiguration(); //extension
-app.ApplyProjectMigrations();
 
 app.Run();
-
