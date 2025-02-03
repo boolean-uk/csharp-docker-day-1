@@ -8,12 +8,25 @@ namespace exercise.wwwapi.Data
     public class DataContext : DbContext
     {
         private string _connectionString;
+        public static bool _migrations; 
         public DataContext()
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
             this.Database.EnsureCreated();
         }
+
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+
+            if (!_migrations)
+            {
+                this.Database.Migrate();
+                _migrations = true;
+
+            }
+        }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
