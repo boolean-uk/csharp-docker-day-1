@@ -1,0 +1,21 @@
+services:
+  workshop.wwwapi:
+    image: ${DOCKER_REGISTRY-}exercisewwwapi
+    build:
+      context: .
+      dockerfile: workshop.wwwapi/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+ 
+  workshop.database:
+    container_name: workshop.database
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+    - ./.containers/workshop_db:/var/lib/postgresql/data
+    ports:
+        - 5432:5432
