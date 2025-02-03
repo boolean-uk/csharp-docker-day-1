@@ -1,24 +1,94 @@
-﻿using exercise.wwwapi.Data;
-using exercise.wwwapi.DataModels;
+﻿using System.Linq.Expressions;
+using api_cinema_challenge.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace exercise.wwwapi.Repository
+namespace api_cinema_challenge.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T : class
     {
-        private DataContext _db;
-        public Repository(DataContext db)
+        private CinemaContext _db;
+        private DbSet<T> _table = null!;
+        public Repository(CinemaContext db)
         {
             _db = db;
-        }
-        public async Task<IEnumerable<Course>> GetCourses()
-        {
-            return await _db.Courses.ToListAsync();
+            _table = _db.Set<T>();
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<T> Add(T entity)
         {
-            return await _db.Students.ToListAsync();
+            _table.Add(entity);
+            await _db.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<T> Delete(object id)
+        {
+            T existing = _table.Find(id);
+            _table.Remove(existing);
+            _db.SaveChanges();
+            return existing;
+        }
+
+        public async Task<IEnumerable<T>> Get()
+        {
+            return _table.ToList();
+        }
+
+        public async Task<T> GetById(int id)
+        {
+            return _table.Find(id);
+        }
+
+        public async Task<IEnumerable<T>> GetWithIncludes(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _table;
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetWithNestedIncludes(params Func<IQueryable<T>, IQueryable<T>>[] includeActions)
+        {
+            IQueryable<T> query = _table;
+
+            foreach (var includeAction in includeActions)
+            {
+                query = includeAction(query);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<T> GetByIdWithIncludes(int id, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _table;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.FirstOrDefaultAsync(entity => EF.Property<int>(entity, "Id") == id);
+        }
+
+        public async Task Save()
+        {
+            _db.SaveChangesAsync();
+        }
+
+        public async Task<T> Update(T entity)
+        {
+            _table.Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
+            _db.SaveChanges();
+            return entity;
+        }
+
+        public IQueryable<T> GetQuery()
+        {
+            return _table;
         }
     }
 }
