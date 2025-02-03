@@ -29,6 +29,7 @@ networks:                   # Define the driver for our created network
 
 
 # DEBUGGING TIPS: 
+# NOTE: Make sure you've done a add-migration; You can temporary switch the Launch mode from `docker-compose` to `exercice.wwwapi` , then run the migration and then switch back...
 # NOTE: The IP Adress we need to use to connect to our postgresql server is changed; It's no longer local host (127.0.0.1)
 #       To find the IP-adress you can enter the following commands:  
 # Get the name of the network both services (postgres and exercise.wwwapi) is connected to, it will have something to do with our network name `my_first_network`: 
