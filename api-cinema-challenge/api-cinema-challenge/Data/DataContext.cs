@@ -9,6 +9,8 @@ namespace api_cinema_challenge.Data
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Ticket>()
                 .HasOne(x => x.Customer)
                 .WithMany(x => x.Tickets)

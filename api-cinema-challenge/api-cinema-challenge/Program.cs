@@ -14,7 +14,8 @@ var configuration = new ConfigurationBuilder()
     .Build();
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    var connectionString = configuration.GetConnectionString("DefaultConnectionString");
+    //var connectionString = configuration.GetConnectionString("DefaultConnectionString");
+    var connectionString = configuration.GetConnectionString("LocalConnectionString");
     options.UseNpgsql(connectionString);
 
     options.ConfigureWarnings(warnings =>
@@ -33,6 +34,23 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Apply migrations automatically
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<DataContext>();
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<DataContext>>();
+        logger.LogError(ex, "An error occurred while migrating the database.");
+    }
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

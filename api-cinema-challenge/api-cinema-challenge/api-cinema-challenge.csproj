@@ -7,6 +7,7 @@
     <RootNamespace>api_cinema_challenge</RootNamespace>
     <UserSecretsId>1b1a8d0f-31d9-4d94-b28a-69f49baad22b</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
