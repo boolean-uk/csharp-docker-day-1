@@ -1,24 +1,3 @@
-# services:
-#   api-cinema-challenge:
-#     image: ${DOCKER_REGISTRY-}apicinemachallenge
-#     build:
-#       context: .
-#       dockerfile: api-cinema-challenge/Dockerfile
-#     ports:  
-#       - "5000:5000"
-#       - "5001:5001"
-
-#   workshop.database:
-#     image: postgres:latest
-#     container_name: cinema.database
-#     environment:
-#       POSTGRES_USER: admin
-#       POSTGRES_PASSWORD: admin
-#       POSTGRES_DB: cinemaapp
-#     volumes:
-#     - ./.containers/workshop_db:/var/lib/postgresql/data
-#     ports:
-#         - 5432:5432
 services:
   api-cinema-challenge:
     image: ${DOCKER_REGISTRY-}apicinemachallenge

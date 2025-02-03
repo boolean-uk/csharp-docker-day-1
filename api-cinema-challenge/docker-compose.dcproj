@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>65ed9f88-2599-4b07-81d1-d1f0e8689154</ProjectGuid>
+    <ProjectGuid>87b1dc3e-4f2a-4c1c-8a07-6b8e61e36734</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>api-cinema-challenge</DockerServiceName>
