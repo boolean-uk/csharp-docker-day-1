@@ -6,10 +6,18 @@ namespace exercise.wwwapi.Data
     public class DataContext : DbContext
     {
         private string _connectionString;
+        public static bool _migrations;
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
+            //_connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
+            _connectionString = configuration.GetValue<string>("ConnectionStrings:LocalDockerInstance")!;
+            if (!_migrations)
+            {
+                this.Database.Migrate();
+                _migrations = true;
+            }
+            this.Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -19,6 +27,8 @@ namespace exercise.wwwapi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<StudentCourse>()
                 .HasKey(table => new { table.StudentId, table.CourseId });
 
