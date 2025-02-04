@@ -1,19 +1,21 @@
-using exercise.wwwapi.Data;
-using exercise.wwwapi.Endpoints;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
+using exercise.pizzashopapi.Data;
+using exercise.pizzashopapi.EndPoints;
+using exercise.pizzashopapi.Repository;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddControllers();
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddDbContext<DataContext>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>(opt => {
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-    opt.LogTo(message => Debug.WriteLine(message));
-});
-    
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,9 +27,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.StudentEndpointConfiguration(); //core
-app.CourseEndpointConfiguration(); //extension
-app.ApplyProjectMigrations();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.ConfigurePizzaShopApi();
+
+app.SeedPizzaShopApi();
 
 app.Run();
-
