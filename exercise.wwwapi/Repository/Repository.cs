@@ -1,24 +1,75 @@
-﻿using exercise.wwwapi.Data;
-using exercise.wwwapi.DataModels;
+﻿using api_cinema_challenge.Models.Interfaces;
+using exercise.wwwapi.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace exercise.wwwapi.Repository
+
+namespace api_cinema_challenge.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T : class, new()
     {
-        private DataContext _db;
-        public Repository(DataContext db)
+        private DatabaseContext _databaseContext;
+        private DbSet<T> _table = null!;
+
+        public Repository(DatabaseContext db)
         {
-            _db = db;
-        }
-        public async Task<IEnumerable<Course>> GetCourses()
-        {
-            return await _db.Courses.ToListAsync();
+            _databaseContext = db;
+            _table = db.Set<T>();
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<IEnumerable<T>> GetEntries(params Func<IQueryable<T>, IQueryable<T>>[] includes)
         {
-            return await _db.Students.ToListAsync();
+            IQueryable<T> q = _table.AsQueryable();
+
+            foreach (var inc in includes)
+                q = inc.Invoke(q);
+
+            return await q.ToArrayAsync();
         }
+
+        public async Task<T?> GetEntry(Func<IQueryable<T>, IQueryable<T>> id, params Func<IQueryable<T>, IQueryable<T>>[] expressions)
+        {
+            IQueryable<T> q = _table.AsQueryable();
+
+            q = id.Invoke(q);
+            foreach (var ex in expressions)
+            {
+                q = ex.Invoke(q);
+            }
+
+            return await q.FirstOrDefaultAsync();
+        }
+        public async Task<T?> CreateEntry(T entry)
+        {
+            var a = await _table.AddAsync(entry);
+            await _databaseContext.SaveChangesAsync();
+            return entry;
+        }
+        public async Task<T?> UpdateEntry(Func<IQueryable<T>, IQueryable<T>> id, T entry)
+        {
+            IQueryable<T> q = _table.AsQueryable();
+            q = id.Invoke(q);
+            var foundEntry = await q.FirstOrDefaultAsync();
+
+            if (foundEntry == null) return null;
+            _table.Remove(foundEntry);
+            await _table.AddAsync(entry);            
+
+            await _databaseContext.SaveChangesAsync();
+            return await  id.Invoke(q).FirstAsync();
+        }
+        public async Task<T?> DeleteEntry(Func<IQueryable<T>, IQueryable<T>> id)
+        {
+            IQueryable<T> q = _table.AsQueryable();
+            q = id.Invoke(q);
+            var foundEntry = await q.FirstOrDefaultAsync();
+
+            if (foundEntry == null) return null;
+            _table.Remove(foundEntry);
+           await _databaseContext.SaveChangesAsync();
+            return foundEntry;
+        }
+
+
+
     }
 }
