@@ -1,11 +1,15 @@
-﻿using exercise.wwwapi.DataModels;
+﻿using System.Linq.Expressions;
 
 namespace exercise.wwwapi.Repository
 {
-    public interface IRepository
+    public interface IRepository<T>
     {
-        Task<IEnumerable<Student>> GetStudents();
-        Task<IEnumerable<Course>> GetCourses();
+        Task<IEnumerable<T>> Get();
+        Task<T> GetById(int id);
+        Task<T> Insert(T entity);
+        Task<T> Update(T entity);
+        Task<T> Delete(object id);
+        Task Save();
+        IQueryable<T> GetWithIncludes(params Expression<Func<T, object>>[] includes);
     }
-
 }

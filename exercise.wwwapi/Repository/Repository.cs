@@ -1,24 +1,65 @@
-﻿using exercise.wwwapi.Data;
-using exercise.wwwapi.DataModels;
+﻿using System.Linq.Expressions;
+using exercise.wwwapi.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace exercise.wwwapi.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T : class
     {
         private DataContext _db;
-        public Repository(DataContext db)
+        private DbSet<T> _table = null!;
+
+        public Repository(DataContext dataContext)
         {
-            _db = db;
-        }
-        public async Task<IEnumerable<Course>> GetCourses()
-        {
-            return await _db.Courses.ToListAsync();
+            _db = dataContext;
+            _table = _db.Set<T>();
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<IEnumerable<T>> Get()
         {
-            return await _db.Students.ToListAsync();
+            return _table.ToList();
+        }
+
+        public async Task<T> Insert(T entity)
+        {
+            _table.Add(entity);
+            _db.SaveChanges();
+            return entity;
+        }
+
+        public async Task<T> Update(T entity)
+        {
+            _table.Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
+            _db.SaveChanges();
+            return entity;
+        }
+
+        public async Task<T> Delete(object id)
+        {
+            T entity = _table.Find(id);
+            _table.Remove(entity);
+            _db.SaveChanges();
+            return entity;
+        }
+
+        public async Task<T> GetById(int id)
+        {
+            return _table.Find(id);
+        }
+        public IQueryable<T> GetWithIncludes(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _table;
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return query;
+        }
+
+        public async Task Save()
+        {
+            _db.SaveChangesAsync();
         }
     }
 }
