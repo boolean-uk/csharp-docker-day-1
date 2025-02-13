@@ -1,19 +1,23 @@
-﻿using exercise.wwwapi.DataModels;
+﻿using exercise.wwwapi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace exercise.wwwapi.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        private string connectionString;
+        public DataContext()
         {
-
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {           
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql(connectionString);
         }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Course> Courses { get; set; }
+        public DbSet<Pizza> Pizzas { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
